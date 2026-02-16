@@ -1,0 +1,1101 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// USER & AUTH
+// ============================================================
+
+enum UserRole {
+  ADMIN
+  MERCHANDISER
+  PRODUCTION_MANAGER
+  SOURCING_BUYER
+  QC_MANAGER
+  FINANCE
+  WAREHOUSE
+  SHIPPING
+  MANAGEMENT
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  role          UserRole @default(MERCHANDISER)
+  isActive      Boolean  @default(true)
+  phone         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  srsCreated         SRS[]              @relation("SRSCreatedBy")
+  samplesCreated     Sample[]           @relation("SampleCreatedBy")
+  inspections        QCInspection[]     @relation("InspectionBy")
+  activityLogs       ActivityLog[]
+
+  @@map("users")
+}
+
+// ============================================================
+// CUSTOMER
+// ============================================================
+
+model Customer {
+  id              String   @id @default(uuid())
+  name            String
+  code            String   @unique // e.g., "NK" for Nike
+  contactPerson   String?
+  email           String?
+  phone           String?
+  address         String?
+  country         String?
+  currency        String   @default("USD") // Invoicing currency
+  paymentTermDays Int      @default(60) // Net 60, Net 90, etc.
+  paymentTermBasis String  @default("ROG") // ROG, BL_DATE, INVOICE_DATE
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  srsList         SRS[]
+  purchaseOrders  PurchaseOrder[]
+  invoices        CustomerInvoice[]
+  styles          Style[]
+  packingLists    PackingList[]
+
+  @@map("customers")
+}
+
+// ============================================================
+// STYLE MASTER
+// ============================================================
+
+model Style {
+  id              String   @id @default(uuid())
+  styleNo         String   @unique
+  customerId      String
+  customerRef     String?  // Customer's own style reference
+  description     String?
+  category        String?  // Tops, Bottoms, Outerwear, etc.
+  season          String?  // SS25, FW25, etc.
+  year            String?
+  collection      String?
+  techPackUrl     String?  // File attachment
+  imageUrl        String?
+  construction    String?  // Woven, Knit, Denim, etc.
+  fitType         String?  // Slim, Regular, Relaxed, etc.
+  washInstructions String?
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  customer        Customer @relation(fields: [customerId], references: [id])
+  srs             SRS?
+  bomItems        BOMItem[]
+  samples         Sample[]
+  poLines         POLineItem[]
+  approvals       ApprovalRecord[]
+
+  @@map("styles")
+}
+
+// ============================================================
+// BILL OF MATERIALS (BOM)
+// ============================================================
+
+model BOMItem {
+  id              String   @id @default(uuid())
+  styleId         String
+  materialId      String
+  description     String?
+  placement       String?  // e.g., "Body fabric", "Collar trim", "Main label"
+  consumptionQty  Decimal @db.Decimal(12,4)  // Per garment unit
+  consumptionUnit String   // YDS, MTR, PCS, GROSS, etc.
+  wastagePercent  Decimal @db.Decimal(5,2)  @default(3) // Default 3% wastage
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  style           Style    @relation(fields: [styleId], references: [id])
+  material        Material @relation(fields: [materialId], references: [id])
+
+  @@map("bom_items")
+}
+
+// ============================================================
+// SRS (DEVELOPMENT REQUEST)
+// ============================================================
+
+enum SRSStatus {
+  RECEIVED
+  UNDER_REVIEW
+  COSTING_IN_PROGRESS
+  QUOTED
+  CUSTOMER_CONFIRMED
+  DEVELOPMENT_STARTED
+  ON_HOLD
+  CANCELLED
+  ORDER_RECEIVED
+}
+
+model SRS {
+  id              String    @id @default(uuid())
+  srsNo           String    @unique
+  customerId      String
+  styleId         String?   @unique
+  createdById     String
+  description     String?
+  techPackUrl     String?
+  targetPrice     Decimal? @db.Decimal(12,2)
+  targetPriceCurrency String @default("USD")
+  estimatedQtyMin Int?
+  estimatedQtyMax Int?
+  deliveryWindow  String?   // e.g., "March 2025"
+  targetMarkets   String?   // e.g., "US, EU"
+  fabricSpecs     String?
+  trimSpecs       String?
+  status          SRSStatus @default(RECEIVED)
+  revisionNo      Int       @default(1)
+  quotedPrice     Decimal? @db.Decimal(12,2)
+  quotedDate      DateTime?
+  confirmedDate   DateTime?
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  style           Style?    @relation(fields: [styleId], references: [id])
+  createdBy       User      @relation("SRSCreatedBy", fields: [createdById], references: [id])
+  costingSheet    CostingSheet?
+
+  @@map("srs")
+}
+
+// ============================================================
+// COSTING SHEET
+// ============================================================
+
+model CostingSheet {
+  id                String   @id @default(uuid())
+  srsId             String   @unique
+  revisionNo        Int      @default(1)
+
+  // Fabric costs
+  fabricCost        Decimal @db.Decimal(12,2)  @default(0) // Total fabric cost per unit
+  fabricDetails     Json?    // Array of fabric items with breakdown
+
+  // Trim costs
+  trimCost          Decimal @db.Decimal(12,2)  @default(0)
+  trimDetails       Json?    // Array of trim items
+
+  // Manufacturing
+  cmtCost           Decimal @db.Decimal(12,2)  @default(0) // Cut-Make-Trim per unit
+  washingCost       Decimal @db.Decimal(12,2)  @default(0)
+  embellishmentCost Decimal @db.Decimal(12,2)  @default(0) // Print, embroidery, etc.
+  
+  // Other costs
+  packagingCost     Decimal @db.Decimal(12,2)  @default(0)
+  freightCost       Decimal @db.Decimal(12,2)  @default(0)
+  inspectionCost    Decimal @db.Decimal(12,2)  @default(0)
+  dutyCost          Decimal @db.Decimal(12,2)  @default(0)
+  otherCost         Decimal @db.Decimal(12,2)  @default(0)
+  otherCostDetails  String?
+
+  // Totals
+  totalCostPerUnit  Decimal @db.Decimal(12,2)  @default(0) // Sum of all costs
+  agentCommPercent  Decimal @db.Decimal(5,2)  @default(0)
+  agentCommAmount   Decimal @db.Decimal(12,2)  @default(0)
+  targetMarginPercent Decimal @db.Decimal(5,2) @default(0)
+  sellingPrice      Decimal @db.Decimal(12,2)  @default(0) // Final FOB/CIF price
+  pricingBasis      String   @default("FOB") // FOB, CIF, DDP
+
+  currency          String   @default("USD")
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  srs               SRS      @relation(fields: [srsId], references: [id])
+
+  @@map("costing_sheets")
+}
+
+// ============================================================
+// PURCHASE ORDER (FROM CUSTOMER)
+// ============================================================
+
+enum POStatus {
+  RECEIVED
+  CONFIRMED
+  IN_PRODUCTION
+  PARTIALLY_SHIPPED
+  FULLY_SHIPPED
+  INVOICED
+  CLOSED
+  CANCELLED
+}
+
+model PurchaseOrder {
+  id              String    @id @default(uuid())
+  poNo            String    @unique // Customer PO number
+  customerId      String
+  orderDate       DateTime
+  revisionNo      Int       @default(0)
+  shipByDate      DateTime?
+  cancelDate      DateTime?
+  shippingTerms   String    @default("FOB") // FOB, CIF, DDP, EXW
+  portOfLoading   String?
+  portOfDischarge String?
+  currency        String    @default("USD")
+  status          POStatus  @default(RECEIVED)
+  totalQty        Int       @default(0) // Auto-calculated
+  totalAmount     Decimal @db.Decimal(12,2)   @default(0) // Auto-calculated
+  specialInstructions String?
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  lineItems       POLineItem[]
+  productionOrders ProductionOrder[]
+  supplierPOs     SupplierPO[]
+  packingLists    PackingList[]
+  shipments       Shipment[]
+  invoices        CustomerInvoice[]
+  orderCosts      OrderCost[]
+
+  @@map("purchase_orders")
+}
+
+model POLineItem {
+  id              String   @id @default(uuid())
+  poId            String
+  styleId         String
+  color           String
+  colorCode       String?
+  unitPrice       Decimal @db.Decimal(12,2)
+  
+  // Size breakdown (flexible JSON for any size scale)
+  sizeBreakdown   Json     // e.g., {"XS": 100, "S": 200, "M": 300, "L": 200, "XL": 100}
+  totalQty        Int      // Sum of all sizes
+  lineTotal       Decimal @db.Decimal(12,2)  // totalQty * unitPrice
+  
+  deliveryDate    DateTime?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  po              PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  style           Style    @relation(fields: [styleId], references: [id])
+
+  @@map("po_line_items")
+}
+
+// ============================================================
+// SUPPLIER & MATERIAL
+// ============================================================
+
+enum SupplierType {
+  FABRIC_MILL
+  TRIM_SUPPLIER
+  CMT_FACTORY
+  WASHING_PLANT
+  PRINT_EMBROIDERY
+  PACKAGING
+  OTHER
+}
+
+model Supplier {
+  id              String       @id @default(uuid())
+  name            String
+  code            String       @unique
+  type            SupplierType
+  contactPerson   String?
+  email           String?
+  phone           String?
+  address         String?
+  country         String?
+  currency        String       @default("CNY")
+  paymentTerms    String?      // e.g., "30% deposit, 70% before shipment"
+  leadTimeDays    Int?
+  bankDetails     String?
+  complianceStatus String?     // Audited, Pending, Expired
+  auditExpiry     DateTime?
+  rating          Decimal? @db.Decimal(3,1)     // 1-5
+  notes           String?
+  isActive        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  materials       MaterialSupplier[]
+  supplierPOs     SupplierPO[]
+  factories       Factory[]
+
+  @@map("suppliers")
+}
+
+enum MaterialType {
+  FABRIC
+  TRIM
+  PACKAGING
+  ACCESSORY
+  LABEL
+  HANGTAG
+  OTHER
+}
+
+model Material {
+  id              String       @id @default(uuid())
+  code            String       @unique
+  name            String
+  type            MaterialType
+  description     String?
+  composition     String?      // e.g., "100% Cotton", "65% Poly 35% Cotton"
+  weight          String?      // e.g., "180 GSM"
+  width           String?      // e.g., "58 inches"
+  colorOptions    String?
+  unitOfMeasure   String       @default("YDS") // YDS, MTR, PCS, KG, GROSS
+  moq             Decimal? @db.Decimal(12,4)     // Minimum order quantity
+  leadTimeDays    Int?
+  imageUrl        String?
+  notes           String?
+  isActive        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  suppliers       MaterialSupplier[]
+  bomItems        BOMItem[]
+  inventoryItems  InventoryItem[]
+  approvals       ApprovalRecord[]
+
+  @@map("materials")
+}
+
+model MaterialSupplier {
+  id              String   @id @default(uuid())
+  materialId      String
+  supplierId      String
+  unitPrice       Decimal @db.Decimal(12,2)
+  currency        String   @default("CNY")
+  moq             Decimal? @db.Decimal(12,4)
+  leadTimeDays    Int?
+  isPreferred     Boolean  @default(false)
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  material        Material @relation(fields: [materialId], references: [id])
+  supplier        Supplier @relation(fields: [supplierId], references: [id])
+
+  @@unique([materialId, supplierId])
+  @@map("material_suppliers")
+}
+
+// ============================================================
+// SAMPLE MANAGEMENT
+// ============================================================
+
+enum SampleStage {
+  PROTO
+  FIT
+  PP
+  TOP
+  SHIPMENT
+  GPT
+  AD_HOC
+}
+
+enum SampleStatus {
+  PENDING
+  IN_PROGRESS
+  SUBMITTED
+  APPROVED
+  REJECTED
+  APPROVED_WITH_COMMENTS
+}
+
+model Sample {
+  id              String       @id @default(uuid())
+  styleId         String
+  stage           SampleStage
+  revisionNo      Int          @default(1) // 1st, 2nd, 3rd submit
+  size            String?      // Size(s) sampled
+  fabricUsed      String?
+  trimUsed        String?
+  dateSent        DateTime?
+  dateReceived    DateTime?
+  courierName     String?
+  trackingNo      String?
+  customerComments String?
+  internalNotes   String?
+  status          SampleStatus @default(PENDING)
+  imageUrls       Json?        // Array of image URLs
+  createdById     String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  style           Style        @relation(fields: [styleId], references: [id])
+  createdBy       User         @relation("SampleCreatedBy", fields: [createdById], references: [id])
+
+  @@map("samples")
+}
+
+// ============================================================
+// APPROVAL RECORDS (Lab Dip, Fabric, Trim, Strike-off)
+// ============================================================
+
+enum ApprovalType {
+  LAB_DIP
+  FABRIC
+  TRIM
+  PRINT_STRIKEOFF
+  EMBROIDERY_STRIKEOFF
+  WASH
+  FIT
+}
+
+enum ApprovalStatus {
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+  RESUBMIT
+  APPROVED_WITH_COMMENTS
+}
+
+model ApprovalRecord {
+  id              String         @id @default(uuid())
+  styleId         String
+  materialId      String?
+  type            ApprovalType
+  reference       String?        // Pantone ref, customer swatch ref, etc.
+  supplierName    String?
+  submissionNo    Int            @default(1)
+  submitDate      DateTime?
+  approvalDate    DateTime?
+  status          ApprovalStatus @default(PENDING)
+  customerComments String?
+  imageUrls       Json?
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  style           Style          @relation(fields: [styleId], references: [id])
+  material        Material?      @relation(fields: [materialId], references: [id])
+
+  @@map("approval_records")
+}
+
+// ============================================================
+// SUPPLIER PO (MATERIAL PROCUREMENT)
+// ============================================================
+
+enum SupplierPOStatus {
+  DRAFT
+  ISSUED
+  ACKNOWLEDGED
+  PARTIALLY_RECEIVED
+  FULLY_RECEIVED
+  CLOSED
+  CANCELLED
+}
+
+model SupplierPO {
+  id              String           @id @default(uuid())
+  spoNo           String           @unique // Internal Supplier PO number
+  supplierId      String
+  customerPOId    String?          // Linked customer PO
+  orderDate       DateTime         @default(now())
+  deliveryDate    DateTime?
+  currency        String           @default("CNY")
+  totalAmount     Decimal @db.Decimal(12,2)          @default(0)
+  paymentTerms    String?
+  status          SupplierPOStatus @default(DRAFT)
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  supplier        Supplier         @relation(fields: [supplierId], references: [id])
+  customerPO      PurchaseOrder?   @relation(fields: [customerPOId], references: [id])
+  lineItems       SupplierPOLine[]
+  goodsReceived   GoodsReceived[]
+
+  @@map("supplier_pos")
+}
+
+model SupplierPOLine {
+  id              String   @id @default(uuid())
+  supplierPOId    String
+  materialId      String?
+  description     String
+  color           String?
+  quantity        Decimal @db.Decimal(12,4)
+  unit            String   @default("YDS")
+  unitPrice       Decimal @db.Decimal(12,2)
+  lineTotal       Decimal @db.Decimal(12,2)
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  supplierPO      SupplierPO @relation(fields: [supplierPOId], references: [id], onDelete: Cascade)
+
+  @@map("supplier_po_lines")
+}
+
+// ============================================================
+// GOODS RECEIVING
+// ============================================================
+
+model GoodsReceived {
+  id              String   @id @default(uuid())
+  supplierPOId    String
+  receivedDate    DateTime @default(now())
+  receivedBy      String?
+  location        String?  // Warehouse location
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  supplierPO      SupplierPO        @relation(fields: [supplierPOId], references: [id])
+  items           GoodsReceivedItem[]
+
+  @@map("goods_received")
+}
+
+model GoodsReceivedItem {
+  id              String   @id @default(uuid())
+  goodsReceivedId String
+  description     String
+  color           String?
+  orderedQty      Decimal @db.Decimal(12,4)
+  receivedQty     Decimal @db.Decimal(12,4)
+  unit            String
+  qcResult        String?  // PASS, FAIL, CONDITIONAL
+  remarks         String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  goodsReceived   GoodsReceived @relation(fields: [goodsReceivedId], references: [id], onDelete: Cascade)
+
+  @@map("goods_received_items")
+}
+
+// ============================================================
+// INVENTORY
+// ============================================================
+
+model InventoryItem {
+  id              String   @id @default(uuid())
+  materialId      String
+  location        String   // Warehouse, Factory name, etc.
+  color           String?
+  lotNo           String?
+  quantity        Decimal @db.Decimal(12,4)
+  unit            String
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  material        Material @relation(fields: [materialId], references: [id])
+  movements       StockMovement[]
+
+  @@map("inventory_items")
+}
+
+enum MovementType {
+  IN          // Goods receiving
+  OUT         // Issued to production
+  TRANSFER    // Between locations
+  ADJUSTMENT  // Stock take adjustment
+}
+
+model StockMovement {
+  id              String       @id @default(uuid())
+  inventoryItemId String
+  type            MovementType
+  quantity        Decimal @db.Decimal(12,4)
+  fromLocation    String?
+  toLocation      String?
+  reference       String?      // PO#, Production Order#, etc.
+  notes           String?
+  createdAt       DateTime     @default(now())
+
+  // Relations
+  inventoryItem   InventoryItem @relation(fields: [inventoryItemId], references: [id])
+
+  @@map("stock_movements")
+}
+
+// ============================================================
+// PRODUCTION
+// ============================================================
+
+model Factory {
+  id              String   @id @default(uuid())
+  name            String
+  code            String   @unique
+  supplierId      String?  // Link to supplier if external
+  country         String
+  address         String?
+  contactPerson   String?
+  phone           String?
+  email           String?
+  isInHouse       Boolean  @default(false)
+  capacity        String?  // e.g., "5000 pcs/month"
+  specialties     String?  // e.g., "Knits, Woven shirts"
+  complianceStatus String?
+  cmtRateRange    String?  // e.g., "$2.50 - $4.00"
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  supplier        Supplier? @relation(fields: [supplierId], references: [id])
+  productionOrders ProductionOrder[]
+
+  @@map("factories")
+}
+
+enum ProductionStatus {
+  PLANNED
+  MATERIAL_ISSUED
+  CUTTING
+  SEWING
+  WASHING_FINISHING
+  QC_INSPECTION
+  PACKING
+  READY_TO_SHIP
+  COMPLETED
+  ON_HOLD
+  CANCELLED
+}
+
+model ProductionOrder {
+  id              String           @id @default(uuid())
+  prodOrderNo     String           @unique
+  poId            String
+  factoryId       String
+  styleNo         String
+  color           String?
+  sizeBreakdown   Json?            // Same format as PO line
+  totalQty        Int
+  targetStartDate DateTime?
+  targetEndDate   DateTime?
+  actualStartDate DateTime?
+  actualEndDate   DateTime?
+  cmtRate         Decimal? @db.Decimal(12,2)
+  cmtCurrency     String           @default("USD")
+  status          ProductionStatus @default(PLANNED)
+  specialInstructions String?
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  po              PurchaseOrder    @relation(fields: [poId], references: [id])
+  factory         Factory          @relation(fields: [factoryId], references: [id])
+  stageTracking   ProductionStage[]
+  inspections     QCInspection[]
+  materialIssues  MaterialIssue[]
+
+  @@map("production_orders")
+}
+
+model ProductionStage {
+  id              String   @id @default(uuid())
+  prodOrderId     String
+  stage           String   // CUTTING, SEWING, WASHING, QC, PACKING
+  plannedDate     DateTime?
+  actualDate      DateTime?
+  completedQty    Int?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  prodOrder       ProductionOrder @relation(fields: [prodOrderId], references: [id], onDelete: Cascade)
+
+  @@map("production_stages")
+}
+
+model MaterialIssue {
+  id              String   @id @default(uuid())
+  prodOrderId     String
+  materialDesc    String
+  color           String?
+  quantity        Decimal @db.Decimal(12,4)
+  unit            String
+  issuedDate      DateTime @default(now())
+  issuedTo        String   // Factory name
+  notes           String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  prodOrder       ProductionOrder @relation(fields: [prodOrderId], references: [id])
+
+  @@map("material_issues")
+}
+
+// ============================================================
+// QC / INSPECTION
+// ============================================================
+
+enum InspectionType {
+  INLINE
+  MID_PRODUCTION
+  PRE_SHIPMENT
+  FINAL
+}
+
+enum InspectionResult {
+  PASS
+  FAIL
+  CONDITIONAL_PASS
+  PENDING
+}
+
+model QCInspection {
+  id              String           @id @default(uuid())
+  prodOrderId     String
+  type            InspectionType
+  inspectionDate  DateTime
+  inspectorId     String?
+  thirdPartyName  String?          // SGS, Bureau Veritas, etc.
+  aqlLevel        String?          // e.g., "AQL 2.5"
+  sampleSize      Int?
+  defectsFound    Int?
+  defectDetails   Json?            // Array of defect types and counts
+  result          InspectionResult @default(PENDING)
+  reportUrl       String?
+  imageUrls       Json?
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  prodOrder       ProductionOrder  @relation(fields: [prodOrderId], references: [id])
+  inspector       User?            @relation("InspectionBy", fields: [inspectorId], references: [id])
+
+  @@map("qc_inspections")
+}
+
+// ============================================================
+// PACKING & SHIPPING
+// ============================================================
+
+model PackingList {
+  id              String   @id @default(uuid())
+  packingListNo   String   @unique
+  poId            String
+  customerId      String   // Direct customer link for quick access
+  shipmentId      String?
+  totalCartons    Int      @default(0)
+  totalQty        Int      @default(0)
+  totalGrossWeight Decimal @db.Decimal(10,2) @default(0) // KG
+  totalNetWeight  Decimal @db.Decimal(10,2)  @default(0)
+  totalCBM        Decimal @db.Decimal(10,2) @default(0) // Cubic meters
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  po              PurchaseOrder @relation(fields: [poId], references: [id])
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  shipment        Shipment?     @relation(fields: [shipmentId], references: [id])
+  cartons         Carton[]
+
+  @@map("packing_lists")
+}
+
+model Carton {
+  id              String   @id @default(uuid())
+  packingListId   String
+  cartonNo        Int
+  // Denormalised summary — kept in sync by the API when CartonLines change
+  sizeBreakdown   Json     @default("{}") // {"S": 10, "M": 10, "L": 10}
+  totalPcs        Int      @default(0)
+  netWeight       Decimal @db.Decimal(10,2)  @default(0)
+  grossWeight     Decimal @db.Decimal(10,2)  @default(0)
+  length          Decimal? @db.Decimal(8,2) // CM
+  width           Decimal? @db.Decimal(8,2)
+  height          Decimal? @db.Decimal(8,2)
+  cbm             Decimal @db.Decimal(8,2)  @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  packingList     PackingList @relation(fields: [packingListId], references: [id], onDelete: Cascade)
+  lines           CartonLine[]
+
+  @@unique([packingListId, cartonNo])
+  @@map("cartons")
+}
+
+// Each row inside a carton — supports both solid and ratio packs
+model CartonLine {
+  id              String   @id @default(uuid())
+  cartonId        String
+  styleNo         String
+  color           String
+  size            String   // Individual size: "S", "M", "L", etc.
+  qty             Int
+  createdAt       DateTime @default(now())
+
+  // Relations
+  carton          Carton @relation(fields: [cartonId], references: [id], onDelete: Cascade)
+
+  @@map("carton_lines")
+}
+
+// Reusable ratio-pack templates — e.g. "Standard S/M/L/XL = 1/2/2/1"
+model RatioPackTemplate {
+  id              String   @id @default(uuid())
+  name            String   @unique // e.g. "Standard Ratio 1-2-2-1"
+  sizeRatios      Json     // {"S": 1, "M": 2, "L": 2, "XL": 1}
+  pcsPerPack      Int      // Sum of ratios, e.g. 6
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("ratio_pack_templates")
+}
+
+enum ShipmentStatus {
+  BOOKING_MADE
+  CARGO_READY
+  LOADED
+  IN_TRANSIT
+  ARRIVED
+  CUSTOMS_CLEARED
+  DELIVERED
+}
+
+model Shipment {
+  id              String         @id @default(uuid())
+  shipmentNo      String         @unique
+  poId            String
+  shipmentMethod  String         @default("SEA_FCL") // SEA_FCL, SEA_LCL, AIR, COURIER, RAIL
+  shippingTerms   String         @default("FOB")
+  portOfLoading   String?
+  portOfDischarge String?
+  etd             DateTime?      // Estimated Time of Departure
+  eta             DateTime?      // Estimated Time of Arrival
+  atd             DateTime?      // Actual Time of Departure
+  ata             DateTime?      // Actual Time of Arrival
+  rogDate         DateTime?      // Receipt of Goods — CRITICAL for payment
+  vesselName      String?
+  voyageNo        String?
+  containerNo     String?
+  blNo            String?        // Bill of Lading number
+  awbNo           String?        // Airway Bill number
+  forwarderName   String?
+  forwarderContact String?
+  freightCost     Decimal? @db.Decimal(12,2)
+  status          ShipmentStatus @default(BOOKING_MADE)
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  po              PurchaseOrder  @relation(fields: [poId], references: [id])
+  packingLists    PackingList[]
+  documents       ShipmentDocument[]
+
+  @@map("shipments")
+}
+
+model ShipmentDocument {
+  id              String   @id @default(uuid())
+  shipmentId      String
+  docType         String   // COMMERCIAL_INVOICE, PACKING_LIST, BL, CO, FORM_A, TEST_REPORT
+  fileName        String
+  fileUrl         String
+  notes           String?
+  uploadedAt      DateTime @default(now())
+
+  // Relations
+  shipment        Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@map("shipment_documents")
+}
+
+// ============================================================
+// FINANCE — CUSTOMER INVOICING
+// ============================================================
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  ACKNOWLEDGED
+  PARTIALLY_PAID
+  FULLY_PAID
+  OVERDUE
+  CANCELLED
+}
+
+model CustomerInvoice {
+  id              String        @id @default(uuid())
+  invoiceNo       String        @unique
+  customerId      String
+  poId            String
+  invoiceDate     DateTime      @default(now())
+  dueDate         DateTime?     // Calculated from ROG + payment terms
+  currency        String        @default("USD")
+  subtotal        Decimal @db.Decimal(12,2)       @default(0)
+  adjustments     Decimal @db.Decimal(12,2) @default(0) // Deductions, discounts
+  totalAmount     Decimal @db.Decimal(12,2)       @default(0)
+  amountPaid      Decimal @db.Decimal(12,2)       @default(0)
+  amountDue       Decimal @db.Decimal(12,2)       @default(0) // totalAmount - amountPaid
+  bankDetails     String?
+  status          InvoiceStatus @default(DRAFT)
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  po              PurchaseOrder @relation(fields: [poId], references: [id])
+  lineItems       InvoiceLineItem[]
+  payments        PaymentReceived[]
+
+  @@map("customer_invoices")
+}
+
+model InvoiceLineItem {
+  id              String   @id @default(uuid())
+  invoiceId       String
+  styleNo         String
+  color           String
+  description     String?
+  quantity        Int
+  unitPrice       Decimal @db.Decimal(12,2)
+  lineTotal       Decimal @db.Decimal(12,2)
+  createdAt       DateTime @default(now())
+
+  // Relations
+  invoice         CustomerInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_line_items")
+}
+
+model PaymentReceived {
+  id              String   @id @default(uuid())
+  invoiceId       String
+  paymentDate     DateTime
+  amount          Decimal @db.Decimal(12,2)
+  currency        String
+  exchangeRate    Decimal @db.Decimal(10,6)  @default(1)
+  amountInBase    Decimal @db.Decimal(12,2) // Amount in base currency
+  bankReference   String?
+  paymentMethod   String?  // Wire, Check, LC
+  notes           String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  invoice         CustomerInvoice @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments_received")
+}
+
+// ============================================================
+// FINANCE — ORDER COST & P&L
+// ============================================================
+
+enum CostCategory {
+  FABRIC
+  TRIM
+  CMT
+  WASHING
+  EMBELLISHMENT
+  PACKAGING
+  FREIGHT
+  INSPECTION
+  DUTY
+  AGENT_COMMISSION
+  CLAIM
+  FX_LOSS
+  OTHER
+}
+
+model OrderCost {
+  id              String       @id @default(uuid())
+  poId            String
+  category        CostCategory
+  description     String
+  supplierName    String?
+  quantity        Decimal? @db.Decimal(12,4)
+  unitCost        Decimal? @db.Decimal(12,2)
+  totalCost       Decimal @db.Decimal(12,2)
+  currency        String       @default("USD")
+  exchangeRate    Decimal @db.Decimal(10,6)      @default(1)
+  totalCostBase   Decimal @db.Decimal(12,2)      // In base currency (USD)
+  supplierPORef   String?
+  invoiceRef      String?
+  notes           String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  po              PurchaseOrder @relation(fields: [poId], references: [id])
+
+  @@map("order_costs")
+}
+
+// ============================================================
+// ACTIVITY LOG / AUDIT TRAIL
+// ============================================================
+
+model ActivityLog {
+  id              String   @id @default(uuid())
+  userId          String?
+  action          String   // CREATE, UPDATE, DELETE, STATUS_CHANGE
+  entity          String   // PO, SRS, Sample, etc.
+  entityId        String
+  details         Json?    // What changed
+  createdAt       DateTime @default(now())
+
+  // Relations
+  user            User?    @relation(fields: [userId], references: [id])
+
+  @@index([entity, entityId])
+  @@map("activity_logs")
+}
+
+// ============================================================
+// SYSTEM SETTINGS
+// ============================================================
+
+model SystemSetting {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  value           String
+  description     String?
+  updatedAt       DateTime @updatedAt
+
+  @@map("system_settings")
+}

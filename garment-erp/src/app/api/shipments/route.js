@@ -1,0 +1,54 @@
+// src/app/api/shipments/route.js
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { requireAuth } from '@/lib/auth';
+
+export async function GET(request) {
+  const { user, error } = await requireAuth();
+  if (error) return error;
+
+  const { searchParams } = new URL(request.url);
+  const status = searchParams.get('status');
+
+  const where = {};
+  if (status) where.status = status;
+
+  const shipments = await prisma.shipment.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      po: { select: { poNo: true, customer: { select: { name: true, code: true } } } },
+      packingLists: { select: { packingListNo: true, totalCartons: true, totalQty: true } },
+    },
+  });
+  return NextResponse.json({ shipments });
+}
+
+export async function POST(request) {
+  const { user, error } = await requireAuth();
+  if (error) return error;
+
+  const body = await request.json();
+  const count = await prisma.shipment.count();
+  const shipmentNo = `SHP-${new Date().getFullYear()}-${String(count + 1).padStart(4, '0')}`;
+
+  const shipment = await prisma.shipment.create({
+    data: {
+      shipmentNo,
+      poId: body.poId,
+      shipmentMethod: body.shipmentMethod || 'SEA_FCL',
+      shippingTerms: body.shippingTerms || 'FOB',
+      portOfLoading: body.portOfLoading,
+      portOfDischarge: body.portOfDischarge,
+      etd: body.etd ? new Date(body.etd) : null,
+      eta: body.eta ? new Date(body.eta) : null,
+      vesselName: body.vesselName,
+      containerNo: body.containerNo,
+      forwarderName: body.forwarderName,
+      freightCost: body.freightCost,
+      notes: body.notes,
+    },
+    include: { po: { select: { poNo: true } } },
+  });
+  return NextResponse.json(shipment, { status: 201 });
+}
