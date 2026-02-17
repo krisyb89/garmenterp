@@ -1,1 +1,12 @@
-{}
+{
+  "/page": "app/page.js",
+  "/api/dashboard/route": "app/api/dashboard/route.js",
+  "/login/page": "app/login/page.js",
+  "/api/srs/route": "app/api/srs/route.js",
+  "/api/srs/[id]/route": "app/api/srs/[id]/route.js",
+  "/api/costing-sheets/[srsId]/route": "app/api/costing-sheets/[srsId]/route.js",
+  "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/dashboard/srs/page": "app/(dashboard)/dashboard/srs/page.js",
+  "/(dashboard)/dashboard/costing/page": "app/(dashboard)/dashboard/costing/page.js",
+  "/(dashboard)/dashboard/srs/[id]/page": "app/(dashboard)/dashboard/srs/[id]/page.js"
+}

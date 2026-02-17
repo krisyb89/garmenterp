@@ -30,7 +30,7 @@ export default function CostingPage() {
                 <td>{srs.customer?.name}</td>
                 <td className="text-sm text-gray-500">{(srs.description || '—').substring(0, 40)}</td>
                 <td>{srs.targetPrice ? `${srs.targetPriceCurrency} ${srs.targetPrice}` : '—'}</td>
-                <td className="font-medium text-green-600">{srs.quotedPrice ? `${srs.targetPriceCurrency} ${srs.quotedPrice}` : '—'}</td>
+                <td className="font-medium text-green-600">{srs.costingSheet?.actualQuotedPrice ? `${srs.costingSheet?.quoteCurrency || 'USD'} ${Number(srs.costingSheet.actualQuotedPrice).toFixed(2)}` : srs.costingSheet?.sellingPrice ? `${srs.costingSheet?.quoteCurrency || 'USD'} ${Number(srs.costingSheet.sellingPrice).toFixed(2)}` : '—'}</td>
                 <td><StatusBadge status={srs.status} /></td>
                 <td><Link href={`/dashboard/srs/${srs.id}`} className="text-blue-600 text-sm">Open Costing →</Link></td>
               </tr>

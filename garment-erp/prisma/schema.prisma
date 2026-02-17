@@ -211,19 +211,18 @@ model CostingSheet {
   // ========================================================
   // Segmented costing (Excel-like)
   // Each segment stores an array of line items in JSON.
-  // Recommended line schema:
-  // { materialId?, name, unitPricePerMeter?, unitPriceLocal?, consumption, vatRefund, vatPercent, computedCostLocal }
+  // Line schema: { materialId?, name, unitPriceLocal?, consumption, vatRefund, vatPercent, exchangeRate, costLocal, costQuoted }
   // ========================================================
 
-  fabricDetails     Json?    // Array of fabric lines
-  trimDetails       Json?    // Array of trim lines
-  laborDetails      Json?    // Array of labor/CMT lines
-  packingDetails    Json?    // Array of packing lines
-  misDetails        Json?    // Array of misc lines
-  freightDetails    Json?    // Array of freight lines (optional)
-  dutyDetails       Json?    // Array of duty lines (optional)
+  fabricDetails     Json?
+  trimDetails       Json?
+  laborDetails      Json?
+  packingDetails    Json?
+  misDetails        Json?
+  freightDetails    Json?
+  dutyDetails       Json?
 
-  // Totals by segment (computed and persisted)
+  // Totals by segment in quoted currency (computed and persisted)
   fabricCost        Decimal  @default(0)
   trimCost          Decimal  @default(0)
   laborCost         Decimal  @default(0)
@@ -233,14 +232,18 @@ model CostingSheet {
   dutyCost          Decimal  @default(0)
 
   // Totals
-  totalCostPerUnit  Decimal  @default(0) // Sum of all costs
+  totalCostLocal    Decimal  @default(0)
+  totalCostQuoted   Decimal  @default(0)
   agentCommPercent  Decimal  @default(0)
   agentCommAmount   Decimal  @default(0)
   targetMarginPercent Decimal @default(0)
-  sellingPrice      Decimal  @default(0) // Final FOB/CIF price
-  pricingBasis      String   @default("FOB") // FOB, CIF, DDP
+  sellingPrice      Decimal  @default(0)
+  actualQuotedPrice Decimal?
+  pricingBasis      String   @default("FOB")
 
-  currency          String   @default("USD")
+  localCurrency     String   @default("CNY")
+  quoteCurrency     String   @default("USD")
+  exchangeRate      Decimal  @default(1)
   notes             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt

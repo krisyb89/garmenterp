@@ -33,7 +33,7 @@ export async function GET(request) {
         customer: { select: { name: true, code: true } },
         style: { select: { styleNo: true } },
         createdBy: { select: { name: true } },
-        costingSheet: { select: { id: true, sellingPrice: true, totalCostPerUnit: true } },
+        costingSheet: { select: { id: true, sellingPrice: true, totalCostQuoted: true, actualQuotedPrice: true, quoteCurrency: true } },
       },
     });
 

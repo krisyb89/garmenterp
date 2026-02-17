@@ -1,8 +1,7 @@
-// src/app/api/costing-sheets/[srsId]/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
-import { normalizeLines, sumLines } from '@/lib/costing';
+import { normalizeLines, sumLinesLocal, sumLinesQuoted, computeSellingPrice } from '@/lib/costing';
 
 export async function GET(request, { params }) {
   const user = await getCurrentUser();
@@ -12,7 +11,6 @@ export async function GET(request, { params }) {
   const costing = await prisma.costingSheet.findUnique({ where: { srsId } });
   if (!costing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-  // Provide materials list for dropdowns
   const materials = await prisma.material.findMany({
     where: { isActive: true },
     select: { id: true, code: true, name: true, pricePerMeter: true, vatPercent: true, category: { select: { name: true } }, content: true, widthMeters: true, gsm: true },
@@ -29,80 +27,55 @@ export async function PUT(request, { params }) {
   const { srsId } = await params;
   const body = await request.json();
 
-  const fabricDetails = normalizeLines(body.fabricDetails);
-  const trimDetails = normalizeLines(body.trimDetails);
-  const laborDetails = normalizeLines(body.laborDetails);
-  const packingDetails = normalizeLines(body.packingDetails);
-  const misDetails = normalizeLines(body.misDetails);
-  const freightDetails = normalizeLines(body.freightDetails);
-  const dutyDetails = normalizeLines(body.dutyDetails);
+  const defaultRate = body.exchangeRate != null ? Number(body.exchangeRate) : 1;
 
-  const fabricCost = sumLines(fabricDetails);
-  const trimCost = sumLines(trimDetails);
-  const laborCost = sumLines(laborDetails);
-  const packingCost = sumLines(packingDetails);
-  const misCost = sumLines(misDetails);
-  const freightCost = sumLines(freightDetails);
-  const dutyCost = sumLines(dutyDetails);
+  const segments = ['fabricDetails', 'trimDetails', 'laborDetails', 'packingDetails', 'misDetails', 'freightDetails', 'dutyDetails'];
+  const segmentKeys = ['fabricCost', 'trimCost', 'laborCost', 'packingCost', 'misCost', 'freightCost', 'dutyCost'];
 
-  const totalCostPerUnit = fabricCost + trimCost + laborCost + packingCost + misCost + freightCost + dutyCost;
+  const normalized = {};
+  const segCosts = {};
+  let totalCostLocal = 0;
+  let totalCostQuoted = 0;
+
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    const costKey = segmentKeys[i];
+    const lines = normalizeLines(body[seg], defaultRate);
+    normalized[seg] = lines;
+    const localSum = lines.reduce((s, l) => s + l.costLocal, 0);
+    const quotedSum = lines.reduce((s, l) => s + l.costQuoted, 0);
+    segCosts[costKey] = quotedSum;
+    totalCostLocal += localSum;
+    totalCostQuoted += quotedSum;
+  }
 
   const agentCommPercent = body.agentCommPercent != null ? Number(body.agentCommPercent) : 0;
   const targetMarginPercent = body.targetMarginPercent != null ? Number(body.targetMarginPercent) : 0;
-  const agentCommAmount = totalCostPerUnit * (agentCommPercent / 100);
-  const sellingPrice = (totalCostPerUnit + agentCommAmount) * (1 + targetMarginPercent / 100);
+  const agentCommAmount = totalCostQuoted * (agentCommPercent / 100);
+  const sellingPrice = computeSellingPrice(totalCostQuoted, agentCommPercent, targetMarginPercent);
+  const actualQuotedPrice = body.actualQuotedPrice != null && body.actualQuotedPrice !== '' ? Number(body.actualQuotedPrice) : null;
+
+  const data = {
+    ...normalized,
+    ...segCosts,
+    totalCostLocal,
+    totalCostQuoted,
+    agentCommPercent,
+    agentCommAmount,
+    targetMarginPercent,
+    sellingPrice,
+    actualQuotedPrice,
+    localCurrency: body.localCurrency || 'CNY',
+    quoteCurrency: body.quoteCurrency || 'USD',
+    exchangeRate: defaultRate,
+    pricingBasis: body.pricingBasis || 'FOB',
+    notes: body.notes || null,
+  };
 
   const updated = await prisma.costingSheet.upsert({
     where: { srsId },
-    update: {
-      fabricDetails,
-      trimDetails,
-      laborDetails,
-      packingDetails,
-      misDetails,
-      freightDetails,
-      dutyDetails,
-      fabricCost,
-      trimCost,
-      laborCost,
-      packingCost,
-      misCost,
-      freightCost,
-      dutyCost,
-      totalCostPerUnit,
-      agentCommPercent,
-      agentCommAmount,
-      targetMarginPercent,
-      sellingPrice,
-      currency: body.currency || 'USD',
-      pricingBasis: body.pricingBasis || 'FOB',
-      notes: body.notes || null,
-    },
-    create: {
-      srsId,
-      fabricDetails,
-      trimDetails,
-      laborDetails,
-      packingDetails,
-      misDetails,
-      freightDetails,
-      dutyDetails,
-      fabricCost,
-      trimCost,
-      laborCost,
-      packingCost,
-      misCost,
-      freightCost,
-      dutyCost,
-      totalCostPerUnit,
-      agentCommPercent,
-      agentCommAmount,
-      targetMarginPercent,
-      sellingPrice,
-      currency: body.currency || 'USD',
-      pricingBasis: body.pricingBasis || 'FOB',
-      notes: body.notes || null,
-    },
+    update: data,
+    create: { srsId, ...data },
   });
 
   return NextResponse.json(updated);
