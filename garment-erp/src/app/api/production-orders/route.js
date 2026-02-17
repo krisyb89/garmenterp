@@ -1,11 +1,11 @@
 // src/app/api/production-orders/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { requireAuth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status');
@@ -28,8 +28,8 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
   const count = await prisma.productionOrder.count();

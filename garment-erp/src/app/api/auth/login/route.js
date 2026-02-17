@@ -1,4 +1,4 @@
-// src/app/api/auth/login/route.js — PUBLIC ROUTE (no auth required)
+// src/app/api/auth/login/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { verifyPassword, generateToken } from '@/lib/auth';

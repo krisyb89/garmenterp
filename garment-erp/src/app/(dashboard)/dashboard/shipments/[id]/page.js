@@ -1,8 +1,8 @@
 // src/app/(dashboard)/dashboard/shipments/[id]/page.js
 'use client';
+import { useParams } from 'next/navigation';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 

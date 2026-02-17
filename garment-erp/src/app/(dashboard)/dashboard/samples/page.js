@@ -1,7 +1,6 @@
 // src/app/(dashboard)/dashboard/samples/page.js
 'use client';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
 import StatusBadge from '@/components/StatusBadge';
 
@@ -23,10 +22,7 @@ export default function SamplesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <PageHeader title="Samples" subtitle="Track all sample submissions and approvals" />
-        <Link href="/dashboard/samples/new" className="btn-primary text-sm">+ New Sample</Link>
-      </div>
+      <PageHeader title="Samples" subtitle="Track all sample submissions and approvals" />
       <div className="flex gap-4 mb-4 flex-wrap">
         <div className="flex gap-1 items-center">
           <span className="text-xs text-gray-500 mr-1">Stage:</span>
@@ -51,17 +47,16 @@ export default function SamplesPage() {
         samples.length === 0 ? <div className="card text-center py-12 text-gray-400">No samples found</div> :
         <div className="card p-0 overflow-hidden">
           <table className="table-base">
-            <thead><tr><th>Style</th><th>Customer</th><th>Stage</th><th>Rev#</th><th>Sent</th><th>Tracking</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Style</th><th>Customer</th><th>Stage</th><th>Rev#</th><th>Sent</th><th>Tracking</th><th>Status</th></tr></thead>
             <tbody>{samples.map(s => (
               <tr key={s.id}>
-                <td className="font-medium">{s.style?.styleNo}</td>
+                <td className="font-medium"><a href={`/dashboard/styles/${s.style?.id}`} className="text-blue-600">{s.style?.styleNo}</a></td>
                 <td>{s.style?.customer?.name || '—'}</td>
                 <td><span className="status-badge bg-blue-100 text-blue-700">{s.stage}</span></td>
                 <td>#{s.revisionNo}</td>
                 <td>{s.dateSent ? new Date(s.dateSent).toLocaleDateString() : '—'}</td>
                 <td className="text-xs text-gray-500">{s.trackingNo || '—'}</td>
                 <td><StatusBadge status={s.status} /></td>
-                <td><Link href={`/dashboard/samples/${s.id}`} className="text-blue-600 text-sm">Open →</Link></td>
               </tr>
             ))}</tbody>
           </table>

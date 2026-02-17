@@ -5,13 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
 
-const PRESETS = {
-  'Standard (XS-2XL)': ['XS', 'S', 'M', 'L', 'XL', '2XL'],
-  'Standard (S-XL)': ['S', 'M', 'L', 'XL'],
-  'Numeric (28-38)': ['28', '30', '32', '34', '36', '38'],
-  'UK (6-18)': ['6', '8', '10', '12', '14', '16', '18'],
-  'One Size': ['ONE SIZE'],
-};
+const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL'];
 
 export default function NewPOPage() {
   const router = useRouter();
@@ -19,8 +13,6 @@ export default function NewPOPage() {
   const [styles, setStyles] = useState([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [lineItems, setLineItems] = useState([]);
-  const [sizes, setSizes] = useState(['S', 'M', 'L', 'XL']);
-  const [newSize, setNewSize] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -34,42 +26,10 @@ export default function NewPOPage() {
     }
   }, [selectedCustomerId]);
 
-  function applyPreset(name) {
-    const preset = PRESETS[name];
-    setSizes(preset);
-    // Rebuild all line items' sizeBreakdown to match new sizes
-    setLineItems(prev => prev.map(line => ({
-      ...line,
-      sizeBreakdown: preset.reduce((acc, s) => ({ ...acc, [s]: line.sizeBreakdown[s] || '' }), {}),
-    })));
-  }
-
-  function addSize() {
-    const s = newSize.trim().toUpperCase();
-    if (!s || sizes.includes(s)) return;
-    const updated = [...sizes, s];
-    setSizes(updated);
-    setLineItems(prev => prev.map(line => ({
-      ...line,
-      sizeBreakdown: { ...line.sizeBreakdown, [s]: '' },
-    })));
-    setNewSize('');
-  }
-
-  function removeSize(size) {
-    const updated = sizes.filter(s => s !== size);
-    setSizes(updated);
-    setLineItems(prev => prev.map(line => {
-      const bd = { ...line.sizeBreakdown };
-      delete bd[size];
-      return { ...line, sizeBreakdown: bd };
-    }));
-  }
-
   function addLineItem() {
     setLineItems([...lineItems, {
       styleId: '', color: '', colorCode: '', unitPrice: '',
-      sizeBreakdown: sizes.reduce((acc, s) => ({ ...acc, [s]: '' }), {}),
+      sizeBreakdown: DEFAULT_SIZES.reduce((acc, s) => ({ ...acc, [s]: '' }), {}),
       deliveryDate: '', notes: '',
     }]);
   }
@@ -202,33 +162,6 @@ export default function NewPOPage() {
           </div>
         </div>
 
-        {/* Size Columns Editor */}
-        <div className="card">
-          <h2 className="font-semibold mb-3">Size Columns</h2>
-          <div className="flex flex-wrap gap-2 mb-3">
-            {sizes.map(s => (
-              <span key={s} className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                {s}
-                <button type="button" onClick={() => removeSize(s)} className="text-blue-400 hover:text-red-500 text-xs ml-1">✕</button>
-              </span>
-            ))}
-          </div>
-          <div className="flex gap-2 items-center mb-3">
-            <input className="input-field w-32" placeholder="Add size..." value={newSize}
-              onChange={e => setNewSize(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addSize(); }}} />
-            <button type="button" className="btn-secondary text-xs" onClick={addSize}>Add</button>
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            <span className="text-xs text-gray-500 mr-1 py-1">Presets:</span>
-            {Object.keys(PRESETS).map(name => (
-              <button key={name} type="button" onClick={() => applyPreset(name)}
-                className="px-2 py-1 rounded text-xs bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-700">
-                {name}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Line Items with Size-Color Matrix */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
@@ -272,7 +205,7 @@ export default function NewPOPage() {
                     <div className="mb-3">
                       <label className="label-field">Size Breakdown</label>
                       <div className="flex gap-2 flex-wrap">
-                        {sizes.map(size => (
+                        {DEFAULT_SIZES.map(size => (
                           <div key={size} className="text-center">
                             <div className="text-xs text-gray-500 mb-1">{size}</div>
                             <input

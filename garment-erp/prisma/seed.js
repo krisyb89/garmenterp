@@ -131,6 +131,18 @@ async function main() {
     },
   });
 
+  // Create material categories
+  const fabricCat = await prisma.materialCategory.upsert({
+    where: { name: 'Fabric' },
+    update: {},
+    create: { name: 'Fabric' },
+  });
+  const trimCat = await prisma.materialCategory.upsert({
+    where: { name: 'Trim' },
+    update: {},
+    create: { name: 'Trim' },
+  });
+
   // Create sample materials
   const fabric1 = await prisma.material.upsert({
     where: { code: 'FAB-001' },
@@ -138,7 +150,7 @@ async function main() {
     create: {
       code: 'FAB-001',
       name: 'Cotton Poplin 133x72',
-      type: 'FABRIC',
+      categoryId: fabricCat.id,
       composition: '100% Cotton',
       weight: '120 GSM',
       width: '58 inches',
@@ -152,7 +164,7 @@ async function main() {
     create: {
       code: 'TRM-001',
       name: 'Woven Main Label',
-      type: 'LABEL',
+      categoryId: trimCat.id,
       unitOfMeasure: 'PCS',
     },
   });

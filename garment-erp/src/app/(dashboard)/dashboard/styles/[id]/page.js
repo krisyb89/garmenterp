@@ -1,26 +1,16 @@
 // src/app/(dashboard)/dashboard/styles/[id]/page.js
 'use client';
-import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
-import ImageUploader from '@/components/ImageUploader';
 
 export default function StyleDetailPage() {
   const { id } = useParams();
   const [style, setStyle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => { fetch(`/api/styles/${id}`).then(r => r.json()).then(setStyle).finally(() => setLoading(false)); }, [id]);
-
-  async function saveImages(urls) {
-    setSaving(true);
-    const res = await fetch(`/api/styles/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrls: urls }) });
-    const data = await res.json();
-    setStyle(prev => ({ ...prev, imageUrls: data.imageUrls }));
-    setSaving(false);
-  }
 
   if (loading) return <div className="text-center py-20 text-gray-400">Loading...</div>;
   if (!style) return <div className="text-center py-20 text-red-500">Style not found</div>;
@@ -63,21 +53,12 @@ export default function StyleDetailPage() {
         </div>
       </div>
 
-      {/* Style Images */}
-      <div className="card mb-6">
-        <h2 className="font-semibold mb-3">Style Images</h2>
-        <ImageUploader images={style.imageUrls || []} onChange={saveImages} />
-      </div>
-
       {/* Samples */}
       <div className="card mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-semibold">Samples ({style.samples?.length || 0})</h2>
-          <Link href={`/dashboard/samples/new?styleId=${id}`} className="btn-primary text-xs">+ Add Sample</Link>
-        </div>
+        <h2 className="font-semibold mb-4">Samples ({style.samples?.length || 0})</h2>
         {style.samples?.length === 0 ? <p className="text-sm text-gray-400">No samples yet</p> :
           <table className="table-base">
-            <thead><tr><th>Stage</th><th>Rev#</th><th>Size</th><th>Sent</th><th>Received</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Stage</th><th>Rev#</th><th>Size</th><th>Sent</th><th>Received</th><th>Status</th></tr></thead>
             <tbody>{style.samples.map(s => (
               <tr key={s.id}>
                 <td><span className="status-badge bg-blue-100 text-blue-700">{s.stage}</span></td>
@@ -86,7 +67,6 @@ export default function StyleDetailPage() {
                 <td>{s.dateSent ? new Date(s.dateSent).toLocaleDateString() : '—'}</td>
                 <td>{s.dateReceived ? new Date(s.dateReceived).toLocaleDateString() : '—'}</td>
                 <td><StatusBadge status={s.status} /></td>
-                <td><Link href={`/dashboard/samples/${s.id}`} className="text-blue-600 text-xs">Open →</Link></td>
               </tr>
             ))}</tbody>
           </table>}
@@ -94,13 +74,10 @@ export default function StyleDetailPage() {
 
       {/* Approvals */}
       <div className="card">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-semibold">Approvals ({style.approvals?.length || 0})</h2>
-          <Link href={`/dashboard/approvals/new?styleId=${id}`} className="btn-primary text-xs">+ Add Approval</Link>
-        </div>
+        <h2 className="font-semibold mb-4">Approvals ({style.approvals?.length || 0})</h2>
         {style.approvals?.length === 0 ? <p className="text-sm text-gray-400">No approvals yet</p> :
           <table className="table-base">
-            <thead><tr><th>Type</th><th>Submit#</th><th>Reference</th><th>Supplier</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Type</th><th>Submit#</th><th>Reference</th><th>Supplier</th><th>Submitted</th><th>Status</th></tr></thead>
             <tbody>{style.approvals.map(a => (
               <tr key={a.id}>
                 <td><span className="status-badge bg-purple-100 text-purple-700">{a.type.replace(/_/g, ' ')}</span></td>
@@ -109,7 +86,6 @@ export default function StyleDetailPage() {
                 <td>{a.supplierName || '—'}</td>
                 <td>{a.submitDate ? new Date(a.submitDate).toLocaleDateString() : '—'}</td>
                 <td><StatusBadge status={a.status} /></td>
-                <td><Link href={`/dashboard/approvals/${a.id}`} className="text-blue-600 text-xs">Open →</Link></td>
               </tr>
             ))}</tbody>
           </table>}

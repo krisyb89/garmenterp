@@ -1,11 +1,11 @@
 // src/app/api/srs/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { requireAuth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
     const { searchParams } = new URL(request.url);
@@ -20,6 +20,9 @@ export async function GET(request) {
       where.OR = [
         { srsNo: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
+        { styleNo: { contains: search, mode: 'insensitive' } },
+        { brand: { contains: search, mode: 'insensitive' } },
+        { colorPrint: { contains: search, mode: 'insensitive' } },
       ];
     }
 
@@ -42,11 +45,15 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
     const body = await request.json();
+
+    if (!body.customerId || !body.styleNo) {
+      return NextResponse.json({ error: 'customerId and styleNo are required' }, { status: 400 });
+    }
 
     // Auto-generate SRS number
     const count = await prisma.sRS.count();
@@ -58,10 +65,12 @@ export async function POST(request) {
         srsNo,
         customerId: body.customerId,
         createdById: user.userId,
+        styleNo: body.styleNo,
+        brand: body.brand || null,
+        colorPrint: body.colorPrint || null,
+        deadline: body.deadline ? new Date(body.deadline) : null,
         description: body.description,
         techPackUrl: body.techPackUrl,
-        imageUrls: body.imageUrls || null,
-        attachments: body.attachments || null,
         targetPrice: body.targetPrice,
         targetPriceCurrency: body.targetPriceCurrency || 'USD',
         estimatedQtyMin: body.estimatedQtyMin,
@@ -79,9 +88,7 @@ export async function POST(request) {
     });
 
     // Auto-create empty costing sheet
-    await prisma.costingSheet.create({
-      data: { srsId: srs.id },
-    });
+    await prisma.costingSheet.create({ data: { srsId: srs.id } });
 
     return NextResponse.json(srs, { status: 201 });
   } catch (error) {

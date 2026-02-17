@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
-import ImageUploader from '@/components/ImageUploader';
 
 export default function NewStylePage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
-  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -19,7 +17,6 @@ export default function NewStylePage() {
     setLoading(true); setError('');
     const fd = new FormData(e.target);
     const data = Object.fromEntries(fd);
-    data.imageUrls = images;
     try {
       const res = await fetch('/api/styles', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const result = await res.json();
@@ -67,12 +64,6 @@ export default function NewStylePage() {
           </div>
         </div>
         <div><label className="label-field">Description</label><textarea name="description" className="input-field" rows={2} /></div>
-
-        <div>
-          <label className="label-field">Style Images</label>
-          <ImageUploader images={images} onChange={setImages} />
-        </div>
-
         <div><label className="label-field">Wash Instructions</label><textarea name="washInstructions" className="input-field" rows={2} /></div>
         <div><label className="label-field">Notes</label><textarea name="notes" className="input-field" rows={2} /></div>
         <div className="flex gap-3 pt-2">

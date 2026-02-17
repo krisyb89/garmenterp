@@ -4,14 +4,10 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
-import ImageUploader from '@/components/ImageUploader';
-import FileUploader from '@/components/FileUploader';
 
 export default function NewSRSPage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
-  const [images, setImages] = useState([]);
-  const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -25,11 +21,11 @@ export default function NewSRSPage() {
     setError('');
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+    // Dates
+    data.deadline = data.deadline ? new Date(data.deadline).toISOString() : null;
     data.targetPrice = data.targetPrice ? parseFloat(data.targetPrice) : null;
     data.estimatedQtyMin = data.estimatedQtyMin ? parseInt(data.estimatedQtyMin) : null;
     data.estimatedQtyMax = data.estimatedQtyMax ? parseInt(data.estimatedQtyMax) : null;
-    data.imageUrls = images;
-    data.attachments = files;
 
     try {
       const res = await fetch('/api/srs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
@@ -53,14 +49,32 @@ export default function NewSRSPage() {
           </select>
         </div>
 
-        <div>
-          <label className="label-field">Description</label>
-          <textarea name="description" className="input-field" rows={3} placeholder="Style description, construction details..." />
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="label-field">Style # *</label>
+            <input name="styleNo" className="input-field" required placeholder="e.g., ST-10293" />
+            <p className="text-xs text-gray-400 mt-1">Style # can repeat across SRS (different colors/prints/timing).</p>
+          </div>
+          <div>
+            <label className="label-field">Brand (optional)</label>
+            <input name="brand" className="input-field" placeholder="e.g., Mainline / Kids / Outlet" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="label-field">Color / Print</label>
+            <input name="colorPrint" className="input-field" placeholder="e.g., Navy + floral print" />
+          </div>
+          <div>
+            <label className="label-field">Deadline</label>
+            <input name="deadline" type="date" className="input-field" />
+          </div>
         </div>
 
         <div>
-          <label className="label-field">Reference Images</label>
-          <ImageUploader images={images} onChange={setImages} />
+          <label className="label-field">Description</label>
+          <textarea name="description" className="input-field" rows={3} placeholder="Style description, construction details..." />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -98,15 +112,20 @@ export default function NewSRSPage() {
           </div>
         </div>
 
-        <div><label className="label-field">Fabric Specs</label><textarea name="fabricSpecs" className="input-field" rows={2} /></div>
-        <div><label className="label-field">Trim Specs</label><textarea name="trimSpecs" className="input-field" rows={2} /></div>
-
         <div>
-          <label className="label-field">Attachments (tech packs, specs, reference docs)</label>
-          <FileUploader files={files} onChange={setFiles} />
+          <label className="label-field">Fabric Specifications</label>
+          <textarea name="fabricSpecs" className="input-field" rows={2} placeholder="Composition, weight, construction..." />
         </div>
 
-        <div><label className="label-field">Notes</label><textarea name="notes" className="input-field" rows={2} /></div>
+        <div>
+          <label className="label-field">Trim Specifications</label>
+          <textarea name="trimSpecs" className="input-field" rows={2} placeholder="Buttons, zippers, labels..." />
+        </div>
+
+        <div>
+          <label className="label-field">Notes</label>
+          <textarea name="notes" className="input-field" rows={2} />
+        </div>
 
         <div className="flex gap-3 pt-2">
           <button type="submit" className="btn-primary" disabled={loading}>{loading ? 'Creating...' : 'Create SRS'}</button>

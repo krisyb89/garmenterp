@@ -1,7 +1,7 @@
 # Garment ERP
 
 ## Overview
-A garment trading & manufacturing ERP system built with Next.js 14, Prisma ORM, and PostgreSQL. Manages the full lifecycle: customer SRS/development requests, styles, costing, purchase orders, supplier management, production, QC, packing, shipping, invoicing, and P&L tracking.
+A garment trading & manufacturing ERP system built with Next.js 14, Prisma ORM, and PostgreSQL. Manages the full lifecycle: customer SRS/development requests, styles, costing sheets, purchase orders, supplier management, production, QC, packing, shipping, invoicing, WIP tracking, and P&L analysis.
 
 ## Tech Stack
 - **Frontend**: Next.js 14 (App Router), React 18, Tailwind CSS
@@ -15,11 +15,11 @@ garment-erp/
   prisma/           - Schema, migrations, seed
   src/
     app/
-      api/           - API routes (auth, customers, styles, POs, etc.)
+      api/           - API routes (auth, customers, styles, POs, wip, costing-sheets, etc.)
       (dashboard)/   - Dashboard pages (authenticated)
       login/         - Login page
-    components/      - Shared UI (Sidebar, DataTable, StatCard, etc.)
-    lib/             - Auth, Prisma client, helpers
+    components/      - Shared UI (Sidebar, DataTable, StatCard, EditableWIPTable, etc.)
+    lib/             - Auth, Prisma client, helpers, costing utils
 ```
 
 ## Running
@@ -29,21 +29,24 @@ garment-erp/
 ## Key Decisions
 - RBAC with role groups (ADMIN, FINANCE, OPS, ALL)
 - Sequential number generation for SRS, PO, invoices, etc.
-- Decimal precision standardized to db.Decimal(12,2) for currency, (12,4) for quantities
+- WIP boards use customizable columns (WIPColumn model) with scope-based separation (SRS vs PO)
+- Costing sheets restructured with segmented JSON line items (fabric, trim, labor, packing, misc, freight, duty)
+- SRS supports brand, colorPrint, deadline, and wipData JSON for custom WIP columns
+- PO supports store, brand, ihDate, and wipData JSON for production WIP columns
+- Material categories via MaterialCategory model (replaces old `type` enum)
+- Fixed `use(params)` -> `useParams()` across all detail pages for Next.js 14 compatibility
 
 ## Recent Changes
-- Added file upload API (`/api/uploads`) with 10MB limit, extension validation, auth
-- Added reusable ImageUploader and FileUploader components
-- SRS: Added multi-image uploads and file attachments (imageUrls, attachments JSON fields)
-- Style: Added multi-image uploads (imageUrls JSON field, legacy imageUrl kept)
-- PO creation: Replaced hardcoded sizes with user-editable size columns + presets (Standard, Numeric, UK, One Size)
-- PO detail: Dynamic size columns extracted from line item data
-- Packing lists: Dynamic size columns from carton data, editable sizes when adding cartons
-- Fixed Decimal precision on totalCBM, adjustments, amountInBase fields
-- Fixed customer DELETE auth check (was bypassing requireAuth error)
-- Fixed mass assignment vulnerability in style/production/SRS PUT routes
-- Added try/catch error handling in styles GET route
-- Added Cache-Control headers to prevent stale cache in Replit preview
-- PO detail page: Made fully editable with inline Edit/Save/Cancel for header fields (dates, shipping terms, ports, currency, notes)
-- Renamed "Cancel Date" to "IH Date" across all PO pages
-- PO PUT API: Conditional field updates with date validation
+- Migrated to updated codebase with WIP tracking and costing restructure
+- Added SRS WIP board with customizable columns at /dashboard/wip/srs
+- Added Production WIP board with customizable columns at /dashboard/wip/pos
+- Added WIPColumn model for customizable column definitions per scope
+- Costing sheets restructured: segmented line items (fabricDetails, trimDetails, laborDetails, packingDetails, misDetails, freightDetails, dutyDetails)
+- Added MaterialCategory model and API (/api/material-categories)
+- SRS schema: added styleNo, brand, colorPrint, deadline, wipData fields
+- PO schema: added store, brand, ihDate, wipData fields
+- PO detail page: fully editable header fields and line items with inline editing
+- Editable line items with add/remove rows, size management, auto-recalculating totals
+- Line item CRUD wrapped in Prisma transaction for data integrity
+- Fixed use(params) -> useParams() in all 10 detail pages
+- Database reset and reseeded with updated schema

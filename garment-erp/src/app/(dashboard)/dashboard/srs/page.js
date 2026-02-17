@@ -23,6 +23,10 @@ export default function SRSListPage() {
   const columns = [
     { key: 'srsNo', label: 'SRS#', isLink: true },
     { key: 'customer', label: 'Customer', render: r => r.customer?.name },
+    { key: 'brand', label: 'Brand', render: r => r.brand || '—' },
+    { key: 'styleNo', label: 'Style #', render: r => r.styleNo },
+    { key: 'colorPrint', label: 'Color / Print', render: r => r.colorPrint || '—' },
+    { key: 'deadline', label: 'Deadline', render: r => r.deadline ? new Date(r.deadline).toLocaleDateString() : '—' },
     { key: 'description', label: 'Description', render: r => (r.description || '—').substring(0, 50) },
     { key: 'targetPrice', label: 'Target Price', render: r => r.targetPrice ? `${r.targetPriceCurrency} ${r.targetPrice}` : '—' },
     { key: 'estimatedQty', label: 'Est. Qty', render: r => r.estimatedQtyMin ? `${r.estimatedQtyMin?.toLocaleString()} - ${r.estimatedQtyMax?.toLocaleString()}` : '—' },

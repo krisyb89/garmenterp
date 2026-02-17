@@ -70,7 +70,6 @@ model Customer {
   purchaseOrders  PurchaseOrder[]
   invoices        CustomerInvoice[]
   styles          Style[]
-  packingLists    PackingList[]
 
   @@map("customers")
 }
@@ -91,7 +90,6 @@ model Style {
   collection      String?
   techPackUrl     String?  // File attachment
   imageUrl        String?
-  imageUrls       Json?    // Array of image URL strings
   construction    String?  // Woven, Knit, Denim, etc.
   fitType         String?  // Slim, Regular, Relaxed, etc.
   washInstructions String?
@@ -102,7 +100,7 @@ model Style {
 
   // Relations
   customer        Customer @relation(fields: [customerId], references: [id])
-  srs             SRS?
+  srsRequests     SRS[]
   bomItems        BOMItem[]
   samples         Sample[]
   poLines         POLineItem[]
@@ -121,9 +119,9 @@ model BOMItem {
   materialId      String
   description     String?
   placement       String?  // e.g., "Body fabric", "Collar trim", "Main label"
-  consumptionQty  Decimal @db.Decimal(12,4)  // Per garment unit
+  consumptionQty  Decimal  // Per garment unit
   consumptionUnit String   // YDS, MTR, PCS, GROSS, etc.
-  wastagePercent  Decimal @db.Decimal(5,2)  @default(3) // Default 3% wastage
+  wastagePercent  Decimal  @default(3) // Default 3% wastage
   notes           String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -155,13 +153,24 @@ model SRS {
   id              String    @id @default(uuid())
   srsNo           String    @unique
   customerId      String
-  styleId         String?   @unique
+  // Style master link (optional). Multiple SRS may reference the same Style.
+  styleId         String?
+
+  // IMPORTANT: Style number on SRS can be duplicated across different requests.
+  styleNo         String    @default("")
+
+  // Optional brand under the same customer
+  brand           String?
+
+  // Color / print / wash description
+  colorPrint      String?
+
+  // Request deadline (internal target)
+  deadline        DateTime?
   createdById     String
   description     String?
   techPackUrl     String?
-  imageUrls       Json?    // Array of image URL strings
-  attachments     Json?    // Array of {url, originalName, size} objects
-  targetPrice     Decimal? @db.Decimal(12,2)
+  targetPrice     Decimal?
   targetPriceCurrency String @default("USD")
   estimatedQtyMin Int?
   estimatedQtyMax Int?
@@ -171,10 +180,13 @@ model SRS {
   trimSpecs       String?
   status          SRSStatus @default(RECEIVED)
   revisionNo      Int       @default(1)
-  quotedPrice     Decimal? @db.Decimal(12,2)
+  quotedPrice     Decimal?
   quotedDate      DateTime?
   confirmedDate   DateTime?
   notes           String?
+
+  // Excel-like WIP customizable columns (key-value)
+  wipData         Json?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
@@ -196,33 +208,36 @@ model CostingSheet {
   srsId             String   @unique
   revisionNo        Int      @default(1)
 
-  // Fabric costs
-  fabricCost        Decimal @db.Decimal(12,2)  @default(0) // Total fabric cost per unit
-  fabricDetails     Json?    // Array of fabric items with breakdown
+  // ========================================================
+  // Segmented costing (Excel-like)
+  // Each segment stores an array of line items in JSON.
+  // Recommended line schema:
+  // { materialId?, name, unitPricePerMeter?, unitPriceLocal?, consumption, vatRefund, vatPercent, computedCostLocal }
+  // ========================================================
 
-  // Trim costs
-  trimCost          Decimal @db.Decimal(12,2)  @default(0)
-  trimDetails       Json?    // Array of trim items
+  fabricDetails     Json?    // Array of fabric lines
+  trimDetails       Json?    // Array of trim lines
+  laborDetails      Json?    // Array of labor/CMT lines
+  packingDetails    Json?    // Array of packing lines
+  misDetails        Json?    // Array of misc lines
+  freightDetails    Json?    // Array of freight lines (optional)
+  dutyDetails       Json?    // Array of duty lines (optional)
 
-  // Manufacturing
-  cmtCost           Decimal @db.Decimal(12,2)  @default(0) // Cut-Make-Trim per unit
-  washingCost       Decimal @db.Decimal(12,2)  @default(0)
-  embellishmentCost Decimal @db.Decimal(12,2)  @default(0) // Print, embroidery, etc.
-  
-  // Other costs
-  packagingCost     Decimal @db.Decimal(12,2)  @default(0)
-  freightCost       Decimal @db.Decimal(12,2)  @default(0)
-  inspectionCost    Decimal @db.Decimal(12,2)  @default(0)
-  dutyCost          Decimal @db.Decimal(12,2)  @default(0)
-  otherCost         Decimal @db.Decimal(12,2)  @default(0)
-  otherCostDetails  String?
+  // Totals by segment (computed and persisted)
+  fabricCost        Decimal  @default(0)
+  trimCost          Decimal  @default(0)
+  laborCost         Decimal  @default(0)
+  packingCost       Decimal  @default(0)
+  misCost           Decimal  @default(0)
+  freightCost       Decimal  @default(0)
+  dutyCost          Decimal  @default(0)
 
   // Totals
-  totalCostPerUnit  Decimal @db.Decimal(12,2)  @default(0) // Sum of all costs
-  agentCommPercent  Decimal @db.Decimal(5,2)  @default(0)
-  agentCommAmount   Decimal @db.Decimal(12,2)  @default(0)
-  targetMarginPercent Decimal @db.Decimal(5,2) @default(0)
-  sellingPrice      Decimal @db.Decimal(12,2)  @default(0) // Final FOB/CIF price
+  totalCostPerUnit  Decimal  @default(0) // Sum of all costs
+  agentCommPercent  Decimal  @default(0)
+  agentCommAmount   Decimal  @default(0)
+  targetMarginPercent Decimal @default(0)
+  sellingPrice      Decimal  @default(0) // Final FOB/CIF price
   pricingBasis      String   @default("FOB") // FOB, CIF, DDP
 
   currency          String   @default("USD")
@@ -255,6 +270,8 @@ model PurchaseOrder {
   id              String    @id @default(uuid())
   poNo            String    @unique // Customer PO number
   customerId      String
+  store           String?
+  brand           String?
   orderDate       DateTime
   revisionNo      Int       @default(0)
   shipByDate      DateTime?
@@ -265,9 +282,13 @@ model PurchaseOrder {
   currency        String    @default("USD")
   status          POStatus  @default(RECEIVED)
   totalQty        Int       @default(0) // Auto-calculated
-  totalAmount     Decimal @db.Decimal(12,2)   @default(0) // Auto-calculated
+  totalAmount     Decimal   @default(0) // Auto-calculated
+  ihDate          DateTime?
   specialInstructions String?
   notes           String?
+
+  // Excel-like WIP customizable columns (key-value)
+  wipData         Json?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
@@ -290,12 +311,12 @@ model POLineItem {
   styleId         String
   color           String
   colorCode       String?
-  unitPrice       Decimal @db.Decimal(12,2)
+  unitPrice       Decimal
   
   // Size breakdown (flexible JSON for any size scale)
   sizeBreakdown   Json     // e.g., {"XS": 100, "S": 200, "M": 300, "L": 200, "XL": 100}
   totalQty        Int      // Sum of all sizes
-  lineTotal       Decimal @db.Decimal(12,2)  // totalQty * unitPrice
+  lineTotal       Decimal  // totalQty * unitPrice
   
   deliveryDate    DateTime?
   notes           String?
@@ -339,7 +360,7 @@ model Supplier {
   bankDetails     String?
   complianceStatus String?     // Audited, Pending, Expired
   auditExpiry     DateTime?
-  rating          Decimal? @db.Decimal(3,1)     // 1-5
+  rating          Decimal?     // 1-5
   notes           String?
   isActive        Boolean      @default(true)
   createdAt       DateTime     @default(now())
@@ -353,28 +374,52 @@ model Supplier {
   @@map("suppliers")
 }
 
-enum MaterialType {
-  FABRIC
-  TRIM
-  PACKAGING
-  ACCESSORY
-  LABEL
-  HANGTAG
-  OTHER
+// Material category is user-extendable (default: FABRIC, TRIM, PACKING)
+model MaterialCategory {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  materials Material[]
+
+  @@map("material_categories")
+}
+
+enum MaterialUnit {
+  METER
+  YARD
+  KG
+  PCS
 }
 
 model Material {
   id              String       @id @default(uuid())
   code            String       @unique
   name            String
-  type            MaterialType
+  categoryId      String    @default("")
   description     String?
-  composition     String?      // e.g., "100% Cotton", "65% Poly 35% Cotton"
-  weight          String?      // e.g., "180 GSM"
-  width           String?      // e.g., "58 inches"
+
+  // Fabric-specific fields
+  content         String?      // e.g., "100% Cotton"
+  widthMeters     Decimal?     // e.g., 1.5
+  gsm             Int?         // e.g., 180
+
+  // Pricing
+  pricePerUnit    Decimal?     // as entered by user
+  unit            MaterialUnit @default(METER)
+  pricePerMeter   Decimal?     // computed and stored for costing
+
+  // VAT percentage used when VAT refund is enabled on costing lines
+  vatPercent      Decimal      @default(0)
+
+  // Legacy compatibility fields
+  composition     String?
+  weight          String?
+  width           String?
   colorOptions    String?
-  unitOfMeasure   String       @default("YDS") // YDS, MTR, PCS, KG, GROSS
-  moq             Decimal? @db.Decimal(12,4)     // Minimum order quantity
+  unitOfMeasure   String       @default("MTR")
+  moq             Decimal?     // Minimum order quantity
   leadTimeDays    Int?
   imageUrl        String?
   notes           String?
@@ -383,6 +428,7 @@ model Material {
   updatedAt       DateTime     @updatedAt
 
   // Relations
+  category        MaterialCategory @relation(fields: [categoryId], references: [id])
   suppliers       MaterialSupplier[]
   bomItems        BOMItem[]
   inventoryItems  InventoryItem[]
@@ -391,13 +437,38 @@ model Material {
   @@map("materials")
 }
 
+// ============================================================
+// WIP (Excel-like reports with customizable columns)
+// ============================================================
+
+enum WIPScope {
+  SRS
+  PO
+}
+
+model WIPColumn {
+  id        String   @id @default(uuid())
+  scope     WIPScope
+  key       String
+  label     String
+  dataType  String   @default("text") // text, number, date, select
+  options   Json?    // for select: ["A","B"]
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([scope, key])
+  @@map("wip_columns")
+}
+
 model MaterialSupplier {
   id              String   @id @default(uuid())
   materialId      String
   supplierId      String
-  unitPrice       Decimal @db.Decimal(12,2)
+  unitPrice       Decimal
   currency        String   @default("CNY")
-  moq             Decimal? @db.Decimal(12,4)
+  moq             Decimal?
   leadTimeDays    Int?
   isPreferred     Boolean  @default(false)
   notes           String?
@@ -531,7 +602,7 @@ model SupplierPO {
   orderDate       DateTime         @default(now())
   deliveryDate    DateTime?
   currency        String           @default("CNY")
-  totalAmount     Decimal @db.Decimal(12,2)          @default(0)
+  totalAmount     Decimal          @default(0)
   paymentTerms    String?
   status          SupplierPOStatus @default(DRAFT)
   notes           String?
@@ -553,10 +624,10 @@ model SupplierPOLine {
   materialId      String?
   description     String
   color           String?
-  quantity        Decimal @db.Decimal(12,4)
+  quantity        Decimal
   unit            String   @default("YDS")
-  unitPrice       Decimal @db.Decimal(12,2)
-  lineTotal       Decimal @db.Decimal(12,2)
+  unitPrice       Decimal
+  lineTotal       Decimal
   notes           String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -593,8 +664,8 @@ model GoodsReceivedItem {
   goodsReceivedId String
   description     String
   color           String?
-  orderedQty      Decimal @db.Decimal(12,4)
-  receivedQty     Decimal @db.Decimal(12,4)
+  orderedQty      Decimal
+  receivedQty     Decimal
   unit            String
   qcResult        String?  // PASS, FAIL, CONDITIONAL
   remarks         String?
@@ -616,7 +687,7 @@ model InventoryItem {
   location        String   // Warehouse, Factory name, etc.
   color           String?
   lotNo           String?
-  quantity        Decimal @db.Decimal(12,4)
+  quantity        Decimal
   unit            String
   notes           String?
   createdAt       DateTime @default(now())
@@ -640,7 +711,7 @@ model StockMovement {
   id              String       @id @default(uuid())
   inventoryItemId String
   type            MovementType
-  quantity        Decimal @db.Decimal(12,4)
+  quantity        Decimal
   fromLocation    String?
   toLocation      String?
   reference       String?      // PO#, Production Order#, etc.
@@ -711,7 +782,7 @@ model ProductionOrder {
   targetEndDate   DateTime?
   actualStartDate DateTime?
   actualEndDate   DateTime?
-  cmtRate         Decimal? @db.Decimal(12,2)
+  cmtRate         Decimal?
   cmtCurrency     String           @default("USD")
   status          ProductionStatus @default(PLANNED)
   specialInstructions String?
@@ -751,7 +822,7 @@ model MaterialIssue {
   prodOrderId     String
   materialDesc    String
   color           String?
-  quantity        Decimal @db.Decimal(12,4)
+  quantity        Decimal
   unit            String
   issuedDate      DateTime @default(now())
   issuedTo        String   // Factory name
@@ -815,12 +886,11 @@ model PackingList {
   id              String   @id @default(uuid())
   packingListNo   String   @unique
   poId            String
-  customerId      String   // Direct customer link for quick access
   shipmentId      String?
   totalCartons    Int      @default(0)
   totalQty        Int      @default(0)
-  totalGrossWeight Decimal @db.Decimal(10,2) @default(0) // KG
-  totalNetWeight  Decimal @db.Decimal(10,2)  @default(0)
+  totalGrossWeight Decimal @default(0) // KG
+  totalNetWeight  Decimal  @default(0)
   totalCBM        Decimal  @default(0) // Cubic meters
   notes           String?
   createdAt       DateTime @default(now())
@@ -828,7 +898,6 @@ model PackingList {
 
   // Relations
   po              PurchaseOrder @relation(fields: [poId], references: [id])
-  customer        Customer      @relation(fields: [customerId], references: [id])
   shipment        Shipment?     @relation(fields: [shipmentId], references: [id])
   cartons         Carton[]
 
@@ -839,53 +908,22 @@ model Carton {
   id              String   @id @default(uuid())
   packingListId   String
   cartonNo        Int
-  // Denormalised summary — kept in sync by the API when CartonLines change
-  sizeBreakdown   Json     @default("{}") // {"S": 10, "M": 10, "L": 10}
-  totalPcs        Int      @default(0)
-  netWeight       Decimal @db.Decimal(10,2)  @default(0)
-  grossWeight     Decimal @db.Decimal(10,2)  @default(0)
-  length          Decimal? @db.Decimal(8,2) // CM
-  width           Decimal? @db.Decimal(8,2)
-  height          Decimal? @db.Decimal(8,2)
-  cbm             Decimal @db.Decimal(8,2)  @default(0)
+  styleNo         String
+  color           String
+  sizeBreakdown   Json     // {"S": 10, "M": 10, "L": 10}
+  totalPcs        Int
+  netWeight       Decimal  @default(0)
+  grossWeight     Decimal  @default(0)
+  length          Decimal? // CM
+  width           Decimal?
+  height          Decimal?
+  cbm             Decimal  @default(0)
   createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
 
   // Relations
   packingList     PackingList @relation(fields: [packingListId], references: [id], onDelete: Cascade)
-  lines           CartonLine[]
 
-  @@unique([packingListId, cartonNo])
   @@map("cartons")
-}
-
-// Each row inside a carton — supports both solid and ratio packs
-model CartonLine {
-  id              String   @id @default(uuid())
-  cartonId        String
-  styleNo         String
-  color           String
-  size            String   // Individual size: "S", "M", "L", etc.
-  qty             Int
-  createdAt       DateTime @default(now())
-
-  // Relations
-  carton          Carton @relation(fields: [cartonId], references: [id], onDelete: Cascade)
-
-  @@map("carton_lines")
-}
-
-// Reusable ratio-pack templates — e.g. "Standard S/M/L/XL = 1/2/2/1"
-model RatioPackTemplate {
-  id              String   @id @default(uuid())
-  name            String   @unique // e.g. "Standard Ratio 1-2-2-1"
-  sizeRatios      Json     // {"S": 1, "M": 2, "L": 2, "XL": 1}
-  pcsPerPack      Int      // Sum of ratios, e.g. 6
-  notes           String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@map("ratio_pack_templates")
 }
 
 enum ShipmentStatus {
@@ -918,7 +956,7 @@ model Shipment {
   awbNo           String?        // Airway Bill number
   forwarderName   String?
   forwarderContact String?
-  freightCost     Decimal? @db.Decimal(12,2)
+  freightCost     Decimal?
   status          ShipmentStatus @default(BOOKING_MADE)
   notes           String?
   createdAt       DateTime       @default(now())
@@ -969,11 +1007,11 @@ model CustomerInvoice {
   invoiceDate     DateTime      @default(now())
   dueDate         DateTime?     // Calculated from ROG + payment terms
   currency        String        @default("USD")
-  subtotal        Decimal @db.Decimal(12,2)       @default(0)
+  subtotal        Decimal       @default(0)
   adjustments     Decimal       @default(0) // Deductions, discounts
-  totalAmount     Decimal @db.Decimal(12,2)       @default(0)
-  amountPaid      Decimal @db.Decimal(12,2)       @default(0)
-  amountDue       Decimal @db.Decimal(12,2)       @default(0) // totalAmount - amountPaid
+  totalAmount     Decimal       @default(0)
+  amountPaid      Decimal       @default(0)
+  amountDue       Decimal       @default(0) // totalAmount - amountPaid
   bankDetails     String?
   status          InvoiceStatus @default(DRAFT)
   notes           String?
@@ -996,8 +1034,8 @@ model InvoiceLineItem {
   color           String
   description     String?
   quantity        Int
-  unitPrice       Decimal @db.Decimal(12,2)
-  lineTotal       Decimal @db.Decimal(12,2)
+  unitPrice       Decimal
+  lineTotal       Decimal
   createdAt       DateTime @default(now())
 
   // Relations
@@ -1010,9 +1048,9 @@ model PaymentReceived {
   id              String   @id @default(uuid())
   invoiceId       String
   paymentDate     DateTime
-  amount          Decimal @db.Decimal(12,2)
+  amount          Decimal
   currency        String
-  exchangeRate    Decimal @db.Decimal(10,6)  @default(1)
+  exchangeRate    Decimal  @default(1)
   amountInBase    Decimal  // Amount in base currency
   bankReference   String?
   paymentMethod   String?  // Wire, Check, LC
@@ -1051,12 +1089,12 @@ model OrderCost {
   category        CostCategory
   description     String
   supplierName    String?
-  quantity        Decimal? @db.Decimal(12,4)
-  unitCost        Decimal? @db.Decimal(12,2)
-  totalCost       Decimal @db.Decimal(12,2)
+  quantity        Decimal?
+  unitCost        Decimal?
+  totalCost       Decimal
   currency        String       @default("USD")
-  exchangeRate    Decimal @db.Decimal(10,6)      @default(1)
-  totalCostBase   Decimal @db.Decimal(12,2)      // In base currency (USD)
+  exchangeRate    Decimal      @default(1)
+  totalCostBase   Decimal      // In base currency (USD)
   supplierPORef   String?
   invoiceRef      String?
   notes           String?

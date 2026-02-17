@@ -1,11 +1,11 @@
 // src/app/api/approvals/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { requireAuth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { searchParams } = new URL(request.url);
   const styleId = searchParams.get('styleId');
@@ -29,8 +29,8 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
 
@@ -49,7 +49,6 @@ export async function POST(request) {
       submissionNo: existingApprovals + 1,
       submitDate: body.submitDate ? new Date(body.submitDate) : null,
       status: body.status || 'PENDING',
-      imageUrls: body.imageUrls || null,
       notes: body.notes,
     },
   });

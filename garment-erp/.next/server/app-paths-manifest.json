@@ -1,12 +1,4 @@
 {
-  "/api/approvals/route": "app/api/approvals/route.js",
-  "/api/styles/route": "app/api/styles/route.js",
-  "/api/materials/route": "app/api/materials/route.js",
-  "/(dashboard)/dashboard/order-pnl/page": "app/(dashboard)/dashboard/order-pnl/page.js",
-  "/(dashboard)/dashboard/materials/page": "app/(dashboard)/dashboard/materials/page.js",
-  "/(dashboard)/dashboard/purchase-orders/[id]/page": "app/(dashboard)/dashboard/purchase-orders/[id]/page.js",
-  "/(dashboard)/dashboard/production/page": "app/(dashboard)/dashboard/production/page.js",
-  "/(dashboard)/dashboard/qc/page": "app/(dashboard)/dashboard/qc/page.js",
-  "/(dashboard)/dashboard/approvals/page": "app/(dashboard)/dashboard/approvals/page.js",
-  "/(dashboard)/dashboard/approvals/new/page": "app/(dashboard)/dashboard/approvals/new/page.js"
+  "/page": "app/page.js",
+  "/login/page": "app/login/page.js"
 }

@@ -29,6 +29,13 @@ const navItems = [
     ],
   },
   {
+    group: 'WIP',
+    items: [
+      { href: '/dashboard/wip/srs', label: 'SRS WIP', icon: '🧾' },
+      { href: '/dashboard/wip/pos', label: 'PO WIP', icon: '📑' },
+    ],
+  },
+  {
     group: 'Supply Chain',
     items: [
       { href: '/dashboard/suppliers', label: 'Suppliers', icon: '🏭' },

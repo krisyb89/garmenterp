@@ -18,10 +18,11 @@ export default function MaterialsPage() {
   const columns = [
     { key: 'code', label: 'Code', isLink: true, render: r => r.code },
     { key: 'name', label: 'Name' },
-    { key: 'type', label: 'Type' },
-    { key: 'composition', label: 'Composition' },
-    { key: 'weight', label: 'Weight' },
-    { key: 'unitOfMeasure', label: 'UOM' },
+    { key: 'category', label: 'Type', render: r => r.category?.name || '—' },
+    { key: 'content', label: 'Content', render: r => r.content || r.composition || '—' },
+    { key: 'pricePerUnit', label: 'Price/Unit', render: r => r.pricePerUnit != null ? Number(r.pricePerUnit).toFixed(2) : '—' },
+    { key: 'unit', label: 'Unit', render: r => r.unit || '—' },
+    { key: 'pricePerMeter', label: 'Price/M', render: r => r.pricePerMeter != null ? Number(r.pricePerMeter).toFixed(4) : '—' },
     { key: 'suppliers', label: 'Suppliers', render: r => r.suppliers?.map(s => s.supplier?.name).join(', ') || '—' },
   ];
 

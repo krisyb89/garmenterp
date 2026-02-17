@@ -1,11 +1,11 @@
 // src/app/api/customers/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { requireAuth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
     const { searchParams } = new URL(request.url);
@@ -41,8 +41,8 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { user, error } = await requireAuth();
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
     const body = await request.json();

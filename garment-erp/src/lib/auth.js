@@ -3,15 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 
-// Lazy getter — only throws when auth is actually used, not during next build
-function getJwtSecret() {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error('Missing JWT_SECRET. Set it in Replit Secrets (lock icon).');
-  }
-  return secret;
-}
-
+const JWT_SECRET = process.env.JWT_SECRET || 'garment-erp-secret-change-me';
 const TOKEN_EXPIRY = '7d';
 
 export async function hashPassword(password) {
@@ -25,14 +17,14 @@ export async function verifyPassword(password, hash) {
 export function generateToken(user) {
   return jwt.sign(
     { userId: user.id, email: user.email, role: user.role, name: user.name },
-    getJwtSecret(),
+    JWT_SECRET,
     { expiresIn: TOKEN_EXPIRY }
   );
 }
 
 export function verifyToken(token) {
   try {
-    return jwt.verify(token, getJwtSecret());
+    return jwt.verify(token, JWT_SECRET);
   } catch {
     return null;
   }
@@ -45,46 +37,15 @@ export async function getCurrentUser() {
   return verifyToken(token);
 }
 
-// ============================================================
-// RBAC — Role Groups
-// ============================================================
-
-// Role groups for route-level access control.
-// Keep the granular UserRole enum in Prisma; group them here for guard logic.
-export const ROLE_GROUPS = {
-  // Full access
-  ADMIN: ['ADMIN'],
-  // Finance-sensitive: invoicing, payments, costing, P&L
-  FINANCE: ['ADMIN', 'FINANCE', 'MANAGEMENT'],
-  // Operational: merchandising, production, sourcing, shipping
-  OPS: ['ADMIN', 'MERCHANDISER', 'PRODUCTION_MANAGER', 'SOURCING_BUYER', 'QC_MANAGER', 'WAREHOUSE', 'SHIPPING', 'MANAGEMENT'],
-  // Read-only for dashboards / reports
-  ALL: ['ADMIN', 'MERCHANDISER', 'PRODUCTION_MANAGER', 'SOURCING_BUYER', 'QC_MANAGER', 'FINANCE', 'WAREHOUSE', 'SHIPPING', 'MANAGEMENT'],
-};
-
-/**
- * Guard: require authenticated user.
- * Returns { user } or a NextResponse error.
- */
-export async function requireAuth() {
-  const user = await getCurrentUser();
-  if (!user) {
-    const { NextResponse } = await import('next/server');
-    return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) };
-  }
-  return { user };
-}
-
-/**
- * Guard: require authenticated user with one of the allowed roles.
- * @param {string[]} allowedRoles - flat array of role strings, or use ROLE_GROUPS.
- */
-export async function requireRole(...allowedRoles) {
-  const { user, error } = await requireAuth();
-  if (error) return { error };
-  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-    const { NextResponse } = await import('next/server');
-    return { error: NextResponse.json({ error: 'Forbidden: insufficient role' }, { status: 403 }) };
-  }
-  return { user };
+export function requireRole(...roles) {
+  return async function (req) {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { error: 'Unauthorized', status: 401 };
+    }
+    if (roles.length > 0 && !roles.includes(user.role)) {
+      return { error: 'Forbidden', status: 403 };
+    }
+    return { user };
+  };
 }

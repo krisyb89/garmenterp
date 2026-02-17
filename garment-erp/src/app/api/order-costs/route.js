@@ -1,11 +1,11 @@
 // src/app/api/order-costs/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { requireRole, ROLE_GROUPS } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 
 export async function GET(request) {
-  const { user, error } = await requireRole(...ROLE_GROUPS.FINANCE);
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { searchParams } = new URL(request.url);
   const poId = searchParams.get('poId');
@@ -46,8 +46,8 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
-  const { user, error } = await requireRole(...ROLE_GROUPS.FINANCE);
-  if (error) return error;
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await request.json();
   const totalCostBase = parseFloat(body.totalCost || 0) * parseFloat(body.exchangeRate || 1);

@@ -1,8 +1,8 @@
 // src/app/(dashboard)/dashboard/purchase-orders/[id]/page.js
 'use client';
+import { useParams } from 'next/navigation';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
@@ -78,34 +78,25 @@ export default function PODetailPage() {
       {/* Line Items */}
       <div className="card mb-6">
         <h2 className="font-semibold mb-4">Line Items</h2>
-        {(() => {
-          const allSizes = [...new Set(po.lineItems?.flatMap(l => Object.keys(l.sizeBreakdown || {})) || [])];
-          return (
-            <div className="overflow-x-auto">
-              <table className="table-base">
-                <thead>
-                  <tr>
-                    <th>Style</th><th>Color</th>
-                    {allSizes.map(s => <th key={s} className="text-center">{s}</th>)}
-                    <th className="text-center">Qty</th><th>Unit Price</th><th>Line Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {po.lineItems?.map(line => (
-                    <tr key={line.id}>
-                      <td className="font-medium">{line.style?.styleNo || '—'}</td>
-                      <td>{line.color}</td>
-                      {allSizes.map(s => <td key={s} className="text-center text-sm">{line.sizeBreakdown?.[s] || '—'}</td>)}
-                      <td className="font-medium text-center">{line.totalQty?.toLocaleString()}</td>
-                      <td>{po.currency} {parseFloat(line.unitPrice).toFixed(2)}</td>
-                      <td className="font-medium">{po.currency} {parseFloat(line.lineTotal).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
-        })()}
+        <table className="table-base">
+          <thead>
+            <tr><th>Style</th><th>Color</th><th>Size Breakdown</th><th>Qty</th><th>Unit Price</th><th>Line Total</th></tr>
+          </thead>
+          <tbody>
+            {po.lineItems?.map(line => (
+              <tr key={line.id}>
+                <td className="font-medium">{line.style?.styleNo || '—'}</td>
+                <td>{line.color}</td>
+                <td className="text-xs text-gray-500">
+                  {Object.entries(line.sizeBreakdown || {}).map(([s, q]) => `${s}:${q}`).join(' | ')}
+                </td>
+                <td className="font-medium">{line.totalQty?.toLocaleString()}</td>
+                <td>{po.currency} {parseFloat(line.unitPrice).toFixed(2)}</td>
+                <td className="font-medium">{po.currency} {parseFloat(line.lineTotal).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
