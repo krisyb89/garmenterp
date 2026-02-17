@@ -1,10 +1,12 @@
 {
-  "/page": "app/page.js",
-  "/login/page": "app/login/page.js",
-  "/api/dashboard/route": "app/api/dashboard/route.js",
-  "/api/approvals/route": "app/api/approvals/route.js",
-  "/api/samples/route": "app/api/samples/route.js",
+  "/api/srs/route": "app/api/srs/route.js",
+  "/api/customers/route": "app/api/customers/route.js",
+  "/api/styles/route": "app/api/styles/route.js",
   "/(dashboard)/dashboard/page": "app/(dashboard)/dashboard/page.js",
+  "/(dashboard)/dashboard/samples/page": "app/(dashboard)/dashboard/samples/page.js",
   "/(dashboard)/dashboard/approvals/page": "app/(dashboard)/dashboard/approvals/page.js",
-  "/(dashboard)/dashboard/samples/page": "app/(dashboard)/dashboard/samples/page.js"
+  "/(dashboard)/dashboard/srs/page": "app/(dashboard)/dashboard/srs/page.js",
+  "/(dashboard)/dashboard/srs/new/page": "app/(dashboard)/dashboard/srs/new/page.js",
+  "/(dashboard)/dashboard/styles/page": "app/(dashboard)/dashboard/styles/page.js",
+  "/(dashboard)/dashboard/costing/page": "app/(dashboard)/dashboard/costing/page.js"
 }

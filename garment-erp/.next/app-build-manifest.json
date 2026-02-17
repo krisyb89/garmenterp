@@ -35,6 +35,26 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/dashboard/samples/page.js"
+    ],
+    "/(dashboard)/dashboard/srs/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/dashboard/srs/page.js"
+    ],
+    "/(dashboard)/dashboard/srs/new/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/dashboard/srs/new/page.js"
+    ],
+    "/(dashboard)/dashboard/styles/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/dashboard/styles/page.js"
+    ],
+    "/(dashboard)/dashboard/costing/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/dashboard/costing/page.js"
     ]
   }
 }
