@@ -32,6 +32,13 @@ garment-erp/
 - Decimal precision standardized to db.Decimal(12,2) for currency, (12,4) for quantities
 
 ## Recent Changes
+- Added file upload API (`/api/uploads`) with 10MB limit, extension validation, auth
+- Added reusable ImageUploader and FileUploader components
+- SRS: Added multi-image uploads and file attachments (imageUrls, attachments JSON fields)
+- Style: Added multi-image uploads (imageUrls JSON field, legacy imageUrl kept)
+- PO creation: Replaced hardcoded sizes with user-editable size columns + presets (Standard, Numeric, UK, One Size)
+- PO detail: Dynamic size columns extracted from line item data
+- Packing lists: Dynamic size columns from carton data, editable sizes when adding cartons
 - Fixed Decimal precision on totalCBM, adjustments, amountInBase fields
 - Fixed customer DELETE auth check (was bypassing requireAuth error)
 - Fixed mass assignment vulnerability in style/production/SRS PUT routes
