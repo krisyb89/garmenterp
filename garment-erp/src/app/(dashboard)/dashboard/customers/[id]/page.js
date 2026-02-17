@@ -1,12 +1,13 @@
 // src/app/(dashboard)/dashboard/customers/[id]/page.js
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
-export default function CustomerDetailPage({ params }) {
-  const { id } = use(params);
+export default function CustomerDetailPage() {
+  const { id } = useParams();
   const [customer, setCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
 

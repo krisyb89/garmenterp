@@ -1,14 +1,15 @@
 // src/app/(dashboard)/dashboard/shipments/[id]/page.js
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
 const SHIP_STATUSES = ['BOOKING_MADE','CARGO_READY','LOADED','IN_TRANSIT','ARRIVED','CUSTOMS_CLEARED','DELIVERED'];
 
-export default function ShipmentDetailPage({ params }) {
-  const { id } = use(params);
+export default function ShipmentDetailPage() {
+  const { id } = useParams();
   const [shipment, setShipment] = useState(null);
   const [loading, setLoading] = useState(true);
 

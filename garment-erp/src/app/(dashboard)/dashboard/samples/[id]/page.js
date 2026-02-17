@@ -1,14 +1,15 @@
 // src/app/(dashboard)/dashboard/samples/[id]/page.js
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 import ImageUploader from '@/components/ImageUploader';
 
 const STATUSES = ['PENDING', 'IN_PROGRESS', 'SUBMITTED', 'APPROVED', 'REJECTED', 'APPROVED_WITH_COMMENTS'];
 
-export default function SampleDetailPage({ params }) {
-  const { id } = use(params);
+export default function SampleDetailPage() {
+  const { id } = useParams();
   const [sample, setSample] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

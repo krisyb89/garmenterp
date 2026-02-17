@@ -1,12 +1,13 @@
 // src/app/(dashboard)/dashboard/purchase-orders/[id]/page.js
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
-export default function PODetailPage({ params }) {
-  const { id } = use(params);
+export default function PODetailPage() {
+  const { id } = useParams();
   const [po, setPO] = useState(null);
   const [loading, setLoading] = useState(true);
 

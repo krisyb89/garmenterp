@@ -1,12 +1,13 @@
 // src/app/(dashboard)/dashboard/styles/[id]/page.js
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 import ImageUploader from '@/components/ImageUploader';
 
-export default function StyleDetailPage({ params }) {
-  const { id } = use(params);
+export default function StyleDetailPage() {
+  const { id } = useParams();
   const [style, setStyle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

@@ -1,12 +1,13 @@
 // src/app/(dashboard)/dashboard/invoices/[id]/page.js
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
-export default function InvoiceDetailPage({ params }) {
-  const { id } = use(params);
+export default function InvoiceDetailPage() {
+  const { id } = useParams();
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPayment, setShowPayment] = useState(false);

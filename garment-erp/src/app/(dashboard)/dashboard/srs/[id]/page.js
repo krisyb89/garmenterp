@@ -1,14 +1,15 @@
 // src/app/(dashboard)/dashboard/srs/[id]/page.js
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 import ImageUploader from '@/components/ImageUploader';
 import FileUploader from '@/components/FileUploader';
 
-export default function SRSDetailPage({ params }) {
-  const { id } = use(params);
+export default function SRSDetailPage() {
+  const { id } = useParams();
   const [srs, setSRS] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

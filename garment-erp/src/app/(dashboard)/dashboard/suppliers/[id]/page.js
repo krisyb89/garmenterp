@@ -1,11 +1,12 @@
 // src/app/(dashboard)/dashboard/suppliers/[id]/page.js
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
-export default function SupplierDetailPage({ params }) {
-  const { id } = use(params);
+export default function SupplierDetailPage() {
+  const { id } = useParams();
   const [supplier, setSupplier] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => { fetch(`/api/suppliers/${id}`).then(r => r.json()).then(setSupplier).finally(() => setLoading(false)); }, [id]);

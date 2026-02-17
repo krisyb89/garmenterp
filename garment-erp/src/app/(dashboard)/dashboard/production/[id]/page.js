@@ -1,14 +1,15 @@
 // src/app/(dashboard)/dashboard/production/[id]/page.js
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
 const PROD_STATUSES = ['PLANNED','MATERIAL_ISSUED','CUTTING','SEWING','WASHING_FINISHING','QC_INSPECTION','PACKING','READY_TO_SHIP','COMPLETED','ON_HOLD','CANCELLED'];
 
-export default function ProductionDetailPage({ params }) {
-  const { id } = use(params);
+export default function ProductionDetailPage() {
+  const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
