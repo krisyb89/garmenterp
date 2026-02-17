@@ -20,6 +20,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/dashboard/inventory/page.js"
+    ],
+    "/(dashboard)/dashboard/purchase-orders/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/dashboard/purchase-orders/page.js"
     ]
   }
 }

@@ -1,4 +1,6 @@
 {
+  "/api/materials/route": "app/api/materials/route.js",
   "/(dashboard)/dashboard/materials/page": "app/(dashboard)/dashboard/materials/page.js",
-  "/(dashboard)/dashboard/inventory/page": "app/(dashboard)/dashboard/inventory/page.js"
+  "/(dashboard)/dashboard/inventory/page": "app/(dashboard)/dashboard/inventory/page.js",
+  "/(dashboard)/dashboard/purchase-orders/page": "app/(dashboard)/dashboard/purchase-orders/page.js"
 }
