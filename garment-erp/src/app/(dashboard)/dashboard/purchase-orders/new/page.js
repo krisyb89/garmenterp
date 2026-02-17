@@ -161,7 +161,7 @@ export default function NewPOPage() {
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div>
-              <label className="label-field">Cancel Date</label>
+              <label className="label-field">IH Date</label>
               <input name="cancelDate" type="date" className="input-field" />
             </div>
             <div>

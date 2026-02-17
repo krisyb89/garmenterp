@@ -5,15 +5,36 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
+function formatDate(d) {
+  if (!d) return '';
+  return new Date(d).toISOString().split('T')[0];
+}
+
 export default function PODetailPage() {
   const { id } = useParams();
   const [po, setPO] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({});
 
   useEffect(() => {
     fetch(`/api/purchase-orders/${id}`)
       .then(r => r.json())
-      .then(setPO)
+      .then(data => {
+        setPO(data);
+        setForm({
+          orderDate: formatDate(data.orderDate),
+          shipByDate: formatDate(data.shipByDate),
+          cancelDate: formatDate(data.cancelDate),
+          shippingTerms: data.shippingTerms || 'FOB',
+          portOfLoading: data.portOfLoading || '',
+          portOfDischarge: data.portOfDischarge || '',
+          currency: data.currency || 'USD',
+          specialInstructions: data.specialInstructions || '',
+          notes: data.notes || '',
+        });
+      })
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -23,7 +44,40 @@ export default function PODetailPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus }),
     });
-    setPO({ ...po, status: newStatus });
+    setPO(prev => ({ ...prev, status: newStatus }));
+  }
+
+  async function saveChanges() {
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/purchase-orders/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const updated = await res.json();
+      setPO(prev => ({ ...prev, ...updated }));
+      setEditing(false);
+    } catch {
+      alert('Failed to save changes');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function cancelEdit() {
+    setForm({
+      orderDate: formatDate(po.orderDate),
+      shipByDate: formatDate(po.shipByDate),
+      cancelDate: formatDate(po.cancelDate),
+      shippingTerms: po.shippingTerms || 'FOB',
+      portOfLoading: po.portOfLoading || '',
+      portOfDischarge: po.portOfDischarge || '',
+      currency: po.currency || 'USD',
+      specialInstructions: po.specialInstructions || '',
+      notes: po.notes || '',
+    });
+    setEditing(false);
   }
 
   if (loading) return <div className="text-center py-20 text-gray-400">Loading...</div>;
@@ -48,7 +102,7 @@ export default function PODetailPage() {
         </div>
       </div>
 
-      {/* PO Summary */}
+      {/* PO Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="card text-center">
           <div className="text-xs text-gray-500">Total Qty</div>
@@ -72,6 +126,108 @@ export default function PODetailPage() {
             <div className={`text-xl font-bold ${parseFloat(po.pnl.grossMargin) > 0 ? 'text-green-600' : 'text-red-600'}`}>
               {po.pnl.grossMargin}%
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* PO Details - Editable */}
+      <div className="card mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold">PO Details</h2>
+          {!editing ? (
+            <button onClick={() => setEditing(true)} className="btn-secondary text-xs">Edit</button>
+          ) : (
+            <div className="flex gap-2">
+              <button onClick={saveChanges} disabled={saving} className="btn-primary text-xs">{saving ? 'Saving...' : 'Save'}</button>
+              <button onClick={cancelEdit} className="btn-secondary text-xs">Cancel</button>
+            </div>
+          )}
+        </div>
+
+        {editing ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <label className="label-field">Order Date</label>
+              <input type="date" className="input-field" value={form.orderDate} onChange={e => setForm({ ...form, orderDate: e.target.value })} />
+            </div>
+            <div>
+              <label className="label-field">Ship By Date</label>
+              <input type="date" className="input-field" value={form.shipByDate} onChange={e => setForm({ ...form, shipByDate: e.target.value })} />
+            </div>
+            <div>
+              <label className="label-field">IH Date</label>
+              <input type="date" className="input-field" value={form.cancelDate} onChange={e => setForm({ ...form, cancelDate: e.target.value })} />
+            </div>
+            <div>
+              <label className="label-field">Shipping Terms</label>
+              <select className="select-field" value={form.shippingTerms} onChange={e => setForm({ ...form, shippingTerms: e.target.value })}>
+                <option value="FOB">FOB</option><option value="CIF">CIF</option>
+                <option value="DDP">DDP</option><option value="EXW">EXW</option>
+              </select>
+            </div>
+            <div>
+              <label className="label-field">Port of Loading</label>
+              <input className="input-field" value={form.portOfLoading} onChange={e => setForm({ ...form, portOfLoading: e.target.value })} />
+            </div>
+            <div>
+              <label className="label-field">Port of Discharge</label>
+              <input className="input-field" value={form.portOfDischarge} onChange={e => setForm({ ...form, portOfDischarge: e.target.value })} />
+            </div>
+            <div>
+              <label className="label-field">Currency</label>
+              <select className="select-field" value={form.currency} onChange={e => setForm({ ...form, currency: e.target.value })}>
+                <option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option>
+              </select>
+            </div>
+            <div>
+              <label className="label-field">Special Instructions</label>
+              <input className="input-field" value={form.specialInstructions} onChange={e => setForm({ ...form, specialInstructions: e.target.value })} />
+            </div>
+            <div className="lg:col-span-4">
+              <label className="label-field">Notes</label>
+              <textarea className="input-field" rows={2} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Order Date</div>
+              <div className="text-sm font-medium">{po.orderDate ? new Date(po.orderDate).toLocaleDateString() : '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Ship By Date</div>
+              <div className="text-sm font-medium">{po.shipByDate ? new Date(po.shipByDate).toLocaleDateString() : '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">IH Date</div>
+              <div className="text-sm font-medium">{po.cancelDate ? new Date(po.cancelDate).toLocaleDateString() : '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Shipping Terms</div>
+              <div className="text-sm font-medium">{po.shippingTerms || '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Port of Loading</div>
+              <div className="text-sm font-medium">{po.portOfLoading || '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Port of Discharge</div>
+              <div className="text-sm font-medium">{po.portOfDischarge || '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Currency</div>
+              <div className="text-sm font-medium">{po.currency || '—'}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 mb-1">Special Instructions</div>
+              <div className="text-sm font-medium">{po.specialInstructions || '—'}</div>
+            </div>
+            {po.notes && (
+              <div className="lg:col-span-4">
+                <div className="text-xs text-gray-500 mb-1">Notes</div>
+                <div className="text-sm">{po.notes}</div>
+              </div>
+            )}
           </div>
         )}
       </div>
