@@ -5,6 +5,13 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
 
+const SIZE_PRESETS = {
+  'Standard (XS-2XL)': ['XS', 'S', 'M', 'L', 'XL', '2XL'],
+  'Numeric (28-38)': ['28', '30', '32', '34', '36', '38'],
+  'UK (6-18)': ['6', '8', '10', '12', '14', '16', '18'],
+  'One Size': ['ONE SIZE'],
+};
+
 function formatDate(d) {
   if (!d) return '';
   return new Date(d).toISOString().split('T')[0];
@@ -15,28 +22,168 @@ export default function PODetailPage() {
   const [po, setPO] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [editingLines, setEditingLines] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [savingLines, setSavingLines] = useState(false);
   const [form, setForm] = useState({});
+  const [styles, setStyles] = useState([]);
+  const [editLines, setEditLines] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [newSize, setNewSize] = useState('');
 
   useEffect(() => {
     fetch(`/api/purchase-orders/${id}`)
       .then(r => r.json())
       .then(data => {
         setPO(data);
-        setForm({
-          orderDate: formatDate(data.orderDate),
-          shipByDate: formatDate(data.shipByDate),
-          cancelDate: formatDate(data.cancelDate),
-          shippingTerms: data.shippingTerms || 'FOB',
-          portOfLoading: data.portOfLoading || '',
-          portOfDischarge: data.portOfDischarge || '',
-          currency: data.currency || 'USD',
-          specialInstructions: data.specialInstructions || '',
-          notes: data.notes || '',
-        });
+        initForm(data);
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  function initForm(data) {
+    setForm({
+      orderDate: formatDate(data.orderDate),
+      shipByDate: formatDate(data.shipByDate),
+      cancelDate: formatDate(data.cancelDate),
+      shippingTerms: data.shippingTerms || 'FOB',
+      portOfLoading: data.portOfLoading || '',
+      portOfDischarge: data.portOfDischarge || '',
+      currency: data.currency || 'USD',
+      specialInstructions: data.specialInstructions || '',
+      notes: data.notes || '',
+    });
+  }
+
+  function startEditLines() {
+    const allSz = [...new Set(po.lineItems?.flatMap(l => Object.keys(l.sizeBreakdown || {})) || [])];
+    setSizes(allSz.length > 0 ? allSz : ['S', 'M', 'L', 'XL']);
+    setEditLines(po.lineItems?.map(l => ({
+      id: l.id,
+      styleId: l.styleId,
+      styleName: l.style?.styleNo || '',
+      color: l.color || '',
+      colorCode: l.colorCode || '',
+      unitPrice: parseFloat(l.unitPrice) || 0,
+      sizeBreakdown: { ...l.sizeBreakdown },
+      notes: l.notes || '',
+    })) || []);
+    if (po.customerId) {
+      fetch(`/api/styles?customerId=${po.customerId}`).then(r => r.json()).then(d => setStyles(d.styles || []));
+    }
+    setEditingLines(true);
+  }
+
+  function cancelEditLines() {
+    setEditingLines(false);
+    setEditLines([]);
+  }
+
+  function addLineItem() {
+    const sizeBreakdown = sizes.reduce((acc, s) => ({ ...acc, [s]: 0 }), {});
+    setEditLines([...editLines, { id: null, styleId: '', styleName: '', color: '', colorCode: '', unitPrice: 0, sizeBreakdown, notes: '' }]);
+  }
+
+  function removeLineItem(idx) {
+    setEditLines(editLines.filter((_, i) => i !== idx));
+  }
+
+  function updateLine(idx, field, value) {
+    setEditLines(prev => prev.map((l, i) => i === idx ? { ...l, [field]: value } : l));
+  }
+
+  function updateSizeQty(idx, size, value) {
+    setEditLines(prev => prev.map((l, i) => {
+      if (i !== idx) return l;
+      return { ...l, sizeBreakdown: { ...l.sizeBreakdown, [size]: parseInt(value) || 0 } };
+    }));
+  }
+
+  function addSize() {
+    const s = newSize.trim().toUpperCase();
+    if (!s || sizes.includes(s)) return;
+    const newSizes = [...sizes, s];
+    setSizes(newSizes);
+    setEditLines(prev => prev.map(l => ({ ...l, sizeBreakdown: { ...l.sizeBreakdown, [s]: 0 } })));
+    setNewSize('');
+  }
+
+  function removeSize(sizeToRemove) {
+    setSizes(sizes.filter(s => s !== sizeToRemove));
+    setEditLines(prev => prev.map(l => {
+      const { [sizeToRemove]: _, ...rest } = l.sizeBreakdown;
+      return { ...l, sizeBreakdown: rest };
+    }));
+  }
+
+  function applySizePreset(presetName) {
+    const newSizes = SIZE_PRESETS[presetName];
+    setSizes(newSizes);
+    setEditLines(prev => prev.map(l => ({
+      ...l,
+      sizeBreakdown: newSizes.reduce((acc, s) => ({ ...acc, [s]: l.sizeBreakdown[s] || 0 }), {}),
+    })));
+  }
+
+  function getLineQty(line) {
+    return Object.values(line.sizeBreakdown || {}).reduce((s, v) => s + (parseInt(v) || 0), 0);
+  }
+
+  function getLineTotal(line) {
+    const qty = getLineQty(line);
+    return qty * (parseFloat(line.unitPrice) || 0);
+  }
+
+  async function saveLineItems() {
+    for (const line of editLines) {
+      if (!line.styleId) { alert('Each line item must have a style selected.'); return; }
+    }
+    setSavingLines(true);
+    try {
+      const payload = editLines.map(l => {
+        const sizeBreakdown = {};
+        for (const s of sizes) {
+          sizeBreakdown[s] = parseInt(l.sizeBreakdown[s]) || 0;
+        }
+        return {
+          id: l.id || undefined,
+          styleId: l.styleId,
+          color: l.color,
+          colorCode: l.colorCode,
+          unitPrice: parseFloat(l.unitPrice) || 0,
+          sizeBreakdown,
+          notes: l.notes,
+        };
+      });
+      const res = await fetch(`/api/purchase-orders/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lineItems: payload }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || 'Failed to save line items');
+        return;
+      }
+      const updated = await res.json();
+      setPO(prev => {
+        const newPo = { ...prev, ...updated };
+        if (prev.pnl) {
+          const revenue = parseFloat(newPo.totalAmount) || 0;
+          const totalCosts = (newPo.orderCosts || prev.orderCosts || []).reduce((s, c) => s + (parseFloat(c.totalCostBase) || 0), 0);
+          const grossProfit = revenue - totalCosts;
+          const grossMargin = revenue > 0 ? ((grossProfit / revenue) * 100).toFixed(1) : 0;
+          newPo.pnl = { revenue, totalCosts, grossProfit, grossMargin };
+        }
+        return newPo;
+      });
+      setEditingLines(false);
+    } catch {
+      alert('Failed to save line items');
+    } finally {
+      setSavingLines(false);
+    }
+  }
 
   async function updateStatus(newStatus) {
     await fetch(`/api/purchase-orders/${id}`, {
@@ -67,17 +214,7 @@ export default function PODetailPage() {
       }
       const updated = await res.json();
       setPO(prev => ({ ...prev, ...updated }));
-      setForm({
-        orderDate: formatDate(updated.orderDate),
-        shipByDate: formatDate(updated.shipByDate),
-        cancelDate: formatDate(updated.cancelDate),
-        shippingTerms: updated.shippingTerms || 'FOB',
-        portOfLoading: updated.portOfLoading || '',
-        portOfDischarge: updated.portOfDischarge || '',
-        currency: updated.currency || 'USD',
-        specialInstructions: updated.specialInstructions || '',
-        notes: updated.notes || '',
-      });
+      initForm(updated);
       setEditing(false);
     } catch {
       alert('Failed to save changes');
@@ -87,17 +224,7 @@ export default function PODetailPage() {
   }
 
   function cancelEdit() {
-    setForm({
-      orderDate: formatDate(po.orderDate),
-      shipByDate: formatDate(po.shipByDate),
-      cancelDate: formatDate(po.cancelDate),
-      shippingTerms: po.shippingTerms || 'FOB',
-      portOfLoading: po.portOfLoading || '',
-      portOfDischarge: po.portOfDischarge || '',
-      currency: po.currency || 'USD',
-      specialInstructions: po.specialInstructions || '',
-      notes: po.notes || '',
-    });
+    initForm(po);
     setEditing(false);
   }
 
@@ -105,6 +232,9 @@ export default function PODetailPage() {
   if (!po) return <div className="text-center py-20 text-red-500">PO not found</div>;
 
   const allSizes = [...new Set(po.lineItems?.flatMap(l => Object.keys(l.sizeBreakdown || {})) || [])];
+
+  const grandTotalQty = editLines.reduce((s, l) => s + getLineQty(l), 0);
+  const grandTotalAmount = editLines.reduce((s, l) => s + getLineTotal(l), 0);
 
   return (
     <div>
@@ -255,35 +385,137 @@ export default function PODetailPage() {
 
       {/* Line Items */}
       <div className="card mb-6">
-        <h2 className="font-semibold mb-4">Line Items</h2>
-        <div className="overflow-x-auto">
-          <table className="table-base">
-            <thead>
-              <tr>
-                <th>Style</th>
-                <th>Color</th>
-                {allSizes.map(s => <th key={s} className="text-center">{s}</th>)}
-                <th className="text-center">Qty</th>
-                <th>Unit Price</th>
-                <th>Line Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {po.lineItems?.map(line => (
-                <tr key={line.id}>
-                  <td className="font-medium">{line.style?.styleNo || '—'}</td>
-                  <td>{line.color}</td>
-                  {allSizes.map(s => (
-                    <td key={s} className="text-center">{line.sizeBreakdown?.[s] || '—'}</td>
-                  ))}
-                  <td className="text-center font-medium">{line.totalQty?.toLocaleString()}</td>
-                  <td>{po.currency} {parseFloat(line.unitPrice).toFixed(2)}</td>
-                  <td className="font-medium">{po.currency} {parseFloat(line.lineTotal).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold">Line Items</h2>
+          {!editingLines ? (
+            <button onClick={startEditLines} className="btn-secondary text-xs">Edit Line Items</button>
+          ) : (
+            <div className="flex gap-2">
+              <button onClick={saveLineItems} disabled={savingLines} className="btn-primary text-xs">{savingLines ? 'Saving...' : 'Save Line Items'}</button>
+              <button onClick={cancelEditLines} className="btn-secondary text-xs">Cancel</button>
+            </div>
+          )}
         </div>
+
+        {editingLines ? (
+          <>
+            {/* Size Management */}
+            <div className="bg-gray-50 rounded-lg p-3 mb-4">
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="text-xs font-medium text-gray-600">Size Columns:</span>
+                {sizes.map(s => (
+                  <span key={s} className="inline-flex items-center bg-white border rounded px-2 py-0.5 text-xs">
+                    {s}
+                    <button onClick={() => removeSize(s)} className="ml-1 text-red-400 hover:text-red-600">&times;</button>
+                  </span>
+                ))}
+                <div className="inline-flex items-center gap-1">
+                  <input className="input-field w-16 text-xs py-0.5" placeholder="Add" value={newSize}
+                    onChange={e => setNewSize(e.target.value)} onKeyDown={e => e.key === 'Enter' && addSize()} />
+                  <button onClick={addSize} className="btn-secondary text-xs py-0.5">+</button>
+                </div>
+                <span className="text-gray-300">|</span>
+                <span className="text-xs text-gray-500">Presets:</span>
+                {Object.keys(SIZE_PRESETS).map(p => (
+                  <button key={p} onClick={() => applySizePreset(p)} className="text-xs text-blue-600 hover:text-blue-800 underline">{p}</button>
+                ))}
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="table-base">
+                <thead>
+                  <tr>
+                    <th className="w-40">Style</th>
+                    <th className="w-28">Color</th>
+                    {sizes.map(s => <th key={s} className="text-center w-16">{s}</th>)}
+                    <th className="text-center w-16">Qty</th>
+                    <th className="w-24">Unit Price</th>
+                    <th className="w-28">Line Total</th>
+                    <th className="w-10"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {editLines.map((line, idx) => {
+                    const qty = getLineQty(line);
+                    const total = getLineTotal(line);
+                    return (
+                      <tr key={idx}>
+                        <td>
+                          <select className="select-field text-xs w-full" value={line.styleId}
+                            onChange={e => updateLine(idx, 'styleId', e.target.value)}>
+                            <option value="">Select Style</option>
+                            {styles.map(s => <option key={s.id} value={s.id}>{s.styleNo} - {s.description}</option>)}
+                          </select>
+                        </td>
+                        <td>
+                          <input className="input-field text-xs w-full" value={line.color}
+                            onChange={e => updateLine(idx, 'color', e.target.value)} placeholder="Color" />
+                        </td>
+                        {sizes.map(s => (
+                          <td key={s}>
+                            <input type="number" min="0" className="input-field text-xs text-center w-full"
+                              value={line.sizeBreakdown[s] || 0}
+                              onChange={e => updateSizeQty(idx, s, e.target.value)} />
+                          </td>
+                        ))}
+                        <td className="text-center font-medium text-sm">{qty.toLocaleString()}</td>
+                        <td>
+                          <input type="number" step="0.01" min="0" className="input-field text-xs w-full"
+                            value={line.unitPrice}
+                            onChange={e => updateLine(idx, 'unitPrice', e.target.value)} />
+                        </td>
+                        <td className="font-medium text-sm">{po.currency} {total.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                        <td>
+                          <button onClick={() => removeLineItem(idx)} className="text-red-400 hover:text-red-600 text-lg">&times;</button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <tfoot>
+                  <tr className="bg-gray-50 font-semibold">
+                    <td colSpan={2 + sizes.length} className="text-right text-sm">Totals:</td>
+                    <td className="text-center text-sm">{grandTotalQty.toLocaleString()}</td>
+                    <td></td>
+                    <td className="text-sm">{po.currency} {grandTotalAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <button onClick={addLineItem} className="btn-secondary text-xs mt-3">+ Add Line Item</button>
+          </>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="table-base">
+              <thead>
+                <tr>
+                  <th>Style</th>
+                  <th>Color</th>
+                  {allSizes.map(s => <th key={s} className="text-center">{s}</th>)}
+                  <th className="text-center">Qty</th>
+                  <th>Unit Price</th>
+                  <th>Line Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {po.lineItems?.map(line => (
+                  <tr key={line.id}>
+                    <td className="font-medium">{line.style?.styleNo || '—'}</td>
+                    <td>{line.color}</td>
+                    {allSizes.map(s => (
+                      <td key={s} className="text-center">{line.sizeBreakdown?.[s] || '—'}</td>
+                    ))}
+                    <td className="text-center font-medium">{line.totalQty?.toLocaleString()}</td>
+                    <td>{po.currency} {parseFloat(line.unitPrice).toFixed(2)}</td>
+                    <td className="font-medium">{po.currency} {parseFloat(line.lineTotal).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

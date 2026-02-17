@@ -62,6 +62,80 @@ export async function PUT(request, { params }) {
     if (body.notes !== undefined) updateData.notes = body.notes;
     if (body.revisionNo !== undefined) updateData.revisionNo = body.revisionNo;
 
+    if (body.lineItems !== undefined) {
+      for (const line of body.lineItems) {
+        if (!line.styleId) {
+          return NextResponse.json({ error: 'Each line item must have a style selected' }, { status: 400 });
+        }
+      }
+
+      const po = await prisma.$transaction(async (tx) => {
+        const existingLines = await tx.pOLineItem.findMany({ where: { poId: id } });
+        const existingIds = new Set(existingLines.map(l => l.id));
+        const incomingIds = new Set(body.lineItems.filter(l => l.id).map(l => l.id));
+
+        const toDelete = [...existingIds].filter(eid => !incomingIds.has(eid));
+        if (toDelete.length > 0) {
+          await tx.pOLineItem.deleteMany({ where: { id: { in: toDelete } } });
+        }
+
+        for (const line of body.lineItems) {
+          const sizeBreakdown = line.sizeBreakdown || {};
+          const totalQty = Object.values(sizeBreakdown).reduce((s, v) => s + (parseInt(v) || 0), 0);
+          const unitPrice = parseFloat(line.unitPrice) || 0;
+          const lineTotal = totalQty * unitPrice;
+
+          if (line.id && existingIds.has(line.id)) {
+            await tx.pOLineItem.update({
+              where: { id: line.id },
+              data: {
+                styleId: line.styleId,
+                color: line.color || '',
+                colorCode: line.colorCode || null,
+                unitPrice,
+                sizeBreakdown,
+                totalQty,
+                lineTotal,
+                notes: line.notes || null,
+              },
+            });
+          } else {
+            await tx.pOLineItem.create({
+              data: {
+                poId: id,
+                styleId: line.styleId,
+                color: line.color || '',
+                colorCode: line.colorCode || null,
+                unitPrice,
+                sizeBreakdown,
+                totalQty,
+                lineTotal,
+                notes: line.notes || null,
+              },
+            });
+          }
+        }
+
+        const allLines = await tx.pOLineItem.findMany({ where: { poId: id } });
+        const newTotalQty = allLines.reduce((s, l) => s + l.totalQty, 0);
+        const newTotalAmount = allLines.reduce((s, l) => s + parseFloat(l.lineTotal), 0);
+
+        return await tx.purchaseOrder.update({
+          where: { id },
+          data: { ...updateData, totalQty: newTotalQty, totalAmount: newTotalAmount },
+          include: {
+            customer: true,
+            lineItems: { include: { style: true } },
+            productionOrders: { include: { factory: true } },
+            shipments: true,
+            orderCosts: { orderBy: { category: 'asc' } },
+          },
+        });
+      });
+
+      return NextResponse.json(po);
+    }
+
     const po = await prisma.purchaseOrder.update({
       where: { id },
       data: updateData,
