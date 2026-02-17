@@ -1,1 +1,15 @@
-{}
+{
+  "/api/purchase-orders/route": "app/api/purchase-orders/route.js",
+  "/api/wip/srs/route": "app/api/wip/srs/route.js",
+  "/api/wip/pos/route": "app/api/wip/pos/route.js",
+  "/api/purchase-orders/[id]/route": "app/api/purchase-orders/[id]/route.js",
+  "/(dashboard)/dashboard/purchase-orders/page": "app/(dashboard)/dashboard/purchase-orders/page.js",
+  "/(dashboard)/dashboard/packing-lists/page": "app/(dashboard)/dashboard/packing-lists/page.js",
+  "/(dashboard)/dashboard/purchase-orders/new/page": "app/(dashboard)/dashboard/purchase-orders/new/page.js",
+  "/(dashboard)/dashboard/styles/page": "app/(dashboard)/dashboard/styles/page.js",
+  "/(dashboard)/dashboard/styles/new/page": "app/(dashboard)/dashboard/styles/new/page.js",
+  "/(dashboard)/dashboard/wip/srs/page": "app/(dashboard)/dashboard/wip/srs/page.js",
+  "/(dashboard)/dashboard/wip/pos/page": "app/(dashboard)/dashboard/wip/pos/page.js",
+  "/(dashboard)/dashboard/purchase-orders/[id]/page": "app/(dashboard)/dashboard/purchase-orders/[id]/page.js",
+  "/(dashboard)/dashboard/inventory/page": "app/(dashboard)/dashboard/inventory/page.js"
+}

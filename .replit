@@ -1,46 +1,12 @@
-modules = ["nodejs-20"]
+run = "npm run dev"
+
 [nix]
-channel = "stable-25_05"
-packages = ["unzip"]
-
-[agent]
-expertMode = true
-
-[userenv]
-
-[userenv.shared]
-JWT_SECRET = "ab97772a4f7b84da8f1b16ce733b177724aba3c34152006cad140a62a26f52cf393364d6fdc4e4deaacaa6498991ca5b"
-ALLOW_SEED = "true"
-
-[workflows]
-runButton = "Project"
-
-[[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Garment ERP"
-
-[[workflows.workflow]]
-name = "Garment ERP"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd garment-erp && PORT=5000 npx next dev -p 5000"
-waitForPort = 5000
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[ports]]
-localPort = 5000
-externalPort = 80
+channel = "stable-24_05"
 
 [deployment]
-deploymentTarget = "autoscale"
-run = ["bash", "-c", "cd garment-erp && PORT=5000 npm run start -- -p 5000"]
-build = ["bash", "-c", "cd garment-erp && npx prisma generate && npm run build"]
+run = ["sh", "-c", "npm start"]
+build = ["sh", "-c", "npm install && npx prisma generate && npx prisma migrate deploy && npm run build"]
+
+[[ports]]
+localPort = 3000
+externalPort = 80
