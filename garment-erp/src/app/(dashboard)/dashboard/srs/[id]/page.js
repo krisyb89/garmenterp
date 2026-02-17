@@ -318,14 +318,14 @@ function Segment({ title, lines, materials, materialById, onChange, defaultExcha
         <table className="min-w-full text-sm">
           <thead>
             <tr className="bg-gray-50 border-b">
-              <th className="text-left px-3 py-2">Material / Name</th>
-              <th className="text-left px-3 py-2">Unit Price ({localCurrency})</th>
-              <th className="text-left px-3 py-2">Consumption</th>
-              <th className="text-left px-3 py-2">VAT</th>
-              <th className="text-left px-3 py-2">VAT %</th>
-              <th className="text-left px-3 py-2">Exch Rate</th>
-              <th className="text-right px-3 py-2">Cost ({localCurrency})</th>
-              <th className="text-right px-3 py-2">Cost ({quoteCurrency})</th>
+              <th className="text-center px-3 py-2">Material / Name</th>
+              <th className="text-center px-3 py-2">Unit Price ({localCurrency})</th>
+              <th className="text-center px-3 py-2">Consumption</th>
+              <th className="text-center px-3 py-2">VAT</th>
+              <th className="text-center px-3 py-2">VAT %</th>
+              <th className="text-center px-3 py-2">Exch Rate</th>
+              <th className="text-center px-3 py-2">Cost ({localCurrency})</th>
+              <th className="text-center px-3 py-2">Cost ({quoteCurrency})</th>
               <th className="px-3 py-2"></th>
             </tr>
           </thead>
@@ -346,9 +346,9 @@ function Segment({ title, lines, materials, materialById, onChange, defaultExcha
 
               return (
                 <tr key={idx} className="border-b last:border-0">
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 text-center">
                     {materials.length > 0 ? (
-                      <select className="select-field text-xs" value={l.materialId || ''}
+                      <select className="select-field text-xs text-center" value={l.materialId || ''}
                         onChange={e => {
                           const mid = e.target.value || null;
                           const m = mid ? materialById[mid] : null;
@@ -364,34 +364,34 @@ function Segment({ title, lines, materials, materialById, onChange, defaultExcha
                         {materials.map(m => <option key={m.id} value={m.id}>{m.code} • {m.name}</option>)}
                       </select>
                     ) : (
-                      <input className="input-field text-xs" value={l.name || ''} onChange={e => updateLine(idx, { name: e.target.value })} placeholder="Name" />
+                      <input className="input-field text-xs text-center" value={l.name || ''} onChange={e => updateLine(idx, { name: e.target.value })} placeholder="Name" />
                     )}
                   </td>
-                  <td className="px-3 py-2">
-                    <input className="input-field text-xs w-24" type="number" step="0.0001"
+                  <td className="px-3 py-2 text-center">
+                    <input className="input-field text-xs w-24 text-center" type="number" step="0.0001"
                       value={unitPrice ?? ''} onChange={e => {
                         const v = e.target.value === '' ? null : parseFloat(e.target.value);
                         updateLine(idx, { unitPriceLocal: v, unitPricePerMeter: v });
                       }} />
                   </td>
-                  <td className="px-3 py-2">
-                    <input className="input-field text-xs w-20" type="number" step="0.0001"
+                  <td className="px-3 py-2 text-center">
+                    <input className="input-field text-xs w-20 text-center" type="number" step="0.0001"
                       value={l.consumption ?? 0} onChange={e => updateLine(idx, { consumption: parseFloat(e.target.value || '0') })} />
                   </td>
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 text-center">
                     <input type="checkbox" checked={!!l.vatRefund} onChange={e => updateLine(idx, { vatRefund: e.target.checked })} />
                   </td>
-                  <td className="px-3 py-2">
-                    <input className="input-field text-xs w-16" type="number" step="0.01"
+                  <td className="px-3 py-2 text-center">
+                    <input className="input-field text-xs w-16 text-center" type="number" step="0.01"
                       value={l.vatPercent ?? 0} onChange={e => updateLine(idx, { vatPercent: parseFloat(e.target.value || '0') })} />
                   </td>
-                  <td className="px-3 py-2">
-                    <input className="input-field text-xs w-20" type="number" step="0.0001"
+                  <td className="px-3 py-2 text-center">
+                    <input className="input-field text-xs w-20 text-center" type="number" step="0.0001"
                       value={rate} onChange={e => updateLine(idx, { exchangeRate: parseFloat(e.target.value || '1') })} />
                   </td>
-                  <td className="px-3 py-2 text-right whitespace-nowrap text-xs text-gray-500">{costLocal.toFixed(4)}</td>
-                  <td className="px-3 py-2 text-right whitespace-nowrap font-medium">{costQuoted.toFixed(4)}</td>
-                  <td className="px-3 py-2 text-right">
+                  <td className="px-3 py-2 text-center whitespace-nowrap text-xs text-gray-500">{costLocal.toFixed(4)}</td>
+                  <td className="px-3 py-2 text-center whitespace-nowrap font-medium">{costQuoted.toFixed(4)}</td>
+                  <td className="px-3 py-2 text-center">
                     <button type="button" className="text-xs text-red-600 hover:underline" onClick={() => removeLine(idx)}>×</button>
                   </td>
                 </tr>
