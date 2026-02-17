@@ -1,8 +1,8 @@
-// src/app/(dashboard)/dashboard/styles/[id]/page.js
 'use client';
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
+import ImageUploader from '@/components/ImageUploader';
 
 export default function StyleDetailPage({ params }) {
   const { id } = use(params);
@@ -11,14 +11,39 @@ export default function StyleDetailPage({ params }) {
 
   useEffect(() => { fetch(`/api/styles/${id}`).then(r => r.json()).then(setStyle).finally(() => setLoading(false)); }, [id]);
 
+  async function updateImages(newImages) {
+    setStyle(prev => ({ ...prev, imageUrls: newImages }));
+    await fetch(`/api/styles/${id}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrls: newImages }),
+    });
+  }
+
   if (loading) return <div className="text-center py-20 text-gray-400">Loading...</div>;
   if (!style) return <div className="text-center py-20 text-red-500">Style not found</div>;
+
+  const imageUrls = style.imageUrls || [];
 
   return (
     <div>
       <Link href="/dashboard/styles" className="text-sm text-blue-600 mb-2 inline-block">← Styles</Link>
       <h1 className="text-2xl font-bold mb-1">{style.styleNo}</h1>
       <p className="text-gray-500 text-sm mb-6">{style.customer?.name} • {style.category || 'No category'} • {style.season || ''}</p>
+
+      {/* Image Gallery */}
+      <div className="card mb-6">
+        <h2 className="font-semibold mb-3">Images</h2>
+        {imageUrls.length > 0 && (
+          <div className="flex flex-wrap gap-3 mb-3">
+            {imageUrls.map((url, i) => (
+              <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-28 h-28 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                <img src={url} alt="" className="w-full h-full object-cover" />
+              </a>
+            ))}
+          </div>
+        )}
+        <ImageUploader images={imageUrls} onChange={updateImages} />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="card">

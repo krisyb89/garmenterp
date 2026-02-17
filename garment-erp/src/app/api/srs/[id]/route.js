@@ -54,6 +54,8 @@ export async function PUT(request, { params }) {
       data: {
         description: body.description,
         techPackUrl: body.techPackUrl,
+        imageUrls: body.imageUrls,
+        attachments: body.attachments,
         targetPrice: body.targetPrice,
         targetPriceCurrency: body.targetPriceCurrency,
         estimatedQtyMin: body.estimatedQtyMin,

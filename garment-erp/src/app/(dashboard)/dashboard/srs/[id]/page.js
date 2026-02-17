@@ -1,9 +1,10 @@
-// src/app/(dashboard)/dashboard/srs/[id]/page.js
 'use client';
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import StatusBadge from '@/components/StatusBadge';
+import ImageUploader from '@/components/ImageUploader';
+import FileUploader from '@/components/FileUploader';
 
 export default function SRSDetailPage({ params }) {
   const { id } = use(params);
@@ -26,6 +27,22 @@ export default function SRSDetailPage({ params }) {
     setSaving(false);
   }
 
+  async function updateImages(newImages) {
+    setSRS(prev => ({ ...prev, imageUrls: newImages }));
+    await fetch(`/api/srs/${id}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrls: newImages }),
+    });
+  }
+
+  async function updateAttachments(newFiles) {
+    setSRS(prev => ({ ...prev, attachments: newFiles }));
+    await fetch(`/api/srs/${id}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ attachments: newFiles }),
+    });
+  }
+
   async function saveCosting(e) {
     e.preventDefault();
     setSaving(true);
@@ -45,8 +62,6 @@ export default function SRSDetailPage({ params }) {
       ...costData, totalCostPerUnit: total, agentCommAmount: commAmt, sellingPrice,
     };
 
-    // Save via updating SRS's costing sheet (we'd need a costing endpoint, but for now use SRS)
-    // In production, create a /api/costing/[id] endpoint
     setSRS(prev => ({ ...prev, costingSheet: { ...prev.costingSheet, ...payload } }));
     setSaving(false);
     alert('Costing saved (in-memory). Add /api/costing endpoint for persistence.');
@@ -56,6 +71,8 @@ export default function SRSDetailPage({ params }) {
   if (!srs) return <div className="text-center py-20 text-red-500">SRS not found</div>;
 
   const cs = srs.costingSheet || {};
+  const imageUrls = srs.imageUrls || [];
+  const attachments = srs.attachments || [];
 
   return (
     <div>
@@ -96,6 +113,27 @@ export default function SRSDetailPage({ params }) {
           <h2 className="font-semibold mb-3">Notes</h2>
           <p className="text-sm text-gray-600">{srs.notes || 'No notes'}</p>
         </div>
+      </div>
+
+      {/* Images */}
+      <div className="card mb-6">
+        <h2 className="font-semibold mb-3">Images</h2>
+        {imageUrls.length > 0 && (
+          <div className="flex flex-wrap gap-3 mb-3">
+            {imageUrls.map((url, i) => (
+              <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-28 h-28 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                <img src={url} alt="" className="w-full h-full object-cover" />
+              </a>
+            ))}
+          </div>
+        )}
+        <ImageUploader images={imageUrls} onChange={updateImages} />
+      </div>
+
+      {/* Attachments */}
+      <div className="card mb-6">
+        <h2 className="font-semibold mb-3">Attachments</h2>
+        <FileUploader files={attachments} onChange={updateAttachments} />
       </div>
 
       {/* Costing Sheet */}

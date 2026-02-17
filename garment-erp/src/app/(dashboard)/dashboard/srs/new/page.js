@@ -1,15 +1,18 @@
-// src/app/(dashboard)/dashboard/srs/new/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
+import ImageUploader from '@/components/ImageUploader';
+import FileUploader from '@/components/FileUploader';
 
 export default function NewSRSPage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [images, setImages] = useState([]);
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
     fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || []));
@@ -24,6 +27,8 @@ export default function NewSRSPage() {
     data.targetPrice = data.targetPrice ? parseFloat(data.targetPrice) : null;
     data.estimatedQtyMin = data.estimatedQtyMin ? parseInt(data.estimatedQtyMin) : null;
     data.estimatedQtyMax = data.estimatedQtyMax ? parseInt(data.estimatedQtyMax) : null;
+    data.imageUrls = images;
+    data.attachments = files;
 
     try {
       const res = await fetch('/api/srs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
@@ -50,6 +55,11 @@ export default function NewSRSPage() {
         <div>
           <label className="label-field">Description</label>
           <textarea name="description" className="input-field" rows={3} placeholder="Style description, construction details..." />
+        </div>
+
+        <div>
+          <label className="label-field">Images</label>
+          <ImageUploader images={images} onChange={setImages} />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -95,6 +105,12 @@ export default function NewSRSPage() {
         <div>
           <label className="label-field">Trim Specifications</label>
           <textarea name="trimSpecs" className="input-field" rows={2} placeholder="Buttons, zippers, labels..." />
+        </div>
+
+        <div>
+          <label className="label-field">Attachments</label>
+          <p className="text-xs text-gray-400 mb-2">Tech packs, spec sheets, reference docs</p>
+          <FileUploader files={files} onChange={setFiles} />
         </div>
 
         <div>

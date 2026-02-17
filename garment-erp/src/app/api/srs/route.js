@@ -60,6 +60,8 @@ export async function POST(request) {
         createdById: user.userId,
         description: body.description,
         techPackUrl: body.techPackUrl,
+        imageUrls: body.imageUrls || [],
+        attachments: body.attachments || [],
         targetPrice: body.targetPrice,
         targetPriceCurrency: body.targetPriceCurrency || 'USD',
         estimatedQtyMin: body.estimatedQtyMin,

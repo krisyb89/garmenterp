@@ -91,6 +91,7 @@ model Style {
   collection      String?
   techPackUrl     String?  // File attachment
   imageUrl        String?
+  imageUrls       Json?
   construction    String?  // Woven, Knit, Denim, etc.
   fitType         String?  // Slim, Regular, Relaxed, etc.
   washInstructions String?
@@ -158,6 +159,8 @@ model SRS {
   createdById     String
   description     String?
   techPackUrl     String?
+  imageUrls       Json?
+  attachments     Json?
   targetPrice     Decimal? @db.Decimal(12,2)
   targetPriceCurrency String @default("USD")
   estimatedQtyMin Int?

@@ -1,11 +1,15 @@
-// src/app/(dashboard)/dashboard/purchase-orders/new/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
 
-const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL'];
+const SIZE_PRESETS = {
+  'Standard (XS-2XL)': ['XS', 'S', 'M', 'L', 'XL', '2XL'],
+  'Numeric (28-38)': ['28', '30', '32', '34', '36', '38'],
+  'UK (6-18)': ['6', '8', '10', '12', '14', '16', '18'],
+  'One Size': ['ONE SIZE'],
+};
 
 export default function NewPOPage() {
   const router = useRouter();
@@ -15,6 +19,8 @@ export default function NewPOPage() {
   const [lineItems, setLineItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [sizes, setSizes] = useState(['S', 'M', 'L', 'XL']);
+  const [newSize, setNewSize] = useState('');
 
   useEffect(() => {
     fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || []));
@@ -26,10 +32,40 @@ export default function NewPOPage() {
     }
   }, [selectedCustomerId]);
 
+  function applySizePreset(presetName) {
+    const newSizes = SIZE_PRESETS[presetName];
+    setSizes(newSizes);
+    setLineItems(prev => prev.map(line => ({
+      ...line,
+      sizeBreakdown: newSizes.reduce((acc, s) => ({ ...acc, [s]: line.sizeBreakdown[s] || '' }), {}),
+    })));
+  }
+
+  function addSize() {
+    const s = newSize.trim().toUpperCase();
+    if (!s || sizes.includes(s)) return;
+    const newSizes = [...sizes, s];
+    setSizes(newSizes);
+    setLineItems(prev => prev.map(line => ({
+      ...line,
+      sizeBreakdown: { ...line.sizeBreakdown, [s]: '' },
+    })));
+    setNewSize('');
+  }
+
+  function removeSize(sizeToRemove) {
+    const newSizes = sizes.filter(s => s !== sizeToRemove);
+    setSizes(newSizes);
+    setLineItems(prev => prev.map(line => {
+      const { [sizeToRemove]: _, ...rest } = line.sizeBreakdown;
+      return { ...line, sizeBreakdown: rest };
+    }));
+  }
+
   function addLineItem() {
     setLineItems([...lineItems, {
       styleId: '', color: '', colorCode: '', unitPrice: '',
-      sizeBreakdown: DEFAULT_SIZES.reduce((acc, s) => ({ ...acc, [s]: '' }), {}),
+      sizeBreakdown: sizes.reduce((acc, s) => ({ ...acc, [s]: '' }), {}),
       deliveryDate: '', notes: '',
     }]);
   }
@@ -162,6 +198,37 @@ export default function NewPOPage() {
           </div>
         </div>
 
+        {/* Size Columns Editor */}
+        <div className="card">
+          <h2 className="font-semibold mb-3">Size Columns</h2>
+          <div className="flex flex-wrap gap-2 mb-3">
+            {sizes.map(s => (
+              <span key={s} className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                {s}
+                <button type="button" onClick={() => removeSize(s)} className="text-blue-400 hover:text-blue-800 ml-1">✕</button>
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2 mb-3">
+            <input
+              value={newSize}
+              onChange={e => setNewSize(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addSize(); } }}
+              className="input-field w-32"
+              placeholder="e.g., 3XL"
+            />
+            <button type="button" onClick={addSize} className="btn-primary text-xs">Add Size</button>
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            <span className="text-xs text-gray-500 self-center mr-1">Presets:</span>
+            {Object.keys(SIZE_PRESETS).map(name => (
+              <button key={name} type="button" onClick={() => applySizePreset(name)} className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg transition-colors">
+                {name}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Line Items with Size-Color Matrix */}
         <div className="card">
           <div className="flex items-center justify-between mb-4">
@@ -205,7 +272,7 @@ export default function NewPOPage() {
                     <div className="mb-3">
                       <label className="label-field">Size Breakdown</label>
                       <div className="flex gap-2 flex-wrap">
-                        {DEFAULT_SIZES.map(size => (
+                        {sizes.map(size => (
                           <div key={size} className="text-center">
                             <div className="text-xs text-gray-500 mb-1">{size}</div>
                             <input

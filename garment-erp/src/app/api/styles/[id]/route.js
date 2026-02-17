@@ -49,6 +49,7 @@ export async function PUT(request, { params }) {
         collection: body.collection,
         techPackUrl: body.techPackUrl,
         imageUrl: body.imageUrl,
+        imageUrls: body.imageUrls,
         construction: body.construction,
         fitType: body.fitType,
         washInstructions: body.washInstructions,
