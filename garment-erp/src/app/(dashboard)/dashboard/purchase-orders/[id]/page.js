@@ -50,13 +50,34 @@ export default function PODetailPage() {
   async function saveChanges() {
     setSaving(true);
     try {
+      const payload = { ...form };
+      if (!payload.shipByDate) payload.shipByDate = null;
+      if (!payload.cancelDate) payload.cancelDate = null;
+      if (!payload.orderDate) delete payload.orderDate;
+
       const res = await fetch(`/api/purchase-orders/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || 'Failed to save changes');
+        return;
+      }
       const updated = await res.json();
       setPO(prev => ({ ...prev, ...updated }));
+      setForm({
+        orderDate: formatDate(updated.orderDate),
+        shipByDate: formatDate(updated.shipByDate),
+        cancelDate: formatDate(updated.cancelDate),
+        shippingTerms: updated.shippingTerms || 'FOB',
+        portOfLoading: updated.portOfLoading || '',
+        portOfDischarge: updated.portOfDischarge || '',
+        currency: updated.currency || 'USD',
+        specialInstructions: updated.specialInstructions || '',
+        notes: updated.notes || '',
+      });
       setEditing(false);
     } catch {
       alert('Failed to save changes');

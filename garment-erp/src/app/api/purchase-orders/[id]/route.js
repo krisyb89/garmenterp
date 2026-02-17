@@ -48,7 +48,10 @@ export async function PUT(request, { params }) {
 
     const updateData = {};
     if (body.status !== undefined) updateData.status = body.status;
-    if (body.orderDate !== undefined) updateData.orderDate = new Date(body.orderDate);
+    if (body.orderDate !== undefined && body.orderDate) {
+      const d = new Date(body.orderDate);
+      if (!isNaN(d.getTime())) updateData.orderDate = d;
+    }
     if (body.shipByDate !== undefined) updateData.shipByDate = body.shipByDate ? new Date(body.shipByDate) : null;
     if (body.cancelDate !== undefined) updateData.cancelDate = body.cancelDate ? new Date(body.cancelDate) : null;
     if (body.shippingTerms !== undefined) updateData.shippingTerms = body.shippingTerms;

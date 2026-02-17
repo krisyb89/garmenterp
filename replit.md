@@ -44,3 +44,6 @@ garment-erp/
 - Fixed mass assignment vulnerability in style/production/SRS PUT routes
 - Added try/catch error handling in styles GET route
 - Added Cache-Control headers to prevent stale cache in Replit preview
+- PO detail page: Made fully editable with inline Edit/Save/Cancel for header fields (dates, shipping terms, ports, currency, notes)
+- Renamed "Cancel Date" to "IH Date" across all PO pages
+- PO PUT API: Conditional field updates with date validation
