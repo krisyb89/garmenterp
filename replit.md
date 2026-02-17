@@ -37,6 +37,8 @@ garment-erp/
 - Fixed `use(params)` -> `useParams()` across all detail pages for Next.js 14 compatibility
 
 ## Recent Changes
+- Costing sheet overhaul: dual-currency support (local + quote), per-line exchange rates, corrected selling price formula (cost+comm)/(1-margin%), manual actual quoted price override
+- Schema: added localCurrency, quoteCurrency, exchangeRate, totalCostLocal, totalCostQuoted, actualQuotedPrice to CostingSheet; removed totalCostPerUnit/currency
 - Migrated to updated codebase with WIP tracking and costing restructure
 - Added SRS WIP board with customizable columns at /dashboard/wip/srs
 - Added Production WIP board with customizable columns at /dashboard/wip/pos
