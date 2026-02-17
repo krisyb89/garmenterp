@@ -39,19 +39,7 @@ export async function PUT(request, { params }) {
 
     const customer = await prisma.customer.update({
       where: { id },
-      data: {
-        name: body.name,
-        contactPerson: body.contactPerson,
-        email: body.email,
-        phone: body.phone,
-        address: body.address,
-        country: body.country,
-        currency: body.currency,
-        paymentTermDays: body.paymentTermDays,
-        paymentTermBasis: body.paymentTermBasis,
-        notes: body.notes,
-        isActive: body.isActive,
-      },
+      data: body,
     });
 
     return NextResponse.json(customer);
@@ -63,8 +51,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   const { user, error } = await requireAuth();
-  if (error) return error;
-  if (user.role !== 'ADMIN') {
+  if (!user || user.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 

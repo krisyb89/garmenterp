@@ -51,27 +51,7 @@ export async function PUT(request, { params }) {
 
     const srs = await prisma.sRS.update({
       where: { id },
-      data: {
-        description: body.description,
-        techPackUrl: body.techPackUrl,
-        imageUrls: body.imageUrls,
-        attachments: body.attachments,
-        targetPrice: body.targetPrice,
-        targetPriceCurrency: body.targetPriceCurrency,
-        estimatedQtyMin: body.estimatedQtyMin,
-        estimatedQtyMax: body.estimatedQtyMax,
-        deliveryWindow: body.deliveryWindow,
-        targetMarkets: body.targetMarkets,
-        fabricSpecs: body.fabricSpecs,
-        trimSpecs: body.trimSpecs,
-        status: body.status,
-        revisionNo: body.revisionNo,
-        quotedPrice: body.quotedPrice,
-        quotedDate: body.quotedDate ? new Date(body.quotedDate) : undefined,
-        confirmedDate: body.confirmedDate ? new Date(body.confirmedDate) : undefined,
-        notes: body.notes,
-        styleId: body.styleId,
-      },
+      data: body,
       include: { customer: { select: { name: true } } },
     });
 

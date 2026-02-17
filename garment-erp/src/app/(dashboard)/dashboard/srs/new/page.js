@@ -1,3 +1,4 @@
+// src/app/(dashboard)/dashboard/srs/new/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -9,10 +10,10 @@ import FileUploader from '@/components/FileUploader';
 export default function NewSRSPage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || []));
@@ -58,7 +59,7 @@ export default function NewSRSPage() {
         </div>
 
         <div>
-          <label className="label-field">Images</label>
+          <label className="label-field">Reference Images</label>
           <ImageUploader images={images} onChange={setImages} />
         </div>
 
@@ -97,26 +98,15 @@ export default function NewSRSPage() {
           </div>
         </div>
 
-        <div>
-          <label className="label-field">Fabric Specifications</label>
-          <textarea name="fabricSpecs" className="input-field" rows={2} placeholder="Composition, weight, construction..." />
-        </div>
+        <div><label className="label-field">Fabric Specs</label><textarea name="fabricSpecs" className="input-field" rows={2} /></div>
+        <div><label className="label-field">Trim Specs</label><textarea name="trimSpecs" className="input-field" rows={2} /></div>
 
         <div>
-          <label className="label-field">Trim Specifications</label>
-          <textarea name="trimSpecs" className="input-field" rows={2} placeholder="Buttons, zippers, labels..." />
-        </div>
-
-        <div>
-          <label className="label-field">Attachments</label>
-          <p className="text-xs text-gray-400 mb-2">Tech packs, spec sheets, reference docs</p>
+          <label className="label-field">Attachments (tech packs, specs, reference docs)</label>
           <FileUploader files={files} onChange={setFiles} />
         </div>
 
-        <div>
-          <label className="label-field">Notes</label>
-          <textarea name="notes" className="input-field" rows={2} />
-        </div>
+        <div><label className="label-field">Notes</label><textarea name="notes" className="input-field" rows={2} /></div>
 
         <div className="flex gap-3 pt-2">
           <button type="submit" className="btn-primary" disabled={loading}>{loading ? 'Creating...' : 'Create SRS'}</button>

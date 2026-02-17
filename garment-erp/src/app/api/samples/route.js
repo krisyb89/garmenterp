@@ -51,6 +51,7 @@ export async function POST(request) {
       courierName: body.courierName,
       trackingNo: body.trackingNo,
       internalNotes: body.internalNotes,
+      imageUrls: body.imageUrls || null,
       createdById: user.userId,
       status: body.status || 'PENDING',
     },

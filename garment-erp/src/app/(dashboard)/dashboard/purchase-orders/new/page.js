@@ -1,11 +1,13 @@
+// src/app/(dashboard)/dashboard/purchase-orders/new/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
 
-const SIZE_PRESETS = {
+const PRESETS = {
   'Standard (XS-2XL)': ['XS', 'S', 'M', 'L', 'XL', '2XL'],
+  'Standard (S-XL)': ['S', 'M', 'L', 'XL'],
   'Numeric (28-38)': ['28', '30', '32', '34', '36', '38'],
   'UK (6-18)': ['6', '8', '10', '12', '14', '16', '18'],
   'One Size': ['ONE SIZE'],
@@ -17,10 +19,10 @@ export default function NewPOPage() {
   const [styles, setStyles] = useState([]);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [lineItems, setLineItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [sizes, setSizes] = useState(['S', 'M', 'L', 'XL']);
   const [newSize, setNewSize] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || []));
@@ -32,20 +34,21 @@ export default function NewPOPage() {
     }
   }, [selectedCustomerId]);
 
-  function applySizePreset(presetName) {
-    const newSizes = SIZE_PRESETS[presetName];
-    setSizes(newSizes);
+  function applyPreset(name) {
+    const preset = PRESETS[name];
+    setSizes(preset);
+    // Rebuild all line items' sizeBreakdown to match new sizes
     setLineItems(prev => prev.map(line => ({
       ...line,
-      sizeBreakdown: newSizes.reduce((acc, s) => ({ ...acc, [s]: line.sizeBreakdown[s] || '' }), {}),
+      sizeBreakdown: preset.reduce((acc, s) => ({ ...acc, [s]: line.sizeBreakdown[s] || '' }), {}),
     })));
   }
 
   function addSize() {
     const s = newSize.trim().toUpperCase();
     if (!s || sizes.includes(s)) return;
-    const newSizes = [...sizes, s];
-    setSizes(newSizes);
+    const updated = [...sizes, s];
+    setSizes(updated);
     setLineItems(prev => prev.map(line => ({
       ...line,
       sizeBreakdown: { ...line.sizeBreakdown, [s]: '' },
@@ -53,12 +56,13 @@ export default function NewPOPage() {
     setNewSize('');
   }
 
-  function removeSize(sizeToRemove) {
-    const newSizes = sizes.filter(s => s !== sizeToRemove);
-    setSizes(newSizes);
+  function removeSize(size) {
+    const updated = sizes.filter(s => s !== size);
+    setSizes(updated);
     setLineItems(prev => prev.map(line => {
-      const { [sizeToRemove]: _, ...rest } = line.sizeBreakdown;
-      return { ...line, sizeBreakdown: rest };
+      const bd = { ...line.sizeBreakdown };
+      delete bd[size];
+      return { ...line, sizeBreakdown: bd };
     }));
   }
 
@@ -161,7 +165,7 @@ export default function NewPOPage() {
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div>
-              <label className="label-field">IH Date</label>
+              <label className="label-field">Cancel Date</label>
               <input name="cancelDate" type="date" className="input-field" />
             </div>
             <div>
@@ -203,26 +207,22 @@ export default function NewPOPage() {
           <h2 className="font-semibold mb-3">Size Columns</h2>
           <div className="flex flex-wrap gap-2 mb-3">
             {sizes.map(s => (
-              <span key={s} className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+              <span key={s} className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
                 {s}
-                <button type="button" onClick={() => removeSize(s)} className="text-blue-400 hover:text-blue-800 ml-1">✕</button>
+                <button type="button" onClick={() => removeSize(s)} className="text-blue-400 hover:text-red-500 text-xs ml-1">✕</button>
               </span>
             ))}
           </div>
-          <div className="flex gap-2 mb-3">
-            <input
-              value={newSize}
-              onChange={e => setNewSize(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addSize(); } }}
-              className="input-field w-32"
-              placeholder="e.g., 3XL"
-            />
-            <button type="button" onClick={addSize} className="btn-primary text-xs">Add Size</button>
+          <div className="flex gap-2 items-center mb-3">
+            <input className="input-field w-32" placeholder="Add size..." value={newSize}
+              onChange={e => setNewSize(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addSize(); }}} />
+            <button type="button" className="btn-secondary text-xs" onClick={addSize}>Add</button>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <span className="text-xs text-gray-500 self-center mr-1">Presets:</span>
-            {Object.keys(SIZE_PRESETS).map(name => (
-              <button key={name} type="button" onClick={() => applySizePreset(name)} className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg transition-colors">
+            <span className="text-xs text-gray-500 mr-1 py-1">Presets:</span>
+            {Object.keys(PRESETS).map(name => (
+              <button key={name} type="button" onClick={() => applyPreset(name)}
+                className="px-2 py-1 rounded text-xs bg-gray-100 text-gray-600 hover:bg-blue-100 hover:text-blue-700">
                 {name}
               </button>
             ))}

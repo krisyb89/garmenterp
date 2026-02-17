@@ -1,8 +1,11 @@
+// src/app/(dashboard)/dashboard/packing-lists/page.js
 'use client';
 
 import { useState, useEffect } from 'react';
 import PageHeader from '@/components/PageHeader';
 import StatusBadge from '@/components/StatusBadge';
+
+const DEFAULT_CARTON_SIZES = ['S', 'M', 'L', 'XL'];
 
 export default function PackingListsPage() {
   const [packingLists, setPackingLists] = useState([]);
@@ -12,8 +15,6 @@ export default function PackingListsPage() {
   const [selectedPL, setSelectedPL] = useState(null);
   const [detail, setDetail] = useState(null);
   const [showAddCarton, setShowAddCarton] = useState(false);
-  const [cartonSizes, setCartonSizes] = useState(['S', 'M', 'L', 'XL']);
-  const [newCartonSize, setNewCartonSize] = useState('');
 
   useEffect(() => { reload(); }, []);
 
@@ -42,36 +43,18 @@ export default function PackingListsPage() {
   async function openDetail(pl) {
     setSelectedPL(pl.id);
     const res = await fetch(`/api/packing-lists/${pl.id}`);
-    const data = await res.json();
-    setDetail(data);
-
-    const existingSizes = [...new Set(
-      (data.cartons || []).flatMap(c => (c.lines || []).map(l => l.size))
-    )].filter(Boolean);
-    if (existingSizes.length > 0) {
-      setCartonSizes(existingSizes);
-    }
-  }
-
-  function addCartonSize() {
-    const s = newCartonSize.trim().toUpperCase();
-    if (!s || cartonSizes.includes(s)) return;
-    setCartonSizes([...cartonSizes, s]);
-    setNewCartonSize('');
-  }
-
-  function removeCartonSize(size) {
-    setCartonSizes(cartonSizes.filter(s => s !== size));
+    setDetail(await res.json());
   }
 
   async function addCarton(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
     const lines = [];
-    for (const size of cartonSizes) {
-      const qty = parseInt(fd.get(`qty_${size}`) || 0);
-      if (qty > 0) {
-        lines.push({ styleNo: fd.get('styleNo'), color: fd.get('color'), size, qty });
+    // Dynamically find all qty_* fields
+    for (const [key, val] of fd.entries()) {
+      if (key.startsWith('qty_') && parseInt(val) > 0) {
+        const size = key.replace('qty_', '');
+        lines.push({ styleNo: fd.get('styleNo'), color: fd.get('color'), size, qty: parseInt(val) });
       }
     }
     if (lines.length === 0) return;
@@ -89,6 +72,7 @@ export default function PackingListsPage() {
       }),
     });
     setShowAddCarton(false);
+    // Refresh detail
     const res = await fetch(`/api/packing-lists/${selectedPL}`);
     setDetail(await res.json());
     reload();
@@ -104,8 +88,10 @@ export default function PackingListsPage() {
 
   if (loading) return <div className="text-center py-20 text-gray-400">Loading...</div>;
 
+  // Detail view
   if (detail) {
     const summaryMap = detail.summary || {};
+    // Group summary by style|color → sizes
     const grouped = {};
     for (const [key, qty] of Object.entries(summaryMap)) {
       const [style, color, size] = key.split('|');
@@ -113,8 +99,9 @@ export default function PackingListsPage() {
       if (!grouped[gKey]) grouped[gKey] = { style, color, sizes: {} };
       grouped[gKey].sizes[size] = qty;
     }
-
-    const summarySizes = [...new Set(Object.values(grouped).flatMap(g => Object.keys(g.sizes)))];
+    // Extract all sizes dynamically from actual data
+    const dataSizes = [...new Set(Object.values(grouped).flatMap(g => Object.keys(g.sizes)))];
+    const SIZES = dataSizes.length > 0 ? dataSizes : DEFAULT_CARTON_SIZES;
 
     return (
       <div>
@@ -127,6 +114,7 @@ export default function PackingListsPage() {
           <button className="btn-primary text-sm" onClick={() => setShowAddCarton(!showAddCarton)}>+ Add Carton</button>
         </div>
 
+        {/* Summary cards */}
         <div className="grid grid-cols-5 gap-4 mb-6">
           <div className="card text-center"><div className="text-xs text-gray-500">Total Cartons</div><div className="text-xl font-bold">{detail.totalCartons}</div></div>
           <div className="card text-center"><div className="text-xs text-gray-500">Total Qty</div><div className="text-xl font-bold">{detail.totalQty?.toLocaleString()}</div></div>
@@ -135,6 +123,7 @@ export default function PackingListsPage() {
           <div className="card text-center"><div className="text-xs text-gray-500">Total CBM</div><div className="text-xl font-bold">{parseFloat(detail.totalCBM || 0).toFixed(3)}</div></div>
         </div>
 
+        {/* Add carton form */}
         {showAddCarton && (
           <form onSubmit={addCarton} className="card mb-6 space-y-3">
             <h3 className="font-semibold">New Carton</h3>
@@ -150,22 +139,9 @@ export default function PackingListsPage() {
               <div><label className="text-xs text-gray-500">Height (cm)</label><input name="height" type="number" step="0.1" className="input-field" /></div>
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Sizes</label>
-              <div className="flex flex-wrap gap-1 mb-2">
-                {cartonSizes.map(s => (
-                  <span key={s} className="inline-flex items-center gap-1 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-medium">
-                    {s}
-                    <button type="button" onClick={() => removeCartonSize(s)} className="text-blue-400 hover:text-blue-800">✕</button>
-                  </span>
-                ))}
-                <div className="flex gap-1">
-                  <input value={newCartonSize} onChange={e => setNewCartonSize(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCartonSize(); } }} className="input-field w-16 text-xs py-0.5" placeholder="Size" />
-                  <button type="button" onClick={addCartonSize} className="text-xs text-blue-600">+</button>
-                </div>
-              </div>
               <label className="text-xs text-gray-500 mb-1 block">Qty per Size (enter at least one)</label>
               <div className="flex gap-2 flex-wrap">
-                {cartonSizes.map(s => (
+                {SIZES.map(s => (
                   <div key={s} className="text-center">
                     <div className="text-xs text-gray-400 mb-1">{s}</div>
                     <input name={`qty_${s}`} type="number" min="0" className="input-field w-16 text-center text-sm" placeholder="0" />
@@ -180,32 +156,32 @@ export default function PackingListsPage() {
           </form>
         )}
 
+        {/* Summary by style/color/size */}
         {Object.keys(grouped).length > 0 && (
           <div className="card mb-6">
             <h3 className="font-semibold mb-3">Qty Summary by Style / Color / Size</h3>
-            <div className="overflow-x-auto">
-              <table className="table-base">
-                <thead>
-                  <tr><th>Style</th><th>Color</th>{summarySizes.map(s => <th key={s} className="text-center">{s}</th>)}<th className="text-center">Total</th></tr>
-                </thead>
-                <tbody>
-                  {Object.values(grouped).map((g, i) => {
-                    const rowTotal = Object.values(g.sizes).reduce((a, b) => a + b, 0);
-                    return (
-                      <tr key={i}>
-                        <td className="font-medium">{g.style}</td>
-                        <td>{g.color}</td>
-                        {summarySizes.map(s => <td key={s} className="text-center">{g.sizes[s] || '—'}</td>)}
-                        <td className="text-center font-bold">{rowTotal}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+            <table className="table-base">
+              <thead>
+                <tr><th>Style</th><th>Color</th>{SIZES.map(s => <th key={s} className="text-center">{s}</th>)}<th className="text-center">Total</th></tr>
+              </thead>
+              <tbody>
+                {Object.values(grouped).map((g, i) => {
+                  const rowTotal = Object.values(g.sizes).reduce((a, b) => a + b, 0);
+                  return (
+                    <tr key={i}>
+                      <td className="font-medium">{g.style}</td>
+                      <td>{g.color}</td>
+                      {SIZES.map(s => <td key={s} className="text-center">{g.sizes[s] || '—'}</td>)}
+                      <td className="text-center font-bold">{rowTotal}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
 
+        {/* Carton list */}
         <div className="card overflow-hidden p-0">
           <div className="px-4 py-3 border-b bg-gray-50"><h3 className="font-semibold">Cartons ({detail.cartons?.length || 0})</h3></div>
           {detail.cartons?.length === 0 ? (
@@ -240,6 +216,7 @@ export default function PackingListsPage() {
     );
   }
 
+  // List view
   return (
     <div>
       <PageHeader title="Packing Lists" subtitle="Cartonization and packing details by PO" />

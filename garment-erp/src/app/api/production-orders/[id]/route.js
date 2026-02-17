@@ -24,30 +24,8 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   const { user, error } = await requireAuth();
   if (error) return error;
-
-  try {
-    const { id } = await params;
-    const body = await request.json();
-    const order = await prisma.productionOrder.update({
-      where: { id },
-      data: {
-        status: body.status,
-        color: body.color,
-        sizeBreakdown: body.sizeBreakdown,
-        totalQty: body.totalQty,
-        targetStartDate: body.targetStartDate ? new Date(body.targetStartDate) : undefined,
-        targetEndDate: body.targetEndDate ? new Date(body.targetEndDate) : undefined,
-        actualStartDate: body.actualStartDate ? new Date(body.actualStartDate) : undefined,
-        actualEndDate: body.actualEndDate ? new Date(body.actualEndDate) : undefined,
-        cmtRate: body.cmtRate,
-        cmtCurrency: body.cmtCurrency,
-        specialInstructions: body.specialInstructions,
-        notes: body.notes,
-      },
-    });
-    return NextResponse.json(order);
-  } catch (error) {
-    console.error('Production order PUT error:', error);
-    return NextResponse.json({ error: 'Failed to update production order' }, { status: 500 });
-  }
+  const { id } = await params;
+  const body = await request.json();
+  const order = await prisma.productionOrder.update({ where: { id }, data: body });
+  return NextResponse.json(order);
 }

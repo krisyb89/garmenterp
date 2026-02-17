@@ -1,14 +1,14 @@
+// src/app/api/uploads/route.js
 import { NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth';
 import { writeFile, mkdir } from 'fs/promises';
-import { existsSync } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-const ALLOWED_IMAGE_EXTS = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
-const ALLOWED_DOC_EXTS = ['.pdf', '.xlsx', '.xls', '.doc', '.docx', '.ai', '.psd'];
-const ALLOWED_EXTS = [...ALLOWED_IMAGE_EXTS, ...ALLOWED_DOC_EXTS];
+const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_IMAGE = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
+const ALLOWED_DOC = ['.pdf', '.xlsx', '.xls', '.doc', '.docx', '.ai', '.psd'];
+const ALLOWED = [...ALLOWED_IMAGE, ...ALLOWED_DOC];
 
 export async function POST(request) {
   const { user, error } = await requireAuth();
@@ -23,46 +23,38 @@ export async function POST(request) {
     }
 
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
+    await mkdir(uploadDir, { recursive: true });
 
     const results = [];
 
     for (const file of files) {
       if (!file || typeof file === 'string') continue;
 
-      if (file.size > MAX_FILE_SIZE) {
-        return NextResponse.json(
-          { error: `File "${file.name}" exceeds 10MB limit` },
-          { status: 400 }
-        );
+      if (file.size > MAX_SIZE) {
+        return NextResponse.json({ error: `File "${file.name}" exceeds 10MB limit` }, { status: 400 });
       }
 
       const ext = path.extname(file.name).toLowerCase();
-      if (!ALLOWED_EXTS.includes(ext)) {
-        return NextResponse.json(
-          { error: `File type "${ext}" is not allowed` },
-          { status: 400 }
-        );
+      if (!ALLOWED.includes(ext)) {
+        return NextResponse.json({ error: `File type "${ext}" not allowed` }, { status: 400 });
       }
 
-      const randomHex = crypto.randomBytes(6).toString('hex');
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const fileName = `${Date.now()}-${randomHex}-${safeName}`;
-      const filePath = path.join(uploadDir, fileName);
+      const hex = crypto.randomBytes(6).toString('hex');
+      const safeName = `${Date.now()}-${hex}${ext}`;
+      const bytes = Buffer.from(await file.arrayBuffer());
+      const filePath = path.join(uploadDir, safeName);
 
-      const buffer = Buffer.from(await file.arrayBuffer());
-      await writeFile(filePath, buffer);
+      await writeFile(filePath, bytes);
 
       results.push({
-        url: `/uploads/${fileName}`,
+        url: `/uploads/${safeName}`,
         originalName: file.name,
         size: file.size,
+        isImage: ALLOWED_IMAGE.includes(ext),
       });
     }
 
-    return NextResponse.json(results);
+    return NextResponse.json(results.length === 1 ? results[0] : results, { status: 201 });
   } catch (err) {
     console.error('Upload error:', err);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });

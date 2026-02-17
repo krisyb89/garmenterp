@@ -1,3 +1,4 @@
+// src/app/(dashboard)/dashboard/styles/new/page.js
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -7,9 +8,9 @@ import ImageUploader from '@/components/ImageUploader';
 export default function NewStylePage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [images, setImages] = useState([]);
 
   useEffect(() => { fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || [])); }, []);
 
@@ -68,7 +69,7 @@ export default function NewStylePage() {
         <div><label className="label-field">Description</label><textarea name="description" className="input-field" rows={2} /></div>
 
         <div>
-          <label className="label-field">Images</label>
+          <label className="label-field">Style Images</label>
           <ImageUploader images={images} onChange={setImages} />
         </div>
 

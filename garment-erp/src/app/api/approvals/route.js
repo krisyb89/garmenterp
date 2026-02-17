@@ -49,6 +49,7 @@ export async function POST(request) {
       submissionNo: existingApprovals + 1,
       submitDate: body.submitDate ? new Date(body.submitDate) : null,
       status: body.status || 'PENDING',
+      imageUrls: body.imageUrls || null,
       notes: body.notes,
     },
   });

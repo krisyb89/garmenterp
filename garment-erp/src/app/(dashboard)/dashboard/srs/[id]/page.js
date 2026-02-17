@@ -1,3 +1,4 @@
+// src/app/(dashboard)/dashboard/srs/[id]/page.js
 'use client';
 
 import { useState, useEffect, use } from 'react';
@@ -16,31 +17,15 @@ export default function SRSDetailPage({ params }) {
     fetch(`/api/srs/${id}`).then(r => r.json()).then(setSRS).finally(() => setLoading(false));
   }, [id]);
 
-  async function updateStatus(newStatus) {
+  async function updateField(updates) {
     setSaving(true);
     const res = await fetch(`/api/srs/${id}`, {
       method: 'PUT', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: newStatus }),
+      body: JSON.stringify(updates),
     });
     const data = await res.json();
-    setSRS(prev => ({ ...prev, status: data.status }));
+    setSRS(prev => ({ ...prev, ...data }));
     setSaving(false);
-  }
-
-  async function updateImages(newImages) {
-    setSRS(prev => ({ ...prev, imageUrls: newImages }));
-    await fetch(`/api/srs/${id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageUrls: newImages }),
-    });
-  }
-
-  async function updateAttachments(newFiles) {
-    setSRS(prev => ({ ...prev, attachments: newFiles }));
-    await fetch(`/api/srs/${id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ attachments: newFiles }),
-    });
   }
 
   async function saveCosting(e) {
@@ -58,10 +43,7 @@ export default function SRSDetailPage({ params }) {
     const marginMultiplier = 1 + ((costData.targetMarginPercent || 0) / 100);
     const sellingPrice = (total + commAmt) * marginMultiplier;
 
-    const payload = {
-      ...costData, totalCostPerUnit: total, agentCommAmount: commAmt, sellingPrice,
-    };
-
+    const payload = { ...costData, totalCostPerUnit: total, agentCommAmount: commAmt, sellingPrice };
     setSRS(prev => ({ ...prev, costingSheet: { ...prev.costingSheet, ...payload } }));
     setSaving(false);
     alert('Costing saved (in-memory). Add /api/costing endpoint for persistence.');
@@ -71,8 +53,6 @@ export default function SRSDetailPage({ params }) {
   if (!srs) return <div className="text-center py-20 text-red-500">SRS not found</div>;
 
   const cs = srs.costingSheet || {};
-  const imageUrls = srs.imageUrls || [];
-  const attachments = srs.attachments || [];
 
   return (
     <div>
@@ -84,7 +64,7 @@ export default function SRSDetailPage({ params }) {
         </div>
         <div className="flex items-center gap-3">
           <StatusBadge status={srs.status} />
-          <select className="select-field w-auto text-sm" value={srs.status} onChange={e => updateStatus(e.target.value)} disabled={saving}>
+          <select className="select-field w-auto text-sm" value={srs.status} onChange={e => updateField({ status: e.target.value })} disabled={saving}>
             {['RECEIVED','UNDER_REVIEW','COSTING_IN_PROGRESS','QUOTED','CUSTOMER_CONFIRMED','DEVELOPMENT_STARTED','ORDER_RECEIVED','ON_HOLD','CANCELLED'].map(s =>
               <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>)}
           </select>
@@ -115,25 +95,16 @@ export default function SRSDetailPage({ params }) {
         </div>
       </div>
 
-      {/* Images */}
-      <div className="card mb-6">
-        <h2 className="font-semibold mb-3">Images</h2>
-        {imageUrls.length > 0 && (
-          <div className="flex flex-wrap gap-3 mb-3">
-            {imageUrls.map((url, i) => (
-              <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-28 h-28 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                <img src={url} alt="" className="w-full h-full object-cover" />
-              </a>
-            ))}
-          </div>
-        )}
-        <ImageUploader images={imageUrls} onChange={updateImages} />
-      </div>
-
-      {/* Attachments */}
-      <div className="card mb-6">
-        <h2 className="font-semibold mb-3">Attachments</h2>
-        <FileUploader files={attachments} onChange={updateAttachments} />
+      {/* Images + Attachments */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="card">
+          <h2 className="font-semibold mb-3">Reference Images</h2>
+          <ImageUploader images={srs.imageUrls || []} onChange={urls => updateField({ imageUrls: urls })} />
+        </div>
+        <div className="card">
+          <h2 className="font-semibold mb-3">Attachments</h2>
+          <FileUploader files={srs.attachments || []} onChange={files => updateField({ attachments: files })} />
+        </div>
       </div>
 
       {/* Costing Sheet */}

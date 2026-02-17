@@ -1,3 +1,4 @@
+// src/app/(dashboard)/dashboard/styles/[id]/page.js
 'use client';
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
@@ -8,42 +9,26 @@ export default function StyleDetailPage({ params }) {
   const { id } = use(params);
   const [style, setStyle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => { fetch(`/api/styles/${id}`).then(r => r.json()).then(setStyle).finally(() => setLoading(false)); }, [id]);
 
-  async function updateImages(newImages) {
-    setStyle(prev => ({ ...prev, imageUrls: newImages }));
-    await fetch(`/api/styles/${id}`, {
-      method: 'PUT', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageUrls: newImages }),
-    });
+  async function saveImages(urls) {
+    setSaving(true);
+    const res = await fetch(`/api/styles/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrls: urls }) });
+    const data = await res.json();
+    setStyle(prev => ({ ...prev, imageUrls: data.imageUrls }));
+    setSaving(false);
   }
 
   if (loading) return <div className="text-center py-20 text-gray-400">Loading...</div>;
   if (!style) return <div className="text-center py-20 text-red-500">Style not found</div>;
-
-  const imageUrls = style.imageUrls || [];
 
   return (
     <div>
       <Link href="/dashboard/styles" className="text-sm text-blue-600 mb-2 inline-block">← Styles</Link>
       <h1 className="text-2xl font-bold mb-1">{style.styleNo}</h1>
       <p className="text-gray-500 text-sm mb-6">{style.customer?.name} • {style.category || 'No category'} • {style.season || ''}</p>
-
-      {/* Image Gallery */}
-      <div className="card mb-6">
-        <h2 className="font-semibold mb-3">Images</h2>
-        {imageUrls.length > 0 && (
-          <div className="flex flex-wrap gap-3 mb-3">
-            {imageUrls.map((url, i) => (
-              <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-28 h-28 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                <img src={url} alt="" className="w-full h-full object-cover" />
-              </a>
-            ))}
-          </div>
-        )}
-        <ImageUploader images={imageUrls} onChange={updateImages} />
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="card">
@@ -77,12 +62,21 @@ export default function StyleDetailPage({ params }) {
         </div>
       </div>
 
+      {/* Style Images */}
+      <div className="card mb-6">
+        <h2 className="font-semibold mb-3">Style Images</h2>
+        <ImageUploader images={style.imageUrls || []} onChange={saveImages} />
+      </div>
+
       {/* Samples */}
       <div className="card mb-6">
-        <h2 className="font-semibold mb-4">Samples ({style.samples?.length || 0})</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold">Samples ({style.samples?.length || 0})</h2>
+          <Link href={`/dashboard/samples/new?styleId=${id}`} className="btn-primary text-xs">+ Add Sample</Link>
+        </div>
         {style.samples?.length === 0 ? <p className="text-sm text-gray-400">No samples yet</p> :
           <table className="table-base">
-            <thead><tr><th>Stage</th><th>Rev#</th><th>Size</th><th>Sent</th><th>Received</th><th>Status</th></tr></thead>
+            <thead><tr><th>Stage</th><th>Rev#</th><th>Size</th><th>Sent</th><th>Received</th><th>Status</th><th></th></tr></thead>
             <tbody>{style.samples.map(s => (
               <tr key={s.id}>
                 <td><span className="status-badge bg-blue-100 text-blue-700">{s.stage}</span></td>
@@ -91,6 +85,7 @@ export default function StyleDetailPage({ params }) {
                 <td>{s.dateSent ? new Date(s.dateSent).toLocaleDateString() : '—'}</td>
                 <td>{s.dateReceived ? new Date(s.dateReceived).toLocaleDateString() : '—'}</td>
                 <td><StatusBadge status={s.status} /></td>
+                <td><Link href={`/dashboard/samples/${s.id}`} className="text-blue-600 text-xs">Open →</Link></td>
               </tr>
             ))}</tbody>
           </table>}
@@ -98,10 +93,13 @@ export default function StyleDetailPage({ params }) {
 
       {/* Approvals */}
       <div className="card">
-        <h2 className="font-semibold mb-4">Approvals ({style.approvals?.length || 0})</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold">Approvals ({style.approvals?.length || 0})</h2>
+          <Link href={`/dashboard/approvals/new?styleId=${id}`} className="btn-primary text-xs">+ Add Approval</Link>
+        </div>
         {style.approvals?.length === 0 ? <p className="text-sm text-gray-400">No approvals yet</p> :
           <table className="table-base">
-            <thead><tr><th>Type</th><th>Submit#</th><th>Reference</th><th>Supplier</th><th>Submitted</th><th>Status</th></tr></thead>
+            <thead><tr><th>Type</th><th>Submit#</th><th>Reference</th><th>Supplier</th><th>Submitted</th><th>Status</th><th></th></tr></thead>
             <tbody>{style.approvals.map(a => (
               <tr key={a.id}>
                 <td><span className="status-badge bg-purple-100 text-purple-700">{a.type.replace(/_/g, ' ')}</span></td>
@@ -110,6 +108,7 @@ export default function StyleDetailPage({ params }) {
                 <td>{a.supplierName || '—'}</td>
                 <td>{a.submitDate ? new Date(a.submitDate).toLocaleDateString() : '—'}</td>
                 <td><StatusBadge status={a.status} /></td>
+                <td><Link href={`/dashboard/approvals/${a.id}`} className="text-blue-600 text-xs">Open →</Link></td>
               </tr>
             ))}</tbody>
           </table>}

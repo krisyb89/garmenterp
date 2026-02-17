@@ -21,21 +21,16 @@ export async function GET(request) {
     ];
   }
 
-  try {
-    const styles = await prisma.style.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        customer: { select: { name: true, code: true } },
-        _count: { select: { samples: true, bomItems: true, poLines: true } },
-      },
-    });
+  const styles = await prisma.style.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      customer: { select: { name: true, code: true } },
+      _count: { select: { samples: true, bomItems: true, poLines: true } },
+    },
+  });
 
-    return NextResponse.json({ styles });
-  } catch (error) {
-    console.error('Styles GET error:', error);
-    return NextResponse.json({ error: 'Failed to fetch styles' }, { status: 500 });
-  }
+  return NextResponse.json({ styles });
 }
 
 export async function POST(request) {
@@ -48,31 +43,12 @@ export async function POST(request) {
   }
 
   try {
-    const style = await prisma.style.create({
-      data: {
-        styleNo: body.styleNo,
-        customerId: body.customerId,
-        customerRef: body.customerRef,
-        description: body.description,
-        category: body.category,
-        season: body.season,
-        year: body.year,
-        collection: body.collection,
-        techPackUrl: body.techPackUrl,
-        imageUrl: body.imageUrl,
-        imageUrls: body.imageUrls || [],
-        construction: body.construction,
-        fitType: body.fitType,
-        washInstructions: body.washInstructions,
-        notes: body.notes,
-      },
-    });
+    const style = await prisma.style.create({ data: body });
     return NextResponse.json(style, { status: 201 });
   } catch (error) {
     if (error.code === 'P2002') {
       return NextResponse.json({ error: 'Style# already exists' }, { status: 400 });
     }
-    console.error('Style POST error:', error);
     return NextResponse.json({ error: 'Failed to create style' }, { status: 500 });
   }
 }
