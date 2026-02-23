@@ -48,6 +48,14 @@ next-env.d.ts
 garment-erp/
 garment-erp-updated/
 
+# Rollback snapshots and backup files
+_rollback_*/
+*.bak
+prisma/schema.prisma.backup-*
+
+# Script logs
+scripts/check-delivery.log
+
 # Deployment packages
 *.zip
 garment-erp-for-replit.zip

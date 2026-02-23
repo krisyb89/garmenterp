@@ -43,6 +43,7 @@ model User {
   // Phase 0 Permissions
   posCreated         PurchaseOrder[]    @relation("POCreatedBy")
   posLastModified    PurchaseOrder[]    @relation("POLastModifiedBy")
+  packagesCreated    Package[]          @relation("PackageCreatedBy")
 
   @@map("users")
 }
@@ -73,6 +74,7 @@ model Customer {
   purchaseOrders  PurchaseOrder[]
   invoices        CustomerInvoice[]
   styles          Style[]
+  packages        Package[]
 
   @@map("customers")
 }
@@ -91,8 +93,10 @@ model Style {
   season          String?  // SS25, FW25, etc.
   year            String?
   collection      String?
-  techPackUrl     String?  // File attachment
-  imageUrl        String?
+  techPackUrl     String?  // File attachment (legacy single file)
+  imageUrl        String?  // Legacy single image
+  imageUrls       Json?    // Array of image URLs ["url1","url2"]
+  attachments     Json?    // Array of {url,originalName,size}
   construction    String?  // Woven, Knit, Denim, etc.
   fitType         String?  // Slim, Regular, Relaxed, etc.
   washInstructions String?
@@ -147,9 +151,10 @@ enum SRSStatus {
   QUOTED
   CUSTOMER_CONFIRMED
   DEVELOPMENT_STARTED
+  SAMPLE_SENT
+  ORDER_RECEIVED
   ON_HOLD
   CANCELLED
-  ORDER_RECEIVED
 }
 
 model SRS {
@@ -172,7 +177,9 @@ model SRS {
   deadline        DateTime?
   createdById     String
   description     String?
-  techPackUrl     String?
+  techPackUrl     String?    // Legacy single file
+  imageUrls       Json?      // Array of image URLs ["url1","url2"]
+  attachments     Json?      // Array of {url,originalName,size}
   targetPrice     Decimal?
   targetPriceCurrency String @default("USD")
   estimatedQtyMin Int?
@@ -197,7 +204,8 @@ model SRS {
   customer        Customer  @relation(fields: [customerId], references: [id])
   style           Style?    @relation(fields: [styleId], references: [id])
   createdBy       User      @relation("SRSCreatedBy", fields: [createdById], references: [id])
-  costingSheet    CostingSheet?
+  costingSheets   CostingSheet[]
+  packageItems    PackageItem[]
 
   @@map("srs")
 }
@@ -208,8 +216,9 @@ model SRS {
 
 model CostingSheet {
   id                String   @id @default(uuid())
-  srsId             String   @unique
+  srsId             String
   revisionNo        Int      @default(1)
+  versionLabel      String?  // e.g. "Initial", "After negotiation"
 
   // ========================================================
   // Segmented costing (Excel-like)
@@ -340,6 +349,7 @@ model POLineItem {
   po              PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
   style           Style    @relation(fields: [styleId], references: [id])
   approvals       ApprovalRecord[]
+  wipCells        WIPCell[]
 
   @@map("po_line_items")
 }
@@ -562,13 +572,22 @@ model Sample {
 // ============================================================
 
 enum ApprovalType {
+  // Sample stages
+  PROTO
+  FIT
+  PP
+  TOP
+  GPT
+  SHIPMENT_SAMPLE
+  // Material / quality approvals
   LAB_DIP
   FABRIC
   TRIM
   PRINT_STRIKEOFF
   EMBROIDERY_STRIKEOFF
   WASH
-  FIT
+  // Free-text custom type
+  CUSTOM
 }
 
 enum ApprovalStatus {
@@ -1147,6 +1166,124 @@ model OrderCost {
   po              PurchaseOrder @relation(fields: [poId], references: [id])
 
   @@map("order_costs")
+}
+
+// ============================================================
+// PACKAGES & WIP APPROVALS
+// ============================================================
+
+enum PackageStatus {
+  DRAFT
+  SENT
+  RECEIVED  // Package physically delivered by carrier
+  COMPLETE  // All approval items have received a comment/outcome
+}
+
+enum PackageSection {
+  APPROVAL  // Section 1: linked to WIPCells via POLineItem
+  SRS       // Section 2: linked to SRS requests
+  MISC      // Section 3: ad-hoc, no status linkage
+}
+
+enum WIPSegment {
+  SAMPLES       // PP, TOP, FIT, PROTO, GPT
+  FABRICS       // Fabric quality approvals
+  COLOR_PRINTS  // Lab dip, print strikeoff, embroidery strikeoff
+  TRIMS         // Trim approvals
+}
+
+model Package {
+  id            String        @id @default(uuid())
+  customerId    String
+  courier       String?       // UPS, FEDEX, DHL, HAND_CARRY, OTHER
+  trackingNo    String?
+  dateSent      DateTime?
+  inHandDate    DateTime?
+  status        PackageStatus @default(DRAFT)
+  notes         String?
+  createdById   String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  createdBy     User          @relation("PackageCreatedBy", fields: [createdById], references: [id])
+  items         PackageItem[]
+
+  @@map("packages")
+}
+
+model PackageItem {
+  id             String         @id @default(uuid())
+  packageId      String
+  section        PackageSection
+  // Approval type (Section 1 & 2)
+  approvalType   ApprovalType?
+  // SRS link (Section 2 only)
+  srsId          String?
+  // Colorway / print being submitted (Section 1 & 2)
+  colorPrint     String?
+  // Free text description (Section 3; optional label for 1 & 2)
+  description    String?
+  // Outcome (Sections 1 & 2; MISC stays PENDING)
+  approvalStatus ApprovalStatus @default(PENDING)
+  comments       String?
+  sortOrder      Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  package        Package        @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  srs            SRS?           @relation(fields: [srsId], references: [id])
+  wipCells       PackageItemWIPCell[]
+
+  @@map("package_items")
+}
+
+// Junction: one PackageItem can update many WIPCells (same approval sent to multiple POs)
+model PackageItemWIPCell {
+  id            String      @id @default(uuid())
+  packageItemId String
+  wipCellId     String
+
+  packageItem   PackageItem @relation(fields: [packageItemId], references: [id], onDelete: Cascade)
+  wipCell       WIPCell     @relation(fields: [wipCellId], references: [id], onDelete: Cascade)
+
+  @@unique([packageItemId, wipCellId])
+  @@map("package_item_wip_cells")
+}
+
+// A single approval cell in the WIP grid: POLineItem × approvalType × label
+model WIPCell {
+  id            String         @id @default(uuid())
+  poLineItemId  String
+  segment       WIPSegment
+  approvalType  ApprovalType
+  label         String         // e.g. "Shell Fabric", "Main Button", "PP"
+  status        ApprovalStatus @default(PENDING)
+  sortOrder     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  poLineItem    POLineItem     @relation(fields: [poLineItemId], references: [id])
+  packageItems  PackageItemWIPCell[]
+  comments      WIPComment[]
+
+  @@unique([poLineItemId, approvalType, label])
+  @@map("wip_cells")
+}
+
+// Append-only comment history per WIP cell
+model WIPComment {
+  id             String         @id @default(uuid())
+  wipCellId      String
+  packageItemId  String?        // Which package item generated this comment
+  approvalStatus ApprovalStatus? // Status at the time this comment was written
+  text           String
+  createdById    String?
+  createdAt      DateTime       @default(now())
+
+  wipCell        WIPCell        @relation(fields: [wipCellId], references: [id], onDelete: Cascade)
+
+  @@map("wip_comments")
 }
 
 // ============================================================

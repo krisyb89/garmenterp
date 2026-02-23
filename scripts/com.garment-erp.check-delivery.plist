@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  macOS LaunchAgent: Garment ERP — Daily Delivery Check
+  Runs check-delivery.mjs every weekday at 8:45am (Beijing local time).
+
+  INSTALL (run once in Terminal):
+    chmod +x ~/Desktop/Garment\ ERP/scripts/check-delivery-runner.sh
+    cp ~/Desktop/Garment\ ERP/scripts/com.garment-erp.check-delivery.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.garment-erp.check-delivery.plist
+
+  UNINSTALL:
+    launchctl unload ~/Library/LaunchAgents/com.garment-erp.check-delivery.plist
+    rm ~/Library/LaunchAgents/com.garment-erp.check-delivery.plist
+
+  VIEW LOGS:
+    tail -f ~/Desktop/Garment\ ERP/scripts/check-delivery.log
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.garment-erp.check-delivery</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/kris/Desktop/Garment ERP/scripts/check-delivery-runner.sh</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>/Users/kris/Desktop/Garment ERP</string>
+
+  <!-- Run Mon–Fri at 08:45 local time -->
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict>
+      <key>Weekday</key><integer>1</integer>
+      <key>Hour</key><integer>8</integer>
+      <key>Minute</key><integer>45</integer>
+    </dict>
+    <dict>
+      <key>Weekday</key><integer>2</integer>
+      <key>Hour</key><integer>8</integer>
+      <key>Minute</key><integer>45</integer>
+    </dict>
+    <dict>
+      <key>Weekday</key><integer>3</integer>
+      <key>Hour</key><integer>8</integer>
+      <key>Minute</key><integer>45</integer>
+    </dict>
+    <dict>
+      <key>Weekday</key><integer>4</integer>
+      <key>Hour</key><integer>8</integer>
+      <key>Minute</key><integer>45</integer>
+    </dict>
+    <dict>
+      <key>Weekday</key><integer>5</integer>
+      <key>Hour</key><integer>8</integer>
+      <key>Minute</key><integer>45</integer>
+    </dict>
+  </array>
+
+  <!-- Append all output to a single log file -->
+  <key>StandardOutPath</key>
+  <string>/Users/kris/Desktop/Garment ERP/scripts/check-delivery.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/kris/Desktop/Garment ERP/scripts/check-delivery.log</string>
+
+  <!-- Run even if the trigger was missed (e.g. Mac was asleep) -->
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>

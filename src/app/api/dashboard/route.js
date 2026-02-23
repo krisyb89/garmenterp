@@ -8,6 +8,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
+    // All queries run in parallel — no sequential round trips
     const [
       customerCount,
       activeSRS,
@@ -17,6 +18,8 @@ export async function GET() {
       pendingApprovals,
       pendingShipments,
       overdueInvoices,
+      recentPOs,
+      recentSRS,
     ] = await Promise.all([
       prisma.customer.count({ where: { isActive: true } }),
       prisma.sRS.count({ where: { status: { notIn: ['CANCELLED', 'ON_HOLD', 'ORDER_RECEIVED'] } } }),
@@ -26,21 +29,23 @@ export async function GET() {
       prisma.approvalRecord.count({ where: { status: { in: ['PENDING', 'SUBMITTED'] } } }),
       prisma.shipment.count({ where: { status: { notIn: ['DELIVERED'] } } }),
       prisma.customerInvoice.count({ where: { status: 'OVERDUE' } }),
+      prisma.purchaseOrder.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true, poNo: true, status: true, totalQty: true,
+          customer: { select: { name: true } },
+        },
+      }),
+      prisma.sRS.findMany({
+        take: 5,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true, srsNo: true, styleNo: true, status: true,
+          customer: { select: { name: true } },
+        },
+      }),
     ]);
-
-    // Recent POs
-    const recentPOs = await prisma.purchaseOrder.findMany({
-      take: 5,
-      orderBy: { createdAt: 'desc' },
-      include: { customer: { select: { name: true, code: true } } },
-    });
-
-    // Recent SRS
-    const recentSRS = await prisma.sRS.findMany({
-      take: 5,
-      orderBy: { createdAt: 'desc' },
-      include: { customer: { select: { name: true, code: true } } },
-    });
 
     return NextResponse.json({
       stats: {

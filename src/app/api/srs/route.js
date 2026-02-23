@@ -26,16 +26,26 @@ export async function GET(request) {
       ];
     }
 
-    const srsList = await prisma.sRS.findMany({
+    const raw = await prisma.sRS.findMany({
       where,
       orderBy: { createdAt: 'desc' },
       include: {
         customer: { select: { name: true, code: true } },
         style: { select: { styleNo: true } },
         createdBy: { select: { name: true } },
-        costingSheet: { select: { id: true, sellingPrice: true, totalCostQuoted: true, actualQuotedPrice: true, quoteCurrency: true } },
+        costingSheets: {
+          orderBy: { revisionNo: 'desc' },
+          take: 1,
+          select: { id: true, sellingPrice: true, totalCostQuoted: true, actualQuotedPrice: true, quoteCurrency: true },
+        },
       },
     });
+
+    // Map costingSheets[0] → costingSheet for UI backward-compat; also expose imageUrls
+    const srsList = raw.map(s => ({
+      ...s,
+      costingSheet: s.costingSheets[0] || null,
+    }));
 
     return NextResponse.json({ srsList });
   } catch (error) {
@@ -71,6 +81,8 @@ export async function POST(request) {
         deadline: body.deadline ? new Date(body.deadline) : null,
         description: body.description,
         techPackUrl: body.techPackUrl,
+        imageUrls: body.imageUrls && body.imageUrls.length > 0 ? body.imageUrls : undefined,
+        attachments: body.attachments && body.attachments.length > 0 ? body.attachments : undefined,
         targetPrice: body.targetPrice,
         targetPriceCurrency: body.targetPriceCurrency || 'USD',
         estimatedQtyMin: body.estimatedQtyMin,

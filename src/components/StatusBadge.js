@@ -8,6 +8,7 @@ const statusColors = {
   QUOTED: 'bg-purple-100 text-purple-700',
   CUSTOMER_CONFIRMED: 'bg-green-100 text-green-700',
   DEVELOPMENT_STARTED: 'bg-teal-100 text-teal-700',
+  SAMPLE_SENT: 'bg-pink-100 text-pink-700',
   ORDER_RECEIVED: 'bg-green-100 text-green-700',
   ON_HOLD: 'bg-gray-100 text-gray-700',
   CANCELLED: 'bg-red-100 text-red-700',

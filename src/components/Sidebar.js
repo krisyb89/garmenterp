@@ -19,6 +19,7 @@ const navItems = [
       { href: '/dashboard/styles', label: 'Styles', icon: '👔' },
       { href: '/dashboard/samples', label: 'Samples', icon: '🧵' },
       { href: '/dashboard/approvals', label: 'Approvals', icon: '✅' },
+      { href: '/dashboard/packages', label: 'Packages', icon: '📫' },
     ],
   },
   {
@@ -31,6 +32,7 @@ const navItems = [
   {
     group: 'WIP',
     items: [
+      { href: '/dashboard/wip/approvals', label: 'Approval WIP', icon: '🎯' },
       { href: '/dashboard/wip/srs', label: 'SRS WIP', icon: '🧾' },
       { href: '/dashboard/wip/pos', label: 'PO WIP', icon: '📑' },
       { href: '/dashboard/wip/production', label: 'Production WIP', icon: '🟩' },

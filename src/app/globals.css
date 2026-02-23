@@ -41,13 +41,13 @@
     @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
   }
   .table-base {
-    @apply w-full text-sm text-left;
+    @apply w-full text-sm;
   }
   .table-base th {
-    @apply bg-gray-50 px-4 py-3 font-semibold text-gray-600 border-b;
+    @apply bg-gray-50 px-4 py-3 font-semibold text-gray-600 border-b text-center;
   }
   .table-base td {
-    @apply px-4 py-3 border-b border-gray-100;
+    @apply px-4 py-3 border-b border-gray-100 text-center align-middle;
   }
   .table-base tr:hover td {
     @apply bg-gray-50;

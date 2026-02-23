@@ -16,6 +16,20 @@ export default function StylesPage() {
   }, [search]);
 
   const columns = [
+    {
+      key: 'photo', label: '',
+      render: r => {
+        const url = Array.isArray(r.imageUrls) && r.imageUrls.length > 0 ? r.imageUrls[0] : null;
+        return (
+          <div className="w-11 h-11 rounded-lg overflow-hidden bg-gray-100 shadow-sm flex-shrink-0">
+            {url
+              ? <img src={url} alt="" className="w-full h-full object-contain" />
+              : <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg">📷</div>
+            }
+          </div>
+        );
+      }
+    },
     { key: 'styleNo', label: 'Style#', isLink: true },
     { key: 'customer', label: 'Customer', render: r => r.customer?.name },
     { key: 'category', label: 'Category' },

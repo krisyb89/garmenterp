@@ -3,12 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
+import ImageUploader from '@/components/ImageUploader';
+import FileUploader from '@/components/FileUploader';
 
 export default function NewStylePage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [imageUrls, setImageUrls] = useState([]);
+  const [attachments, setAttachments] = useState([]);
 
   useEffect(() => { fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || [])); }, []);
 
@@ -17,6 +21,9 @@ export default function NewStylePage() {
     setLoading(true); setError('');
     const fd = new FormData(e.target);
     const data = Object.fromEntries(fd);
+    // Attach uploaded files
+    data.imageUrls = imageUrls;
+    data.attachments = attachments;
     try {
       const res = await fetch('/api/styles', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
       const result = await res.json();
@@ -30,7 +37,17 @@ export default function NewStylePage() {
       <PageHeader title="New Style" />
       {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">{error}</div>}
       <form onSubmit={handleSubmit} className="card max-w-2xl space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+
+        {/* ── Style Images ── */}
+        <div className="pb-2">
+          <label className="label-field text-base font-semibold text-gray-700 mb-2 block">
+            📷 Style Photos
+          </label>
+          <p className="text-xs text-gray-400 mb-3">Upload design sketches, reference photos, or style images (max 10)</p>
+          <ImageUploader images={imageUrls} onChange={setImageUrls} maxImages={10} />
+        </div>
+
+        <div className="border-t pt-4 grid grid-cols-2 gap-4">
           <div><label className="label-field">Style# *</label><input name="styleNo" className="input-field" required /></div>
           <div><label className="label-field">Customer *</label>
             <select name="customerId" className="select-field" required>
@@ -66,7 +83,17 @@ export default function NewStylePage() {
         <div><label className="label-field">Description</label><textarea name="description" className="input-field" rows={2} /></div>
         <div><label className="label-field">Wash Instructions</label><textarea name="washInstructions" className="input-field" rows={2} /></div>
         <div><label className="label-field">Notes</label><textarea name="notes" className="input-field" rows={2} /></div>
-        <div className="flex gap-3 pt-2">
+
+        {/* ── Attachments ── */}
+        <div className="border-t pt-4">
+          <label className="label-field text-base font-semibold text-gray-700 mb-2 block">
+            📎 Attachments
+          </label>
+          <p className="text-xs text-gray-400 mb-3">Attach tech packs, spec sheets, PDFs, or other documents</p>
+          <FileUploader files={attachments} onChange={setAttachments} maxFiles={20} />
+        </div>
+
+        <div className="flex gap-3 pt-2 border-t">
           <button type="submit" className="btn-primary" disabled={loading}>{loading ? 'Creating...' : 'Create Style'}</button>
           <button type="button" className="btn-secondary" onClick={() => router.back()}>Cancel</button>
         </div>

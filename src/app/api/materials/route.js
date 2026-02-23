@@ -43,13 +43,30 @@ export async function POST(request) {
   }
 
   try {
+    // Strip supplier fields before creating material
+    const { supplierId, supplierPrice, supplierCurrency, ...materialData } = body;
+
     // Compute pricePerMeter for FABRIC when possible
     const material = await prisma.material.create({
       data: {
-        ...body,
+        ...materialData,
         pricePerMeter: computePricePerMeter(body),
       },
     });
+
+    // Link to supplier via MaterialSupplier junction table
+    if (supplierId) {
+      await prisma.materialSupplier.create({
+        data: {
+          materialId: material.id,
+          supplierId,
+          unitPrice: supplierPrice ?? materialData.pricePerUnit ?? 0,
+          currency: supplierCurrency || 'CNY',
+          isPreferred: true,
+        },
+      });
+    }
+
     return NextResponse.json(material, { status: 201 });
   } catch (error) {
     if (error.code === 'P2002') return NextResponse.json({ error: 'Code already exists' }, { status: 400 });

@@ -4,12 +4,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PageHeader from '@/components/PageHeader';
+import ImageUploader from '@/components/ImageUploader';
+import FileUploader from '@/components/FileUploader';
 
 export default function NewSRSPage() {
   const router = useRouter();
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [imageUrls, setImageUrls] = useState([]);
+  const [attachments, setAttachments] = useState([]);
 
   useEffect(() => {
     fetch('/api/customers').then(r => r.json()).then(d => setCustomers(d.customers || []));
@@ -21,11 +25,13 @@ export default function NewSRSPage() {
     setError('');
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-    // Dates
     data.deadline = data.deadline ? new Date(data.deadline).toISOString() : null;
     data.targetPrice = data.targetPrice ? parseFloat(data.targetPrice) : null;
     data.estimatedQtyMin = data.estimatedQtyMin ? parseInt(data.estimatedQtyMin) : null;
     data.estimatedQtyMax = data.estimatedQtyMax ? parseInt(data.estimatedQtyMax) : null;
+    // Attach uploaded files
+    data.imageUrls = imageUrls;
+    data.attachments = attachments;
 
     try {
       const res = await fetch('/api/srs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
@@ -41,7 +47,17 @@ export default function NewSRSPage() {
       {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">{error}</div>}
 
       <form onSubmit={handleSubmit} className="card max-w-2xl space-y-4">
-        <div>
+
+        {/* ── Style Images ── */}
+        <div className="pb-2">
+          <label className="label-field text-base font-semibold text-gray-700 mb-2 block">
+            📷 Style Photos
+          </label>
+          <p className="text-xs text-gray-400 mb-3">Upload design sketches, reference photos, or style images (max 10)</p>
+          <ImageUploader images={imageUrls} onChange={setImageUrls} maxImages={10} />
+        </div>
+
+        <div className="border-t pt-4">
           <label className="label-field">Customer *</label>
           <select name="customerId" className="select-field" required>
             <option value="">Select customer...</option>
@@ -127,7 +143,16 @@ export default function NewSRSPage() {
           <textarea name="notes" className="input-field" rows={2} />
         </div>
 
-        <div className="flex gap-3 pt-2">
+        {/* ── Attachments ── */}
+        <div className="border-t pt-4">
+          <label className="label-field text-base font-semibold text-gray-700 mb-2 block">
+            📎 Attachments
+          </label>
+          <p className="text-xs text-gray-400 mb-3">Attach tech packs, spec sheets, PDFs, or other documents</p>
+          <FileUploader files={attachments} onChange={setAttachments} maxFiles={20} />
+        </div>
+
+        <div className="flex gap-3 pt-2 border-t">
           <button type="submit" className="btn-primary" disabled={loading}>{loading ? 'Creating...' : 'Create SRS'}</button>
           <button type="button" className="btn-secondary" onClick={() => router.back()}>Cancel</button>
         </div>

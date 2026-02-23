@@ -25,7 +25,11 @@ export default function ApprovalsPage() {
 
   return (
     <div>
-      <PageHeader title="Approvals Dashboard" subtitle={`${pending} pending approvals`} />
+      <PageHeader 
+        title="Approvals Dashboard" 
+        subtitle={`${pending} pending approvals`}
+        action={{ href: '/dashboard/approvals/new', label: '+ New Approval' }}
+      />
       <div className="flex gap-4 mb-4 flex-wrap">
         <div className="flex gap-1 items-center">
           <span className="text-xs text-gray-500 mr-1">Type:</span>

@@ -3,32 +3,9 @@ import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { normalizeLines, sumLinesLocal, sumLinesQuoted, computeSellingPrice } from '@/lib/costing';
 
-export async function GET(request, { params }) {
-  const user = await getCurrentUser();
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const { srsId } = await params;
-  const costing = await prisma.costingSheet.findUnique({ where: { srsId } });
-  if (!costing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-
-  const materials = await prisma.material.findMany({
-    where: { isActive: true },
-    select: { id: true, code: true, name: true, pricePerMeter: true, vatPercent: true, category: { select: { name: true } }, content: true, widthMeters: true, gsm: true },
-    orderBy: { code: 'asc' },
-  });
-
-  return NextResponse.json({ costing, materials });
-}
-
-export async function PUT(request, { params }) {
-  const user = await getCurrentUser();
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const { srsId } = await params;
-  const body = await request.json();
-
+// Build the normalized save payload from a request body
+function buildCostingData(body) {
   const defaultRate = body.exchangeRate != null ? Number(body.exchangeRate) : 1;
-
   const segments = ['fabricDetails', 'trimDetails', 'laborDetails', 'packingDetails', 'misDetails', 'freightDetails', 'dutyDetails'];
   const segmentKeys = ['fabricCost', 'trimCost', 'laborCost', 'packingCost', 'misCost', 'freightCost', 'dutyCost'];
 
@@ -55,7 +32,7 @@ export async function PUT(request, { params }) {
   const sellingPrice = computeSellingPrice(totalCostQuoted, agentCommPercent, targetMarginPercent);
   const actualQuotedPrice = body.actualQuotedPrice != null && body.actualQuotedPrice !== '' ? Number(body.actualQuotedPrice) : null;
 
-  const data = {
+  return {
     ...normalized,
     ...segCosts,
     totalCostLocal,
@@ -70,13 +47,48 @@ export async function PUT(request, { params }) {
     exchangeRate: defaultRate,
     pricingBasis: body.pricingBasis || 'FOB',
     notes: body.notes || null,
+    versionLabel: body.versionLabel || null,
   };
+}
 
-  const updated = await prisma.costingSheet.upsert({
+export async function GET(request, { params }) {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  const { srsId } = await params;
+
+  // Return ALL versions ordered newest-first (full data — versions are compact enough)
+  const versions = await prisma.costingSheet.findMany({
     where: { srsId },
-    update: data,
-    create: { srsId, ...data },
+    orderBy: { revisionNo: 'desc' },
   });
 
-  return NextResponse.json(updated);
+  if (versions.length === 0) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+
+  return NextResponse.json({ costing: versions[0], versions });
+}
+
+export async function PUT(request, { params }) {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+  const { srsId } = await params;
+  const body = await request.json();
+  const data = buildCostingData(body);
+
+  // If a specific version ID is provided, save that version; otherwise upsert by srsId (latest)
+  if (body.costingId) {
+    const updated = await prisma.costingSheet.update({ where: { id: body.costingId }, data });
+    return NextResponse.json(updated);
+  }
+
+  // Legacy upsert path (creates v1 if none exists)
+  const existing = await prisma.costingSheet.findFirst({ where: { srsId }, orderBy: { revisionNo: 'desc' } });
+  if (existing) {
+    const updated = await prisma.costingSheet.update({ where: { id: existing.id }, data });
+    return NextResponse.json(updated);
+  }
+
+  const created = await prisma.costingSheet.create({ data: { srsId, revisionNo: 1, ...data } });
+  return NextResponse.json(created);
 }

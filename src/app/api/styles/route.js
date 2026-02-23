@@ -43,7 +43,24 @@ export async function POST(request) {
   }
 
   try {
-    const style = await prisma.style.create({ data: body });
+    const style = await prisma.style.create({
+      data: {
+        styleNo: body.styleNo,
+        customerId: body.customerId,
+        customerRef: body.customerRef || null,
+        category: body.category || null,
+        season: body.season || null,
+        construction: body.construction || null,
+        fitType: body.fitType || null,
+        description: body.description || null,
+        washInstructions: body.washInstructions || null,
+        notes: body.notes || null,
+        imageUrl: body.imageUrl || null,
+        techPackUrl: body.techPackUrl || null,
+        imageUrls: body.imageUrls && body.imageUrls.length > 0 ? body.imageUrls : undefined,
+        attachments: body.attachments && body.attachments.length > 0 ? body.attachments : undefined,
+      },
+    });
     return NextResponse.json(style, { status: 201 });
   } catch (error) {
     if (error.code === 'P2002') {

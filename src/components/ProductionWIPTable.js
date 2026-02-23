@@ -495,7 +495,7 @@ export default function ProductionWIPTable({ rows, columns = [], onRefresh }) {
                           onRefresh={onRefresh}
                         />
                       );
-                    ))}
+                    })}
                   </tr>
                 ))
               )}

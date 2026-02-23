@@ -12,11 +12,11 @@ export async function GET(request, { params }) {
     where: { id },
     include: {
       customer: true,
-      bomItems: { include: { material: true } },
+      bomItems: { orderBy: { createdAt: 'asc' }, include: { material: { include: { category: true } } } },
       samples: { orderBy: { createdAt: 'desc' } },
       approvals: { orderBy: { createdAt: 'desc' } },
       poLines: { include: { po: { select: { poNo: true, status: true } } } },
-      srs: { include: { costingSheet: true } },
+      srsRequests: { include: { costingSheets: { orderBy: { revisionNo: 'desc' }, take: 1 } } },
     },
   });
 
