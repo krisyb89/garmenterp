@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Prevent "Cannot find module './vendor-chunks/xxx.js'" errors in dev mode.
+  // Prevent Cannot find module ./vendor-chunks/xxx.js errors in dev mode.
   // Next.js 14.2.x has a bug where server-side vendor chunks go stale during HMR.
   // Disabling server chunk splitting in dev avoids this entirely.
   webpack: (config, { isServer, dev }) => {
@@ -18,7 +18,21 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: [
-          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+          { key: 'Cache-Control', value: 'no-store, max-age=0, must-revalidate' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0, must-revalidate' },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
         ],
       },
     ];

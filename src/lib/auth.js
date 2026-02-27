@@ -1,9 +1,14 @@
-// src/lib/auth.js
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'garment-erp-secret-change-me';
+// JWT 密钥 - 必须从环境变量获取，没有默认值
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
+
 const TOKEN_EXPIRY = '7d';
 
 export async function hashPassword(password) {

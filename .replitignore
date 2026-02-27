@@ -1,8 +1,0 @@
-# Replit ignore - don't sync these large folders
-node_modules/
-.next/
-.git/
-*.log
-.DS_Store
-.env.local
-.vercel
