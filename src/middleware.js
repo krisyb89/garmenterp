@@ -1,11 +1,4 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from './lib/auth';
-
-// 受保护的路由路径
-const PROTECTED_ROUTES = [
-  '/dashboard',
-  '/api/protected',
-];
 
 // 公开路径（不需要认证）
 const PUBLIC_PATHS = [
@@ -14,43 +7,40 @@ const PUBLIC_PATHS = [
   '/api/auth/logout',
   '/_next',
   '/favicon.ico',
+  '/logo',
+  '/uploads',
 ];
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // 检查是否是公开路径
+  // 静态资源和公开路径不拦截
   if (PUBLIC_PATHS.some(path => pathname.startsWith(path))) {
     return NextResponse.next();
   }
 
-  // 检查是否是受保护路由
-  const isProtectedRoute = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
-  if (!isProtectedRoute) {
-    return NextResponse.next();
-  }
-
-  // 获取 token
   const token = request.cookies.get('auth-token')?.value;
 
-  // 如果没有 token，重定向到登录页
+  // 没有 token → 重定向到登录
   if (!token) {
-    const loginUrl = new URL('/login', request.url);
-    return NextResponse.redirect(loginUrl);
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // 验证 token
-  const payload = verifyToken(token);
-  if (!payload) {
-    const loginUrl = new URL('/login', request.url);
-    return NextResponse.redirect(loginUrl);
+  // 有 token → 简单验证 JWT 格式（三段式）
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };
