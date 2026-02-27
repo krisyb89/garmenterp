@@ -75,6 +75,11 @@ export async function DELETE(request, { params }) {
     const existing = await prisma.productionOrder.findUnique({ where: { id } });
     if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
+    // Delete associated QC inspections first (cascade delete)
+    await prisma.qCInspection.deleteMany({
+      where: { prodOrderId: id }
+    });
+    
     // Delete the order
     await prisma.productionOrder.delete({ where: { id } });
     

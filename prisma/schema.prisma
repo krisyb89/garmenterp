@@ -112,6 +112,7 @@ model Style {
   // Relations
   customer        Customer @relation(fields: [customerId], references: [id])
   srsRequests     SRS[]
+  costingSheets   CostingSheet[]
   bomItems        BOMItem[]
   poLines         POLineItem[]
   approvals       ApprovalRecord[]
@@ -219,7 +220,8 @@ model SRS {
 
 model CostingSheet {
   id                String   @id @default(uuid())
-  srsId             String
+  srsId             String?
+  styleId           String?
   revisionNo        Int      @default(1)
   versionLabel      String?  // e.g. "Initial", "After negotiation"
 
@@ -264,7 +266,8 @@ model CostingSheet {
   updatedAt         DateTime @updatedAt
 
   // Relations
-  srs               SRS      @relation(fields: [srsId], references: [id])
+  srs               SRS?     @relation(fields: [srsId], references: [id])
+  style             Style?   @relation(fields: [styleId], references: [id])
 
   @@map("costing_sheets")
 }
