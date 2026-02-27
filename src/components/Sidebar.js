@@ -83,7 +83,7 @@ export default function Sidebar({ user, onClose }) {
     },
   ];
 
-  const isActive = (href) => pathname === href || pathname?.startsWith(href + '/');
+  const isActive = (href) => pathname === href || (href !== '/dashboard' && pathname?.startsWith(href + '/'));
 
   return (
     <aside className="w-64 bg-slate-900 text-white h-screen flex flex-col fixed left-0 top-0">
