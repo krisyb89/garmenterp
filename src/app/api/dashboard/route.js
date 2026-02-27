@@ -23,7 +23,7 @@ export async function GET() {
       prisma.sRS.count({ where: { status: { notIn: ['CANCELLED', 'ON_HOLD', 'ORDER_RECEIVED'] } } }),
       prisma.purchaseOrder.count({ where: { status: { notIn: ['CLOSED', 'CANCELLED'] } } }),
       prisma.productionOrder.count({ where: { status: { notIn: ['COMPLETED', 'CANCELLED'] } } }),
-      prisma.approvalRecord.count({ where: { status: { in: ['PENDING', 'SUBMITTED'] } } }),
+      prisma.wIPCell.count({ where: { status: { in: ['PENDING', 'SUBMITTED'] } } }),
       prisma.shipment.count({ where: { status: { notIn: ['DELIVERED'] } } }),
       prisma.customerInvoice.count({ where: { status: 'OVERDUE' } }),
       prisma.purchaseOrder.findMany({

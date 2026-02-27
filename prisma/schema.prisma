@@ -114,7 +114,6 @@ model Style {
   srsRequests     SRS[]
   bomItems        BOMItem[]
   poLines         POLineItem[]
-  approvals       ApprovalRecord[]
 
   @@map("styles")
 }
@@ -357,7 +356,6 @@ model POLineItem {
   // Relations
   po              PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
   style           Style    @relation(fields: [styleId], references: [id])
-  approvals       ApprovalRecord[]
   wipCells        WIPCell[]
 
   // Reverse relations for P&L color-level tracking
@@ -471,7 +469,6 @@ model Material {
   suppliers       MaterialSupplier[]
   bomItems        BOMItem[]
   inventoryItems  InventoryItem[]
-  approvals       ApprovalRecord[]
   supplierPOLines SupplierPOLine[]
 
   @@map("materials")
@@ -498,7 +495,6 @@ model WIPColumn {
   groupName String?  // e.g., "Samples", "Approvals"
   // For APPROVAL columns
   approvalType ApprovalType?
-  approvalSlot ApprovalSlot?
   dataType  String   @default("text") // text, number, date, select
   options   Json?    // for select: ["A","B"]
   sortOrder Int      @default(0)
@@ -565,45 +561,6 @@ enum ApprovalStatus {
 
 // Optional slot/bucket for approvals that have multiple tracks per PO line
 // (e.g., self vs contrast fabric, trim 1 vs trim 2)
-enum ApprovalSlot {
-  SELF
-  CONTRAST
-  TRIM_1
-  TRIM_2
-}
-
-model ApprovalRecord {
-  id              String         @id @default(uuid())
-  styleId         String
-  // When set, this approval is scoped to a specific PO line item (recommended for Production WIP)
-  poLineItemId    String?
-  materialId      String?
-  type            ApprovalType
-  // Optional bucket for Fabric/Trim approvals
-  slot            ApprovalSlot?
-  reference       String?        // Pantone ref, customer swatch ref, etc.
-  supplierName    String?
-  submissionNo    Int            @default(1)
-  submitDate      DateTime?
-  approvalDate    DateTime?
-  status          ApprovalStatus @default(PENDING)
-  customerComments String?
-  imageUrls       Json?
-  notes           String?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-
-  // Relations
-  style           Style          @relation(fields: [styleId], references: [id])
-  poLineItem      POLineItem?    @relation(fields: [poLineItemId], references: [id])
-  material        Material?      @relation(fields: [materialId], references: [id])
-
-  @@index([poLineItemId, type, slot, materialId])
-  // Prevent duplicate submission numbers for the same approval cell
-  @@unique([poLineItemId, type, slot, materialId, submissionNo], name: "unique_po_line_approval_submission")
-
-  @@map("approval_records")
-}
 
 // ============================================================
 // SUPPLIER PO (MATERIAL PROCUREMENT)
@@ -1332,6 +1289,7 @@ model WIPCell {
   sortOrder     Int            @default(0)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  imageUrls     Json?          // Array of image URLs for approval documentation
 
   poLineItem    POLineItem     @relation(fields: [poLineItemId], references: [id])
   packageItems  PackageItemWIPCell[]

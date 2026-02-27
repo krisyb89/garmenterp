@@ -23,7 +23,6 @@ export default function Sidebar({ user, onClose }) {
         { href: '/dashboard/customers', label: t('nav.customers') || 'Customers', icon: '🏢' },
         { href: '/dashboard/srs', label: t('nav.srs') || 'SRS', icon: '📋' },
         { href: '/dashboard/styles', label: t('nav.styles') || 'Styles', icon: '👔' },
-        { href: '/dashboard/approvals', label: t('nav.approvals') || 'Approvals', icon: '✅' },
         { href: '/dashboard/packages', label: t('nav.packages') || 'Packages', icon: '📫' },
       ],
     },
@@ -37,7 +36,7 @@ export default function Sidebar({ user, onClose }) {
     {
       group: t('nav.wip') || 'WIP',
       items: [
-        { href: '/dashboard/wip/approvals', label: t('nav.wipApprovals') || 'Approval WIP', icon: '🎯' },
+        { href: '/dashboard/wip/approvals', label: t('nav.wipApprovals') || 'Approvals', icon: '✅' },
         { href: '/dashboard/wip/srs', label: t('nav.wipSRS') || 'SRS WIP', icon: '🧾' },
       ],
     },

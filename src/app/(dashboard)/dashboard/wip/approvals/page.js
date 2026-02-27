@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import PageHeader from '@/components/PageHeader';
+import ImageUploader from '@/components/ImageUploader';
 
 // ── Segment / column definitions ─────────────────────────────────────────────
 
@@ -543,6 +544,7 @@ function CellModal({ cell, lineItem, onClose, onCellUpdated, onDeleted }) {
   const [saving,   setSaving]   = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [localComments, setLocalComments] = useState(cell.comments || []);
+  const [imageUrls, setImageUrls] = useState(cell.imageUrls || []);
 
   const po    = lineItem.po;
   const style = lineItem.style;

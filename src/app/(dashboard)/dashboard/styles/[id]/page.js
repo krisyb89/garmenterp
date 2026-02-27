@@ -401,24 +401,6 @@ export default function StyleDetailPage() {
         </div>
       </div>
 
-      {/* Approvals */}
-      <div className="card">
-        <h2 className="font-semibold mb-4">Approvals ({style.approvals?.length || 0})</h2>
-        {!style.approvals?.length ? <p className="text-sm text-gray-400">No approvals yet</p> :
-          <table className="table-base">
-            <thead><tr><th>Type</th><th>Submit#</th><th>Reference</th><th>Supplier</th><th>Submitted</th><th>Status</th></tr></thead>
-            <tbody>{style.approvals.map(a => (
-              <tr key={a.id}>
-                <td><span className="status-badge bg-purple-100 text-purple-700">{a.type.replace(/_/g, ' ')}</span></td>
-                <td>#{a.submissionNo}</td>
-                <td>{a.reference || '—'}</td>
-                <td>{a.supplierName || '—'}</td>
-                <td>{a.submitDate ? new Date(a.submitDate).toLocaleDateString() : '—'}</td>
-                <td><StatusBadge status={a.status} /></td>
-              </tr>
-            ))}</tbody>
-          </table>}
-      </div>
     </div>
   );
 }
