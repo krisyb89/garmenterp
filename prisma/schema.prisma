@@ -1,0 +1,1399 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// USER & AUTH
+// ============================================================
+
+enum UserRole {
+  ADMIN
+  MERCHANDISER
+  PRODUCTION_MANAGER
+  SOURCING_BUYER
+  QC_MANAGER
+  FINANCE
+  WAREHOUSE
+  SHIPPING
+  MANAGEMENT
+  PACKING
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String
+  name          String
+  role          UserRole @default(MERCHANDISER)
+  isActive      Boolean  @default(true)
+  phone         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  srsCreated         SRS[]              @relation("SRSCreatedBy")
+  inspections        QCInspection[]     @relation("InspectionBy")
+  activityLogs       ActivityLog[]
+  // Phase 0 Permissions
+  posCreated         PurchaseOrder[]    @relation("POCreatedBy")
+  posLastModified    PurchaseOrder[]    @relation("POLastModifiedBy")
+  packagesCreated    Package[]          @relation("PackageCreatedBy")
+
+  @@map("users")
+}
+
+// ============================================================
+// CUSTOMER
+// ============================================================
+
+model Customer {
+  id              String   @id @default(uuid())
+  name            String
+  code            String   @unique // e.g., "NK" for Nike
+  contactPerson   String?
+  email           String?
+  phone           String?
+  address         String?
+  country         String?
+  currency        String   @default("USD") // Invoicing currency
+  paymentTermDays Int      @default(60) // Net 60, Net 90, etc.
+  paymentTermBasis String  @default("ROG") // ROG, BL_DATE, INVOICE_DATE
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  srsList         SRS[]
+  purchaseOrders  PurchaseOrder[]
+  invoices        CustomerInvoice[]
+  styles          Style[]
+  packages        Package[]
+
+  @@map("customers")
+}
+
+// ============================================================
+// STYLE MASTER
+// ============================================================
+
+model Style {
+  id              String   @id @default(uuid())
+  styleNo         String   @unique
+  customerId      String
+  customerRef     String?  // Customer's own style reference
+  description     String?
+  category        String?  // Tops, Bottoms, Outerwear, etc.
+  season          String?  // SS25, FW25, etc.
+  year            String?
+  collection      String?
+  techPackUrl     String?  // File attachment (legacy single file)
+  imageUrl        String?  // Legacy single image
+  imageUrls       Json?    // Array of image URLs ["url1","url2"]
+  attachments     Json?    // Array of {url,originalName,size}
+  construction    String?  // Woven, Knit, Denim, etc.
+  fitType         String?  // Slim, Regular, Relaxed, etc.
+  washInstructions String?
+  notes           String?
+  // Customs / Compliance
+  cnHsCode                   String?  // China HS Code e.g. 6109909050
+  usHsCode                   String?  // US HTS Code e.g. 6109.10.0012
+  customsDeclarationElements String?  @db.Text // 海关申报要素 pipe-separated string
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  customer        Customer @relation(fields: [customerId], references: [id])
+  srsRequests     SRS[]
+  bomItems        BOMItem[]
+  poLines         POLineItem[]
+  approvals       ApprovalRecord[]
+
+  @@map("styles")
+}
+
+// ============================================================
+// BILL OF MATERIALS (BOM)
+// ============================================================
+
+model BOMItem {
+  id              String   @id @default(uuid())
+  styleId         String
+  materialId      String
+  description     String?
+  placement       String?  // e.g., "Body fabric", "Collar trim", "Main label"
+  consumptionQty  Decimal  // Per garment unit
+  consumptionUnit String   // YDS, MTR, PCS, GROSS, etc.
+  wastagePercent  Decimal  @default(3) // Default 3% wastage
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  style           Style    @relation(fields: [styleId], references: [id])
+  material        Material @relation(fields: [materialId], references: [id])
+
+  @@map("bom_items")
+}
+
+// ============================================================
+// SRS (DEVELOPMENT REQUEST)
+// ============================================================
+
+enum SRSStatus {
+  RECEIVED
+  UNDER_REVIEW
+  COSTING_IN_PROGRESS
+  QUOTED
+  CUSTOMER_CONFIRMED
+  DEVELOPMENT_STARTED
+  SAMPLE_SENT
+  ORDER_RECEIVED
+  ON_HOLD
+  CANCELLED
+}
+
+model SRS {
+  id              String    @id @default(uuid())
+  srsNo           String    @unique
+  customerId      String
+  // Style master link (optional). Multiple SRS may reference the same Style.
+  styleId         String?
+
+  // IMPORTANT: Style number on SRS can be duplicated across different requests.
+  styleNo         String    @default("")
+
+  // Optional brand under the same customer
+  brand           String?
+
+  // Color / print / wash description
+  colorPrint      String?
+
+  // Request deadline (internal target)
+  deadline        DateTime?
+  createdById     String
+  description     String?
+  techPackUrl     String?    // Legacy single file
+  imageUrls       Json?      // Array of image URLs ["url1","url2"]
+  attachments     Json?      // Array of {url,originalName,size}
+  targetPrice     Decimal?
+  targetPriceCurrency String @default("USD")
+  estimatedQtyMin Int?
+  estimatedQtyMax Int?
+  deliveryWindow  String?   // e.g., "March 2025"
+  targetMarkets   String?   // e.g., "US, EU"
+  fabricSpecs     String?
+  trimSpecs       String?
+  status          SRSStatus @default(RECEIVED)
+  revisionNo      Int       @default(1)
+  quotedPrice     Decimal?
+  quotedDate      DateTime?
+  confirmedDate   DateTime?
+  notes           String?
+
+  // Excel-like WIP customizable columns (key-value)
+  wipData         Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  style           Style?    @relation(fields: [styleId], references: [id])
+  createdBy       User      @relation("SRSCreatedBy", fields: [createdById], references: [id])
+  costingSheets   CostingSheet[]
+  packageItems    PackageItem[]
+
+  @@map("srs")
+}
+
+// ============================================================
+// COSTING SHEET
+// ============================================================
+
+model CostingSheet {
+  id                String   @id @default(uuid())
+  srsId             String
+  revisionNo        Int      @default(1)
+  versionLabel      String?  // e.g. "Initial", "After negotiation"
+
+  // ========================================================
+  // Segmented costing (Excel-like)
+  // Each segment stores an array of line items in JSON.
+  // Line schema: { materialId?, name, unitPriceLocal?, consumption, vatRefund, vatPercent, exchangeRate, costLocal, costQuoted }
+  // ========================================================
+
+  fabricDetails     Json?
+  trimDetails       Json?
+  laborDetails      Json?
+  packingDetails    Json?
+  misDetails        Json?
+  freightDetails    Json?
+  dutyDetails       Json?
+
+  // Totals by segment in quoted currency (computed and persisted)
+  fabricCost        Decimal  @default(0)
+  trimCost          Decimal  @default(0)
+  laborCost         Decimal  @default(0)
+  packingCost       Decimal  @default(0)
+  misCost           Decimal  @default(0)
+  freightCost       Decimal  @default(0)
+  dutyCost          Decimal  @default(0)
+
+  // Totals
+  totalCostLocal    Decimal  @default(0)
+  totalCostQuoted   Decimal  @default(0)
+  agentCommPercent  Decimal  @default(0)
+  agentCommAmount   Decimal  @default(0)
+  targetMarginPercent Decimal @default(0)
+  sellingPrice      Decimal  @default(0)
+  actualQuotedPrice Decimal?
+  pricingBasis      String   @default("FOB")
+
+  localCurrency     String   @default("CNY")
+  quoteCurrency     String   @default("USD")
+  exchangeRate      Decimal  @default(1)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  srs               SRS      @relation(fields: [srsId], references: [id])
+
+  @@map("costing_sheets")
+}
+
+// ============================================================
+// PURCHASE ORDER (FROM CUSTOMER)
+// ============================================================
+
+enum POStatus {
+  RECEIVED
+  CONFIRMED
+  IN_PRODUCTION
+  PARTIALLY_SHIPPED
+  FULLY_SHIPPED
+  INVOICED
+  CLOSED
+  CANCELLED
+}
+
+model PurchaseOrder {
+  id              String    @id @default(uuid())
+  poNo            String    @unique // Customer PO number
+  customerId      String
+  store           String?
+  brand           String?
+  orderDate       DateTime
+  revisionNo      Int       @default(0)
+  shipByDate      DateTime?
+  cancelDate      DateTime?
+  shippingTerms   String    @default("FOB") // FOB, CIF, DDP, EXW
+  portOfLoading   String?
+  portOfDischarge String?
+  currency        String    @default("USD")
+  exchangeRate    Decimal   @default(1)    // Conversion rate: 1 PO currency = X CNY
+  status          POStatus  @default(RECEIVED)
+  totalQty        Int       @default(0) // Auto-calculated
+  totalAmount     Decimal   @default(0) // Auto-calculated
+  ihDate          DateTime?
+  specialInstructions String?
+  notes           String?
+
+  // Excel-like WIP customizable columns (key-value)
+  wipData         Json?
+
+  // Phase 0 Permissions: Track who created/modified
+  createdByUserId String?
+  lastModifiedByUserId String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  createdBy       User?     @relation("POCreatedBy", fields: [createdByUserId], references: [id])
+  lastModifiedBy  User?     @relation("POLastModifiedBy", fields: [lastModifiedByUserId], references: [id])
+  lineItems       POLineItem[]
+  productionOrders ProductionOrder[]
+  supplierPOs     SupplierPO[]
+  packingLists    PackingList[]
+  shipments       Shipment[]
+  invoices        CustomerInvoice[]
+  invoiceLines    InvoiceLineItem[]
+  orderCosts      OrderCost[]
+
+  @@map("purchase_orders")
+}
+
+model POLineItem {
+  id              String   @id @default(uuid())
+  poId            String
+  styleId         String
+  color           String
+  colorCode       String?
+  unitPrice       Decimal
+  
+  // Size breakdown (flexible JSON for any size scale)
+  sizeBreakdown   Json     // e.g., {"XS": 100, "S": 200, "M": 300, "L": 200, "XL": 100}
+  totalQty        Int      // Sum of all sizes
+  lineTotal       Decimal  // totalQty * unitPrice
+
+  // Shipping Orders — DC-level splits of this line item
+  // Each element: { soNo, dc, address?, sizeBreakdown: { [size]: qty } }
+  shippingOrders  Json?
+
+  deliveryDate    DateTime?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  po              PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  style           Style    @relation(fields: [styleId], references: [id])
+  approvals       ApprovalRecord[]
+  wipCells        WIPCell[]
+
+  // Reverse relations for P&L color-level tracking
+  orderCosts      OrderCost[]
+  supplierPOLines SupplierPOLine[]
+  cartons         Carton[]
+  invoiceLines    InvoiceLineItem[]
+
+  @@map("po_line_items")
+}
+
+// ============================================================
+// SUPPLIER & MATERIAL
+// ============================================================
+
+enum SupplierType {
+  FABRIC_MILL
+  TRIM_SUPPLIER
+  CMT_FACTORY
+  WASHING_PLANT
+  PRINT_EMBROIDERY
+  PACKAGING
+  OTHER
+}
+
+model Supplier {
+  id              String       @id @default(uuid())
+  name            String
+  code            String       @unique
+  type            SupplierType
+  contactPerson   String?
+  email           String?
+  phone           String?
+  address         String?
+  country         String?
+  currency        String       @default("CNY")
+  paymentTerms    String?      // e.g., "30% deposit, 70% before shipment"
+  leadTimeDays    Int?
+  bankDetails     String?
+  complianceStatus String?     // Audited, Pending, Expired
+  auditExpiry     DateTime?
+  rating          Decimal?     // 1-5
+  notes           String?
+  isActive        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  materials       MaterialSupplier[]
+  supplierPOs     SupplierPO[]
+  factories       Factory[]
+
+  @@map("suppliers")
+}
+
+// Material category is user-extendable (default: FABRIC, TRIM, PACKING)
+model MaterialCategory {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  materials Material[]
+
+  @@map("material_categories")
+}
+
+enum MaterialUnit {
+  METER
+  YARD
+  KG
+  PCS
+}
+
+model Material {
+  id              String       @id @default(uuid())
+  code            String       @unique
+  name            String
+  categoryId      String    @default("")
+  description     String?
+
+  // Fabric-specific fields
+  content         String?      // e.g., "100% Cotton"
+  widthMeters     Decimal?     // e.g., 1.5
+  gsm             Int?         // e.g., 180
+
+  // Pricing
+  pricePerUnit    Decimal?     // as entered by user
+  unit            MaterialUnit @default(METER)
+  pricePerMeter   Decimal?     // computed and stored for costing
+
+  // VAT percentage used when VAT refund is enabled on costing lines
+  vatPercent      Decimal      @default(0)
+
+  // Legacy compatibility fields
+  composition     String?
+  weight          String?
+  width           String?
+  colorOptions    String?
+  unitOfMeasure   String       @default("MTR")
+  moq             Decimal?     // Minimum order quantity
+  leadTimeDays    Int?
+  imageUrl        String?
+  notes           String?
+  isActive        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Relations
+  category        MaterialCategory @relation(fields: [categoryId], references: [id])
+  suppliers       MaterialSupplier[]
+  bomItems        BOMItem[]
+  inventoryItems  InventoryItem[]
+  approvals       ApprovalRecord[]
+  supplierPOLines SupplierPOLine[]
+
+  @@map("materials")
+}
+
+// ============================================================
+// WIP (Excel-like reports with customizable columns)
+// ============================================================
+
+enum WIPScope {
+  SRS
+  PO
+  // Spreadsheet-like Production WIP view configuration
+  PRODUCTION
+}
+
+model WIPColumn {
+  id        String   @id @default(uuid())
+  scope     WIPScope
+  key       String
+  label     String
+  // For PRODUCTION scope only: how this column is rendered
+  kind      String   @default("FIELD") // FIELD, SAMPLE, APPROVAL
+  groupName String?  // e.g., "Samples", "Approvals"
+  // For APPROVAL columns
+  approvalType ApprovalType?
+  approvalSlot ApprovalSlot?
+  dataType  String   @default("text") // text, number, date, select
+  options   Json?    // for select: ["A","B"]
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([scope, key])
+  @@map("wip_columns")
+}
+
+model MaterialSupplier {
+  id              String   @id @default(uuid())
+  materialId      String
+  supplierId      String
+  unitPrice       Decimal
+  currency        String   @default("CNY")
+  moq             Decimal?
+  leadTimeDays    Int?
+  isPreferred     Boolean  @default(false)
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  material        Material @relation(fields: [materialId], references: [id])
+  supplier        Supplier @relation(fields: [supplierId], references: [id])
+
+  @@unique([materialId, supplierId])
+  @@map("material_suppliers")
+}
+
+// ============================================================
+// APPROVAL RECORDS (Lab Dip, Fabric, Trim, Strike-off)
+// ============================================================
+
+enum ApprovalType {
+  // Sample stages
+  PROTO
+  FIT
+  PP
+  TOP
+  GPT
+  SHIPMENT_SAMPLE
+  // Material / quality approvals
+  LAB_DIP
+  FABRIC
+  TRIM
+  PRINT_STRIKEOFF
+  EMBROIDERY_STRIKEOFF
+  WASH
+  // Free-text custom type
+  CUSTOM
+}
+
+enum ApprovalStatus {
+  PENDING
+  SUBMITTED
+  APPROVED
+  REJECTED
+  RESUBMIT
+  APPROVED_WITH_COMMENTS
+}
+
+// Optional slot/bucket for approvals that have multiple tracks per PO line
+// (e.g., self vs contrast fabric, trim 1 vs trim 2)
+enum ApprovalSlot {
+  SELF
+  CONTRAST
+  TRIM_1
+  TRIM_2
+}
+
+model ApprovalRecord {
+  id              String         @id @default(uuid())
+  styleId         String
+  // When set, this approval is scoped to a specific PO line item (recommended for Production WIP)
+  poLineItemId    String?
+  materialId      String?
+  type            ApprovalType
+  // Optional bucket for Fabric/Trim approvals
+  slot            ApprovalSlot?
+  reference       String?        // Pantone ref, customer swatch ref, etc.
+  supplierName    String?
+  submissionNo    Int            @default(1)
+  submitDate      DateTime?
+  approvalDate    DateTime?
+  status          ApprovalStatus @default(PENDING)
+  customerComments String?
+  imageUrls       Json?
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  style           Style          @relation(fields: [styleId], references: [id])
+  poLineItem      POLineItem?    @relation(fields: [poLineItemId], references: [id])
+  material        Material?      @relation(fields: [materialId], references: [id])
+
+  @@index([poLineItemId, type, slot, materialId])
+  // Prevent duplicate submission numbers for the same approval cell
+  @@unique([poLineItemId, type, slot, materialId, submissionNo], name: "unique_po_line_approval_submission")
+
+  @@map("approval_records")
+}
+
+// ============================================================
+// SUPPLIER PO (MATERIAL PROCUREMENT)
+// ============================================================
+
+enum SupplierPOStatus {
+  DRAFT
+  ISSUED
+  ACKNOWLEDGED
+  PARTIALLY_RECEIVED
+  FULLY_RECEIVED
+  CLOSED
+  CANCELLED
+}
+
+model SupplierPO {
+  id              String           @id @default(uuid())
+  spoNo           String           @unique // Internal Supplier PO number
+  supplierId      String
+  customerPOId    String?          // Linked customer PO
+  orderDate       DateTime         @default(now())
+  deliveryDate    DateTime?
+  currency        String           @default("CNY")
+  totalAmount     Decimal          @default(0)
+  paymentTerms    String?
+  status          SupplierPOStatus @default(DRAFT)
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  supplier        Supplier         @relation(fields: [supplierId], references: [id])
+  customerPO      PurchaseOrder?   @relation(fields: [customerPOId], references: [id])
+  lineItems       SupplierPOLine[]
+  goodsReceived   GoodsReceived[]
+
+  @@map("supplier_pos")
+}
+
+model SupplierPOLine {
+  id              String   @id @default(uuid())
+  supplierPOId    String
+  materialId      String?
+  description     String
+  color           String?
+  quantity        Decimal
+  unit            String   @default("YDS")
+  unitPrice       Decimal
+  lineTotal       Decimal
+  vatRate         Decimal? // VAT percentage, e.g. 13 for 13%
+  vatRefundable   Boolean  @default(false)
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Link to specific Customer PO line item (style-color) for cost allocation
+  poLineItemId    String?
+
+  // Relations
+  supplierPO      SupplierPO @relation(fields: [supplierPOId], references: [id], onDelete: Cascade)
+  material        Material?  @relation(fields: [materialId], references: [id])
+  poLineItem      POLineItem? @relation(fields: [poLineItemId], references: [id])
+
+  @@index([supplierPOId, poLineItemId])
+  @@map("supplier_po_lines")
+}
+
+// ============================================================
+// GOODS RECEIVING
+// ============================================================
+
+model GoodsReceived {
+  id              String   @id @default(uuid())
+  supplierPOId    String
+  receivedDate    DateTime @default(now())
+  receivedBy      String?
+  location        String?  // Warehouse location
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  supplierPO      SupplierPO        @relation(fields: [supplierPOId], references: [id], onDelete: Cascade)
+  items           GoodsReceivedItem[]
+
+  @@map("goods_received")
+}
+
+model GoodsReceivedItem {
+  id              String   @id @default(uuid())
+  goodsReceivedId String
+  description     String
+  color           String?
+  orderedQty      Decimal
+  receivedQty     Decimal
+  unit            String
+  actualUnitPrice Decimal? // Actual unit price from supplier invoice
+  actualLineTotal Decimal? // receivedQty × actualUnitPrice
+  qcResult        String?  // PASS, FAIL, CONDITIONAL
+  remarks         String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  goodsReceived   GoodsReceived @relation(fields: [goodsReceivedId], references: [id], onDelete: Cascade)
+
+  @@map("goods_received_items")
+}
+
+// ============================================================
+// INVENTORY
+// ============================================================
+
+model InventoryItem {
+  id              String   @id @default(uuid())
+  materialId      String
+  location        String   // Warehouse, Factory name, etc.
+  color           String?
+  lotNo           String?
+  quantity        Decimal
+  unit            String
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  material        Material @relation(fields: [materialId], references: [id])
+  movements       StockMovement[]
+
+  @@map("inventory_items")
+}
+
+enum MovementType {
+  IN          // Goods receiving
+  OUT         // Issued to production
+  TRANSFER    // Between locations
+  ADJUSTMENT  // Stock take adjustment
+}
+
+model StockMovement {
+  id              String       @id @default(uuid())
+  inventoryItemId String
+  type            MovementType
+  quantity        Decimal
+  fromLocation    String?
+  toLocation      String?
+  reference       String?      // PO#, Production Order#, etc.
+  notes           String?
+  createdAt       DateTime     @default(now())
+
+  // Relations
+  inventoryItem   InventoryItem @relation(fields: [inventoryItemId], references: [id])
+
+  @@map("stock_movements")
+}
+
+// ============================================================
+// PRODUCTION
+// ============================================================
+
+model Factory {
+  id              String   @id @default(uuid())
+  name            String
+  code            String   @unique
+  supplierId      String?  // Link to supplier if external
+  country         String
+  address         String?
+  contactPerson   String?
+  phone           String?
+  email           String?
+  isInHouse       Boolean  @default(false)
+  capacity        String?  // e.g., "5000 pcs/month"
+  specialties     String?  // e.g., "Knits, Woven shirts"
+  complianceStatus String?
+  cmtRateRange    String?  // e.g., "$2.50 - $4.00"
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  supplier        Supplier? @relation(fields: [supplierId], references: [id])
+  productionOrders ProductionOrder[]
+
+  @@map("factories")
+}
+
+enum ProductionStatus {
+  PLANNED
+  MATERIAL_ISSUED
+  CUTTING
+  SEWING
+  WASHING_FINISHING
+  QC_INSPECTION
+  PACKING
+  READY_TO_SHIP
+  COMPLETED
+  ON_HOLD
+  CANCELLED
+}
+
+model ProductionOrder {
+  id              String           @id @default(uuid())
+  prodOrderNo     String           @unique
+  poId            String
+  factoryId       String
+  styleNo         String
+  color           String?
+  sizeBreakdown   Json?            // Same format as PO line
+  totalQty        Int
+  targetStartDate DateTime?
+  targetEndDate   DateTime?
+  actualStartDate DateTime?
+  actualEndDate   DateTime?
+  cmtRate         Decimal?
+  cmtCurrency     String           @default("USD")
+  // Factory production invoice (for P&L cost calculation only)
+  prodInvoiceQty        Int?      // Factory invoice qty (may differ from PO or ship qty)
+  prodInvoiceUnitPrice  Decimal?  // Factory invoice unit price
+  prodInvoiceCurrency   String?   @default("CNY")
+  prodInvoiceTotal      Decimal?  // = prodInvoiceQty × prodInvoiceUnitPrice (in CNY)
+  vatRefundRate         Decimal?  @default(0)  // VAT refund rate % for this prod order
+  status          ProductionStatus @default(PLANNED)
+  specialInstructions String?
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  po              PurchaseOrder    @relation(fields: [poId], references: [id])
+  factory         Factory          @relation(fields: [factoryId], references: [id])
+  inspections     QCInspection[]
+
+  @@map("production_orders")
+}
+
+// ============================================================
+// QC / INSPECTION
+// ============================================================
+
+enum InspectionType {
+  INLINE
+  MID_PRODUCTION
+  PRE_SHIPMENT
+  FINAL
+}
+
+enum InspectionResult {
+  PASS
+  FAIL
+  CONDITIONAL_PASS
+  PENDING
+}
+
+model QCInspection {
+  id              String           @id @default(uuid())
+  prodOrderId     String
+  type            InspectionType
+  inspectionDate  DateTime
+  inspectorId     String?
+  thirdPartyName  String?          // SGS, Bureau Veritas, etc.
+  aqlLevel        String?          // e.g., "AQL 2.5"
+  sampleSize      Int?
+  defectsFound    Int?
+  defectDetails   Json?            // Array of defect types and counts
+  result          InspectionResult @default(PENDING)
+  reportUrl       String?
+  imageUrls       Json?
+  notes           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  // Relations
+  prodOrder       ProductionOrder  @relation(fields: [prodOrderId], references: [id])
+  inspector       User?            @relation("InspectionBy", fields: [inspectorId], references: [id])
+
+  @@map("qc_inspections")
+}
+
+// ============================================================
+// PACKING & SHIPPING
+// ============================================================
+
+enum PackingListStatus {
+  IN_PROGRESS
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model PackingList {
+  id              String            @id @default(uuid())
+  packingListNo   String            @unique
+  poId            String            // Primary PO this packing list belongs to
+  shipmentId      String?           // Assigned when booked onto vessel
+  exFtyDate       DateTime?         // Ex-factory date
+  status          PackingListStatus @default(IN_PROGRESS)
+  totalCartons    Int               @default(0)
+  totalQty        Int               @default(0)
+  totalGrossWeight Decimal          @default(0) // KG
+  totalNetWeight  Decimal           @default(0)
+  totalCBM        Decimal           @default(0) // Cubic meters
+  createdByUserId String?
+  notes           String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  // Relations
+  po              PurchaseOrder @relation(fields: [poId], references: [id])
+  shipment        Shipment?     @relation(fields: [shipmentId], references: [id])
+  cartons         Carton[]
+
+  @@map("packing_lists")
+}
+
+enum PackType {
+  PREPACK
+  SINGLE_SIZE
+  MIXED
+}
+
+model Carton {
+  id              String   @id @default(uuid())
+  packingListId   String
+  cartonNo        Int
+  styleNo         String
+  color           String
+  sizeBreakdown   Json     // {"S": 10, "M": 10, "L": 10}
+  totalPcs        Int
+  netWeight       Decimal  @default(0)
+  grossWeight     Decimal  @default(0)
+  length          Decimal? // CM
+  width           Decimal?
+  height          Decimal?
+  cbm             Decimal  @default(0)
+
+  // Phase 3: DC-level packing
+  poLineItemId    String?  // FK → POLineItem, tracks which PO line this carton belongs to
+  dcName          String?  // DC / shipping order designation
+  packType        PackType @default(SINGLE_SIZE) // PREPACK, SINGLE_SIZE, MIXED
+  prepackConfig   Json?    // Pack ratio for PREPACK e.g. {"S":1,"M":2,"L":2,"XL":1}
+
+  createdAt       DateTime @default(now())
+
+  // Relations
+  packingList     PackingList @relation(fields: [packingListId], references: [id], onDelete: Cascade)
+  poLineItem      POLineItem? @relation(fields: [poLineItemId], references: [id])
+
+  @@map("cartons")
+}
+
+enum ShipmentStatus {
+  BOOKING_MADE
+  CARGO_READY
+  LOADED
+  IN_TRANSIT
+  ARRIVED
+  CUSTOMS_CLEARED
+  DELIVERED
+}
+
+model Shipment {
+  id              String         @id @default(uuid())
+  shipmentNo      String         @unique
+  poId            String?        // Optional — POs derived from linked packing lists
+  shipmentMethod  String         @default("SEA_FCL") // SEA_FCL, SEA_LCL, AIR, COURIER, RAIL
+  shippingTerms   String         @default("FOB")
+  portOfLoading   String?
+  portOfDischarge String?
+  etd             DateTime?      // Estimated Time of Departure
+  eta             DateTime?      // Estimated Time of Arrival
+  atd             DateTime?      // Actual Time of Departure
+  ata             DateTime?      // Actual Time of Arrival
+  rogDate         DateTime?      // Receipt of Goods — CRITICAL for payment
+  vesselName      String?
+  voyageNo        String?
+  containerNo     String?
+  blNo            String?        // Bill of Lading number
+  awbNo           String?        // Airway Bill number
+  forwarderName   String?
+  forwarderContact String?
+  freightCost     Decimal?
+  status          ShipmentStatus @default(BOOKING_MADE)
+  notes           String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  po              PurchaseOrder?  @relation(fields: [poId], references: [id])
+  packingLists    PackingList[]
+  documents       ShipmentDocument[]
+  invoices        CustomerInvoice[]
+  customsDeclarations CustomsDeclaration[]
+
+  @@map("shipments")
+}
+
+model ShipmentDocument {
+  id              String   @id @default(uuid())
+  shipmentId      String
+  docType         String   // COMMERCIAL_INVOICE, PACKING_LIST, BL, CO, FORM_A, TEST_REPORT
+  fileName        String
+  fileUrl         String
+  notes           String?
+  uploadedAt      DateTime @default(now())
+
+  // Relations
+  shipment        Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@map("shipment_documents")
+}
+
+// ============================================================
+// CUSTOMS DECLARATION (报关单)
+// ============================================================
+
+model CustomsDeclaration {
+  id                  String    @id @default(uuid())
+  shipmentId          String
+  declarationNo       String?   // 预录入编号
+  customsNo           String?   // 海关编号
+  consignorName       String?   // 收发货人
+  consignorCode       String?   // 收发货人代码 e.g. (3316960AZU)
+  exportPort          String?   // 出口口岸 e.g. 外港海关（2225）
+  exportDate          DateTime? // 出口日期
+  declarationDate     DateTime? // 申报日期
+  productionUnit      String?   // 生产销售单位
+  productionUnitCode  String?   // 生产销售单位代码
+  declaringUnit       String?   // 申报单位
+  transportMethod     String?   @default("海运运输") // 运输方式
+  transportName       String?   // 运输工具名称
+  blNumber            String?   // 提运单号
+  supervisionMode     String?   @default("一般贸易") // 监管方式
+  taxExemption        String?   @default("一般征税") // 征免性质
+  recordNo            String?   // 备案号
+  tradeCountry        String?   // 贸易国（地区）
+  destinationCountry  String?   // 运抵国（地区）
+  destinationPort     String?   // 指运港
+  domesticSource      String?   // 境内货源地
+  licenseNo           String?   // 许可证号
+  transactionMethod   String?   @default("CNF") // 成交方式
+  freightCost         String?   // 运费 e.g. ¥ 15,961.40
+  insuranceCost       String?   // 保费 e.g. USD0.0000
+  miscCost            String?   // 杂费
+  contractNo          String?   // 合同协议号
+  totalPackages       Int?      // 件数
+  packageType         String?   @default("纸箱") // 包装种类
+  grossWeightKg       Decimal?  // 毛重（公斤）
+  netWeightKg         Decimal?  // 净重（公斤）
+  containerNo         String?   // 集装箱号
+  attachedDocs        String?   // 随附单据
+  lineItems           Json?     // Array of declaration line items
+  // Footer confirmations
+  specialRelation     Boolean   @default(false)  // 特殊关系确认
+  priceImpact         Boolean   @default(false)  // 价格影响确认
+  royaltyPayment      Boolean   @default(false)  // 支付特许权使用费确认
+  declarantName       String?   // 报关人员
+  declarantPhone      String?   // 报关人员电话
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  shipment            Shipment  @relation(fields: [shipmentId], references: [id])
+
+  @@map("customs_declarations")
+}
+
+// ============================================================
+// FINANCE — CUSTOMER INVOICING
+// ============================================================
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  ACKNOWLEDGED
+  PARTIALLY_PAID
+  FULLY_PAID
+  OVERDUE
+  CANCELLED
+}
+
+model CustomerInvoice {
+  id              String        @id @default(uuid())
+  invoiceNo       String        @unique
+  customerId      String
+  poId            String?       // Optional — legacy single-PO invoices
+  shipmentId      String?       // Primary generation source — invoice from shipment
+
+  // Shipper / Consignee / Forwarder / Notify Party
+  shipperName     String?
+  shipperAddress  String?       @db.Text
+  consigneeName   String?
+  consigneeAddress String?      @db.Text
+  forwarderName   String?
+  forwarderAddress String?      @db.Text
+  notifyPartyName String?
+  notifyPartyAddress String?    @db.Text
+
+  // Manufacturer / Ship To
+  manufacturerName    String?
+  manufacturerAddress String?   @db.Text
+  shipToName          String?
+  shipToAddress       String?   @db.Text
+
+  // Terms & Reference
+  paymentTerms    String?       // e.g. "NET 60 DAYS"
+  salesTerms      String?       // e.g. "FOB" — INCOTERMS label
+  referenceNo     String?       // MID or reference
+  containerNo     String?       // Container or AWB No.
+  mid             String?       // MID reference
+
+  // Customs / trade
+  countryOfOrigin String?
+  incoterms       String?       // FOB, CIF, DDP, etc.
+  grossWeight     Decimal?
+  netWeight       Decimal?
+  totalCartons    Int?
+
+  invoiceDate     DateTime      @default(now())
+  dueDate         DateTime?     // Calculated from ROG + payment terms
+  currency        String        @default("USD")
+  subtotal        Decimal       @default(0)
+  adjustments     Decimal       @default(0) // Deductions, discounts
+  totalAmount     Decimal       @default(0)
+  amountPaid      Decimal       @default(0)
+  amountDue       Decimal       @default(0) // totalAmount - amountPaid
+  bankDetails     String?
+  status          InvoiceStatus @default(DRAFT)
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  customer        Customer       @relation(fields: [customerId], references: [id])
+  po              PurchaseOrder? @relation(fields: [poId], references: [id])
+  shipment        Shipment?      @relation(fields: [shipmentId], references: [id])
+  lineItems       InvoiceLineItem[]
+  payments        PaymentReceived[]
+
+  @@map("customer_invoices")
+}
+
+model InvoiceLineItem {
+  id              String   @id @default(uuid())
+  invoiceId       String
+  poId            String?  // Which PO this line belongs to (for multi-PO invoices)
+  poLineItemId    String?  // Link to specific PO line item
+  styleNo         String
+  color           String
+  dcName          String?  // DC destination
+  customerName    String?  // Customer/brand name for this line
+  description     String?
+  htsCode         String?  // US HTS code from Style.usHsCode
+  quantity        Int
+  unit            String   @default("PCS")
+  unitPrice       Decimal
+  lineTotal       Decimal
+  createdAt       DateTime @default(now())
+
+  // Relations
+  invoice         CustomerInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  po              PurchaseOrder?  @relation(fields: [poId], references: [id])
+  poLineItem      POLineItem?     @relation(fields: [poLineItemId], references: [id])
+
+  @@map("invoice_line_items")
+}
+
+model PaymentReceived {
+  id              String   @id @default(uuid())
+  invoiceId       String
+  paymentDate     DateTime
+  amount          Decimal
+  currency        String
+  exchangeRate    Decimal  @default(1)
+  amountInBase    Decimal  // Amount in base currency
+  bankReference   String?
+  paymentMethod   String?  // Wire, Check, LC
+  notes           String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  invoice         CustomerInvoice @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments_received")
+}
+
+// ============================================================
+// FINANCE — ORDER COST & P&L
+// ============================================================
+
+enum CostCategory {
+  FABRIC
+  TRIM
+  CMT
+  WASHING
+  EMBELLISHMENT
+  PACKAGING
+  FREIGHT
+  INSPECTION
+  DUTY
+  AGENT_COMMISSION
+  CLAIM
+  FX_LOSS
+  OTHER
+}
+
+model OrderCost {
+  id              String       @id @default(uuid())
+  poId            String
+  category        CostCategory
+  description     String
+  supplierName    String?
+  quantity        Decimal?
+  unitCost        Decimal?
+  totalCost       Decimal
+  currency        String       @default("USD")
+  exchangeRate    Decimal      @default(1)
+  totalCostBase   Decimal      // In base currency (USD)
+  supplierPORef   String?
+  invoiceRef      String?
+  notes           String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  // Link to specific PO line item for color-level P&L allocation
+  poLineItemId    String?
+
+  // Relations
+  po              PurchaseOrder @relation(fields: [poId], references: [id])
+  poLineItem      POLineItem? @relation(fields: [poLineItemId], references: [id])
+
+  @@index([poId, poLineItemId])
+  @@map("order_costs")
+}
+
+// ============================================================
+// PACKAGES & WIP APPROVALS
+// ============================================================
+
+enum PackageStatus {
+  DRAFT
+  SENT
+  RECEIVED  // Package physically delivered by carrier
+  COMPLETE  // All approval items have received a comment/outcome
+}
+
+enum PackageSection {
+  APPROVAL  // Section 1: linked to WIPCells via POLineItem
+  SRS       // Section 2: linked to SRS requests
+  MISC      // Section 3: ad-hoc, no status linkage
+}
+
+enum WIPSegment {
+  SAMPLES       // PP, TOP, FIT, PROTO, GPT
+  FABRICS       // Fabric quality approvals
+  COLOR_PRINTS  // Lab dip, print strikeoff, embroidery strikeoff
+  TRIMS         // Trim approvals
+}
+
+model Package {
+  id            String        @id @default(uuid())
+  customerId    String
+  courier       String?       // UPS, FEDEX, DHL, HAND_CARRY, OTHER
+  trackingNo    String?
+  dateSent      DateTime?
+  inHandDate    DateTime?
+  status        PackageStatus @default(DRAFT)
+  notes         String?
+  createdById   String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  createdBy     User          @relation("PackageCreatedBy", fields: [createdById], references: [id])
+  items         PackageItem[]
+
+  @@map("packages")
+}
+
+model PackageItem {
+  id             String         @id @default(uuid())
+  packageId      String
+  section        PackageSection
+  // Approval type (Section 1 & 2)
+  approvalType   ApprovalType?
+  // SRS link (Section 2 only)
+  srsId          String?
+  // Colorway / print being submitted (Section 1 & 2)
+  colorPrint     String?
+  // Free text description (Section 3; optional label for 1 & 2)
+  description    String?
+  // Outcome (Sections 1 & 2; MISC stays PENDING)
+  approvalStatus ApprovalStatus @default(PENDING)
+  comments       String?
+  sortOrder      Int            @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  package        Package        @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  srs            SRS?           @relation(fields: [srsId], references: [id])
+  wipCells       PackageItemWIPCell[]
+
+  @@map("package_items")
+}
+
+// Junction: one PackageItem can update many WIPCells (same approval sent to multiple POs)
+model PackageItemWIPCell {
+  id            String      @id @default(uuid())
+  packageItemId String
+  wipCellId     String
+
+  packageItem   PackageItem @relation(fields: [packageItemId], references: [id], onDelete: Cascade)
+  wipCell       WIPCell     @relation(fields: [wipCellId], references: [id], onDelete: Cascade)
+
+  @@unique([packageItemId, wipCellId])
+  @@map("package_item_wip_cells")
+}
+
+// A single approval cell in the WIP grid: POLineItem × approvalType × label
+model WIPCell {
+  id            String         @id @default(uuid())
+  poLineItemId  String
+  segment       WIPSegment
+  approvalType  ApprovalType
+  label         String         // e.g. "Shell Fabric", "Main Button", "PP"
+  status        ApprovalStatus @default(PENDING)
+  sortOrder     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  poLineItem    POLineItem     @relation(fields: [poLineItemId], references: [id])
+  packageItems  PackageItemWIPCell[]
+  comments      WIPComment[]
+
+  @@unique([poLineItemId, approvalType, label])
+  @@map("wip_cells")
+}
+
+// Append-only comment history per WIP cell
+model WIPComment {
+  id             String         @id @default(uuid())
+  wipCellId      String
+  packageItemId  String?        // Which package item generated this comment
+  approvalStatus ApprovalStatus? // Status at the time this comment was written
+  text           String
+  createdById    String?
+  createdAt      DateTime       @default(now())
+
+  wipCell        WIPCell        @relation(fields: [wipCellId], references: [id], onDelete: Cascade)
+
+  @@map("wip_comments")
+}
+
+// ============================================================
+// ACTIVITY LOG / AUDIT TRAIL
+// ============================================================
+
+model ActivityLog {
+  id              String   @id @default(uuid())
+  userId          String?
+  action          String   // CREATE, UPDATE, DELETE, STATUS_CHANGE
+  entity          String   // PO, SRS, Sample, etc.
+  entityId        String
+  details         Json?    // What changed
+  // Phase 0 Enhancement: More audit context
+  beforeData      Json?    // State before change
+  afterData       Json?    // State after change
+  ipAddress       String?
+  userAgent       String?
+  createdAt       DateTime @default(now())
+
+  // Relations
+  user            User?    @relation(fields: [userId], references: [id])
+
+  @@index([entityId, entity])
+  @@index([userId, createdAt])
+
+  @@index([entity, entityId])
+  @@map("activity_logs")
+}
+
+// ============================================================
+// SYSTEM SETTINGS
+// ============================================================
+
+model SystemSetting {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  value           String
+  description     String?
+  updatedAt       DateTime @updatedAt
+
+  @@map("system_settings")
+}

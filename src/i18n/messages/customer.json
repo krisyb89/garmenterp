@@ -1,0 +1,60 @@
+{
+  "en": {
+    "customer": {
+      "list": {
+        "title": "Customers",
+        "newButton": "New Customer",
+        "searchPlaceholder": "Search customer name, code..."
+      },
+      "detail": {
+        "title": "Customer Detail",
+        "edit": "Edit Customer",
+        "name": "Customer Name",
+        "code": "Customer Code",
+        "contactPerson": "Contact Person",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "country": "Country",
+        "currency": "Currency",
+        "paymentTermDays": "Payment Term (Days)",
+        "paymentTermBasis": "Payment Term Basis",
+        "isActive": "Active"
+      },
+      "paymentBasis": {
+        "ROG": "Receipt of Goods",
+        "BL_DATE": "Bill of Lading Date",
+        "INVOICE_DATE": "Invoice Date"
+      }
+    }
+  },
+  "zh": {
+    "customer": {
+      "list": {
+        "title": "客户",
+        "newButton": "新建客户",
+        "searchPlaceholder": "搜索客户名称、编号..."
+      },
+      "detail": {
+        "title": "客户详情",
+        "edit": "编辑客户",
+        "name": "客户名称",
+        "code": "客户编号",
+        "contactPerson": "联系人",
+        "email": "邮箱",
+        "phone": "电话",
+        "address": "地址",
+        "country": "国家",
+        "currency": "币种",
+        "paymentTermDays": "付款期限（天）",
+        "paymentTermBasis": "付款基准",
+        "isActive": "启用"
+      },
+      "paymentBasis": {
+        "ROG": "收货日",
+        "BL_DATE": "提单日期",
+        "INVOICE_DATE": "发票日期"
+      }
+    }
+  }
+}

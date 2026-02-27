@@ -1,0 +1,66 @@
+{
+  "en": {
+    "srs": {
+      "list": {
+        "title": "Style Request Sheets",
+        "newButton": "New SRS",
+        "searchPlaceholder": "Search SRS number, customer, style..."
+      },
+      "detail": {
+        "title": "SRS Detail",
+        "edit": "Edit SRS",
+        "srsNumber": "SRS Number",
+        "customer": "Customer",
+        "style": "Style",
+        "season": "Season",
+        "requestDate": "Request Date",
+        "targetPrice": "Target Price",
+        "status": "Status",
+        "description": "Description",
+        "attachments": "Attachments",
+        "costingSheets": "Costing Sheets",
+        "newCosting": "New Costing Sheet"
+      },
+      "status": {
+        "RECEIVED": "Received",
+        "UNDER_REVIEW": "Under Review",
+        "COSTING_IN_PROGRESS": "Costing in Progress",
+        "QUOTED": "Quoted",
+        "CUSTOMER_CONFIRMED": "Customer Confirmed",
+        "REJECTED": "Rejected"
+      }
+    }
+  },
+  "zh": {
+    "srs": {
+      "list": {
+        "title": "款式需求单",
+        "newButton": "新建需求单",
+        "searchPlaceholder": "搜索需求单号、客户、款式..."
+      },
+      "detail": {
+        "title": "需求单详情",
+        "edit": "编辑需求单",
+        "srsNumber": "需求单号",
+        "customer": "客户",
+        "style": "款式",
+        "season": "季节",
+        "requestDate": "需求日期",
+        "targetPrice": "目标价格",
+        "status": "状态",
+        "description": "描述",
+        "attachments": "附件",
+        "costingSheets": "成本核算表",
+        "newCosting": "新建成本核算"
+      },
+      "status": {
+        "RECEIVED": "已接收",
+        "UNDER_REVIEW": "审核中",
+        "COSTING_IN_PROGRESS": "成本核算中",
+        "QUOTED": "已报价",
+        "CUSTOMER_CONFIRMED": "客户已确认",
+        "REJECTED": "已拒绝"
+      }
+    }
+  }
+}

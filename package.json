@@ -1,0 +1,39 @@
+{
+  "name": "garment-erp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "NEXT_TELEMETRY_DISABLED=1 NO_UPDATE_NOTIFIER=1 BROWSERSLIST_IGNORE_OLD_DATA=true NODE_OPTIONS='--dns-result-order=ipv4first' next dev",
+    "build": "NEXT_TELEMETRY_DISABLED=1 BROWSERSLIST_IGNORE_OLD_DATA=true next build",
+    "start": "next start",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "seed": "node prisma/seed.js",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate",
+    "clean-dev": "rm -rf .next && NEXT_TELEMETRY_DISABLED=1 NO_UPDATE_NOTIFIER=1 BROWSERSLIST_IGNORE_OLD_DATA=true NODE_OPTIONS='--dns-result-order=ipv4first' next dev",
+    "clean-build": "rm -rf .next && NEXT_TELEMETRY_DISABLED=1 BROWSERSLIST_IGNORE_OLD_DATA=true next build"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.4.1",
+    "bcryptjs": "2.4.3",
+    "cookie": "0.6.0",
+    "date-fns": "3.6.0",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "9.0.2",
+    "next": "14.2.18",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "uuid": "9.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.20",
+    "pg": "^8.18.0",
+    "pm2": "^6.0.14",
+    "postcss": "8.4.47",
+    "prisma": "^6.4.1",
+    "tailwindcss": "3.4.14"
+  }
+}

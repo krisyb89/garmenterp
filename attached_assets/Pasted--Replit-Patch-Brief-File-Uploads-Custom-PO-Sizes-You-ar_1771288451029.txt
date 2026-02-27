@@ -1,0 +1,255 @@
+# Replit Patch Brief — File Uploads + Custom PO Sizes
+
+You are modifying an existing **Next.js 14 (App Router) + Prisma 5 + PostgreSQL** ERP repo.
+Do NOT introduce new frameworks, ORMs, or UI libraries. Keep everything in Next.js API Routes + React + Tailwind.
+
+---
+
+## Current State (read before coding)
+
+- **SRS model** (`prisma/schema.prisma`, table `srs`): Has `techPackUrl String?` but no image fields and no multi-file support.
+- **Style model** (`prisma/schema.prisma`, table `styles`): Has `techPackUrl String?` and `imageUrl String?` — both single strings, no multi-image.
+- **No file upload API exists** — zero upload infrastructure anywhere in the repo.
+- **PO creation** (`src/app/(dashboard)/dashboard/purchase-orders/new/page.js`): Size columns are hardcoded as `const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL']`. Users cannot add/remove/rename size columns.
+- **Auth**: Every API route uses `requireAuth()` or `requireRole()` from `src/lib/auth.js`. Follow this pattern for any new routes.
+- **File locations**:
+  - Schema: `prisma/schema.prisma`
+  - API routes: `src/app/api/`
+  - Pages: `src/app/(dashboard)/dashboard/`
+  - Shared components: `src/components/`
+  - Auth helpers: `src/lib/auth.js`
+
+---
+
+## Feature 1 — File Upload API (backend foundation)
+
+### 1A. Create upload directory and API route
+
+Create `src/app/api/uploads/route.js`:
+
+- Accept `POST` with `multipart/form-data` (use the native `request.formData()` — no multer needed in Next.js App Router).
+- Save files to `public/uploads/` directory (create if missing). This is fine for Replit — no external storage needed.
+- Generate a unique filename: `${Date.now()}-${randomHex(6)}-${originalName}`
+- Return JSON: `{ url: "/uploads/filename.ext", originalName: "file.pdf", size: 12345 }`
+- Require auth: use `requireAuth()` from `@/lib/auth`.
+- Accept multiple files in a single request (loop through all `file` entries in formData).
+- Return an array of uploaded file objects.
+- Limit file size to **10MB per file** — reject with 400 if exceeded.
+- Allowed extensions for **images**: `.jpg`, `.jpeg`, `.png`, `.webp`, `.gif`
+- Allowed extensions for **documents**: `.pdf`, `.xlsx`, `.xls`, `.doc`, `.docx`, `.ai`, `.psd`
+- Reject anything else with 400.
+
+Important: Make sure `public/uploads/` directory exists. Add a `.gitkeep` file in it.
+
+### 1B. Create reusable upload components
+
+Create two components in `src/components/`:
+
+**`ImageUploader.js`** — Multi-image upload with preview:
+- Props: `images` (array of URL strings), `onChange(newImagesArray)`, `maxImages` (default 10)
+- Shows a grid of thumbnail previews (small cards) for existing images
+- Each thumbnail has an ✕ button to remove
+- Has a "+ Add Image" button that opens a file input (accept images only)
+- On file select: calls `POST /api/uploads`, gets back URL, appends to array, calls `onChange`
+- Shows upload progress/loading state on the thumbnail slot while uploading
+
+**`FileUploader.js`** — Multi-file upload with file list:
+- Props: `files` (array of `{url, originalName, size}`), `onChange(newFilesArray)`, `maxFiles` (default 20)
+- Shows a list of attached files with icon, name, size, and ✕ remove button
+- Has a "+ Attach File" button (accept images + documents)
+- On file select: calls `POST /api/uploads`, gets back file object, appends to array, calls `onChange`
+
+Both components should use Tailwind classes consistent with the rest of the app (see `src/app/globals.css` for existing utility classes like `btn-primary`, `input-field`, `card`).
+
+---
+
+## Feature 2 — SRS: Image Uploads + File Attachments
+
+### 2A. Schema changes
+
+In `prisma/schema.prisma`, update the `SRS` model (table name `srs`). Add these fields **after the existing `techPackUrl` field**:
+
+```prisma
+  imageUrls       Json?    // Array of image URL strings: ["/uploads/img1.jpg", ...]
+  attachments     Json?    // Array of file objects: [{url, originalName, size}, ...]
+```
+
+Generate a migration: `npx prisma migrate dev --name srs_images_attachments`
+
+### 2B. Update SRS API
+
+In `src/app/api/srs/route.js` (POST handler):
+- Accept `imageUrls` (array) and `attachments` (array) in the request body.
+- Store them as JSON in the database.
+
+In `src/app/api/srs/[id]/route.js` (PUT handler):
+- Accept `imageUrls` and `attachments` in the update body.
+- Update them in the database.
+
+In both GET handlers (list + detail):
+- Include `imageUrls` and `attachments` in the response (they're already returned by Prisma if selected).
+
+### 2C. Update SRS New page
+
+In `src/app/(dashboard)/dashboard/srs/new/page.js`:
+- Import `ImageUploader` and `FileUploader` components.
+- Add state: `const [images, setImages] = useState([])` and `const [files, setFiles] = useState([])`
+- Add an "Images" section in the form below the description field, using `<ImageUploader images={images} onChange={setImages} />`
+- Add an "Attachments" section (for tech packs, specs, reference docs) below fabric/trim specs, using `<FileUploader files={files} onChange={setFiles} />`
+- In `handleSubmit`, include `imageUrls: images` and `attachments: files` in the POST body.
+
+### 2D. Update SRS Detail page
+
+In `src/app/(dashboard)/dashboard/srs/[id]/page.js`:
+- Show uploaded images in a thumbnail grid (clickable to open full-size in new tab).
+- Show attachments as a file list with download links.
+- Allow adding more images/files by including the `ImageUploader` and `FileUploader` components.
+- On change, call `PUT /api/srs/${id}` with the updated arrays.
+
+---
+
+## Feature 3 — Style: Image Uploads
+
+### 3A. Schema changes
+
+In `prisma/schema.prisma`, update the `Style` model (table name `styles`). Replace the single `imageUrl` field:
+
+```
+  // Keep the existing field for backward compat, but add multi-image:
+  imageUrl        String?        // Legacy single image — keep for now
+  imageUrls       Json?          // Array of image URL strings
+```
+
+Generate a migration: include this in the same migration as 2A if you haven't run it yet, or create a new one: `npx prisma migrate dev --name style_images`
+
+### 3B. Update Style API
+
+In `src/app/api/styles/route.js` (POST) and `src/app/api/styles/[id]/route.js` (PUT):
+- Accept `imageUrls` array in request body.
+- Store as JSON.
+
+### 3C. Update Style New page
+
+In `src/app/(dashboard)/dashboard/styles/new/page.js`:
+- Add `<ImageUploader>` component in the form, after the description/category fields.
+- Include `imageUrls` in POST body.
+
+### 3D. Update Style Detail page
+
+In `src/app/(dashboard)/dashboard/styles/[id]/page.js`:
+- Show image gallery with thumbnails.
+- Allow adding/removing images with ImageUploader.
+- Save changes via PUT.
+
+---
+
+## Feature 4 — PO Creation: User-Defined Size Columns
+
+### 4A. What to change
+
+In `src/app/(dashboard)/dashboard/purchase-orders/new/page.js`:
+
+**Remove** the hardcoded `const DEFAULT_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL']`.
+
+**Replace** with user-editable size columns:
+
+- Add state: `const [sizes, setSizes] = useState(['S', 'M', 'L', 'XL'])` as a reasonable default.
+- Add a **size columns editor** above the line items section. This should be:
+  - A row of pill/tags showing current sizes, each with an ✕ to remove.
+  - An input field + "Add Size" button to add a custom size (e.g., "28", "30", "32" for bottoms, or "ONE SIZE", or "6", "8", "10" for UK sizing).
+  - Common presets as quick-add buttons: "Standard (XS-2XL)", "Numeric (28-38)", "UK (6-18)", "One Size"
+- When a size is added/removed, all existing line items' `sizeBreakdown` objects must be updated (add new size key with empty value, or remove the key).
+
+**Update `addLineItem()`**:
+- Use current `sizes` array instead of `DEFAULT_SIZES`:
+  ```js
+  sizeBreakdown: sizes.reduce((acc, s) => ({ ...acc, [s]: '' }), {})
+  ```
+
+**Update the size breakdown rendering** in each line item:
+- Loop over `sizes` array instead of `DEFAULT_SIZES`.
+
+**Update `handleSubmit()`**:
+- No changes needed — it already filters out zero-qty sizes: `Object.entries(l.sizeBreakdown).filter(([_, v]) => parseInt(v) > 0)`
+
+### 4B. Also update PO Detail page
+
+In `src/app/(dashboard)/dashboard/purchase-orders/[id]/page.js`:
+- When displaying size breakdown for existing POs, dynamically extract size columns from the data:
+  ```js
+  const allSizes = [...new Set(po.lineItems.flatMap(l => Object.keys(l.sizeBreakdown || {})))];
+  ```
+- Use this dynamic list for table headers instead of any hardcoded sizes.
+
+### 4C. Also update Packing Lists page
+
+In `src/app/(dashboard)/dashboard/packing-lists/page.js`:
+- The `SIZES` constant on line 5 is also hardcoded. Replace it with dynamic extraction from carton data, same pattern as PO detail.
+
+---
+
+## Migration Summary
+
+After all schema changes, you should have one or two new migration files under `prisma/migrations/`. The migrations should only ADD columns (imageUrls, attachments) — never drop or rename existing columns.
+
+Run:
+```bash
+npx prisma migrate dev --name file_uploads_and_images
+npx prisma generate
+```
+
+---
+
+## Files to Create
+
+| File | Purpose |
+|------|---------|
+| `src/app/api/uploads/route.js` | File upload endpoint |
+| `src/components/ImageUploader.js` | Reusable multi-image upload with preview |
+| `src/components/FileUploader.js` | Reusable multi-file upload with list |
+| `public/uploads/.gitkeep` | Ensure upload directory exists |
+
+## Files to Modify
+
+| File | Changes |
+|------|---------|
+| `prisma/schema.prisma` | Add `imageUrls Json?` + `attachments Json?` to SRS; add `imageUrls Json?` to Style |
+| `src/app/api/srs/route.js` | Accept imageUrls + attachments in POST |
+| `src/app/api/srs/[id]/route.js` | Accept imageUrls + attachments in PUT |
+| `src/app/api/styles/route.js` | Accept imageUrls in POST |
+| `src/app/api/styles/[id]/route.js` | Accept imageUrls in PUT |
+| `src/app/(dashboard)/dashboard/srs/new/page.js` | Add ImageUploader + FileUploader |
+| `src/app/(dashboard)/dashboard/srs/[id]/page.js` | Show images + files, allow editing |
+| `src/app/(dashboard)/dashboard/styles/new/page.js` | Add ImageUploader |
+| `src/app/(dashboard)/dashboard/styles/[id]/page.js` | Show images, allow editing |
+| `src/app/(dashboard)/dashboard/purchase-orders/new/page.js` | Replace hardcoded sizes with user-editable |
+| `src/app/(dashboard)/dashboard/purchase-orders/[id]/page.js` | Dynamic size columns from data |
+| `src/app/(dashboard)/dashboard/packing-lists/page.js` | Dynamic size columns from data |
+
+---
+
+## Verification Checklist
+
+After implementation, test:
+
+- [ ] Upload an image via SRS new page — preview appears
+- [ ] Upload a PDF via SRS new page (attachments section) — file appears in list
+- [ ] Save the SRS — reload the detail page — images and files are still there
+- [ ] Upload images on Style new page — save — images visible on detail page
+- [ ] Remove an image from SRS detail — save — image is gone on reload
+- [ ] PO creation: default sizes show S/M/L/XL
+- [ ] PO creation: add custom size "28" — new column appears in all line items
+- [ ] PO creation: click "Numeric (28-38)" preset — sizes replace with 28/30/32/34/36/38
+- [ ] PO creation: remove a size — column disappears from all line items
+- [ ] Existing PO detail page: size columns auto-detected from data (no hardcoded list)
+- [ ] Packing list summary: size columns auto-detected from carton data
+
+---
+
+## Rules
+
+- Do NOT install new npm packages for uploads. Next.js App Router handles `multipart/form-data` natively via `request.formData()`.
+- Do NOT use external storage (S3, GCS). Use `public/uploads/` on Replit's filesystem.
+- Do NOT change the auth system. Use existing `requireAuth()` from `@/lib/auth`.
+- Do NOT modify unrelated files.
+- Keep all Tailwind styling consistent with the existing app.

@@ -1,0 +1,42 @@
+{
+  "en": {
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome back",
+      "stats": {
+        "totalOrders": "Total Orders",
+        "pendingApprovals": "Pending Approvals",
+        "inProduction": "In Production",
+        "readyToShip": "Ready to Ship"
+      },
+      "recentActivity": "Recent Activity",
+      "quickActions": "Quick Actions",
+      "actions": {
+        "newPO": "New Purchase Order",
+        "newSRS": "New SRS",
+        "newSupplier": "New Supplier",
+        "viewWIP": "View WIP"
+      }
+    }
+  },
+  "zh": {
+    "dashboard": {
+      "title": "仪表盘",
+      "welcome": "欢迎回来",
+      "stats": {
+        "totalOrders": "订单总数",
+        "pendingApprovals": "待审批",
+        "inProduction": "生产中",
+        "readyToShip": "待出货"
+      },
+      "recentActivity": "最近活动",
+      "quickActions": "快捷操作",
+      "actions": {
+        "newPO": "新建客户订单",
+        "newSRS": "新建需求单",
+        "newSupplier": "新建供应商",
+        "viewWIP": "查看进度"
+      }
+    }
+  }
+}

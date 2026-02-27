@@ -1,0 +1,77 @@
+/* src/app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 
+           transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed
+           w-full sm:w-auto text-center;
+  }
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-700 px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-gray-300 
+           transition-colors font-medium text-sm w-full sm:w-auto text-center;
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-red-700 
+           transition-colors font-medium text-sm w-full sm:w-auto text-center;
+  }
+  .btn-success {
+    @apply bg-green-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg hover:bg-green-700 
+           transition-colors font-medium text-sm w-full sm:w-auto text-center;
+  }
+  .input-field {
+    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none;
+  }
+  .select-field {
+    @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm 
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white;
+  }
+  .label-field {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6;
+  }
+  
+  /* Responsive Table Styles */
+  .table-base {
+    @apply w-full text-xs sm:text-sm;
+  }
+  .table-base th {
+    @apply bg-gray-50 px-2 py-2 sm:px-4 sm:py-3 font-semibold text-gray-600 border-b text-center whitespace-nowrap;
+  }
+  .table-base td {
+    @apply px-2 py-2 sm:px-4 sm:py-3 border-b border-gray-100 text-center align-middle;
+  }
+  .table-base tr:hover td {
+    @apply bg-gray-50;
+  }
+  
+  /* Status Badge */
+  .status-badge {
+    @apply inline-flex items-center px-2 py-0.5 sm:px-2.5 rounded-full text-xs font-medium;
+  }
+
+  /* WIP Table Styles - Responsive */
+  .wip-cell {
+    @apply px-1 py-1 sm:px-2 sm:py-2 text-[10px] sm:text-[11px] border-b border-gray-100 whitespace-nowrap;
+  }
+  .wip-hdr {
+    @apply px-1 py-1 sm:px-2 sm:py-2 text-[10px] sm:text-[11px] font-semibold text-gray-700 text-center;
+  }
+  .wip-col {
+    @apply px-1 py-1 sm:px-2 sm:py-2 text-[10px] sm:text-[11px] font-medium text-gray-600 text-left border-b border-gray-200;
+  }
+  .wip-col-sm {
+    @apply px-1 py-1 sm:py-2 text-[9px] sm:text-[10px] font-medium text-gray-600 text-center border-b border-gray-200 min-w-[50px] sm:min-w-[60px] max-w-[80px];
+  }
+}

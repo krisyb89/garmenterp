@@ -1,0 +1,148 @@
+// src/app/api/packing-lists/[id]/cartons/route.js
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/auth';
+
+// Helper: recalculate packing list totals from its cartons
+async function refreshPLTotals(plId) {
+  const cartons = await prisma.carton.findMany({
+    where: { packingListId: plId },
+  });
+
+  const totalCartons = cartons.length;
+  let totalQty = 0;
+  let totalGrossWeight = 0;
+  let totalNetWeight = 0;
+  let totalCBM = 0;
+
+  for (const c of cartons) {
+    totalQty += c.totalPcs;
+    totalGrossWeight += Number(c.grossWeight);
+    totalNetWeight += Number(c.netWeight);
+    totalCBM += Number(c.cbm);
+  }
+
+  await prisma.packingList.update({
+    where: { id: plId },
+    data: { totalCartons, totalQty, totalGrossWeight, totalNetWeight, totalCBM },
+  });
+}
+
+// GET — list cartons for a packing list
+export async function GET(request, { params }) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    const cartons = await prisma.carton.findMany({
+      where: { packingListId: id },
+      orderBy: { cartonNo: 'asc' },
+      include: {
+        poLineItem: {
+          select: { id: true, color: true, style: { select: { styleNo: true } }, shippingOrders: true },
+        },
+      },
+    });
+    return NextResponse.json({ cartons });
+
+  } catch (error) {
+    console.error('[cartons:GET]', error?.message || error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// POST — add carton(s). Supports batch creation via `cartonCount` field.
+export async function POST(request, { params }) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    const body = await request.json();
+
+    // Auto-assign carton number
+    const maxCarton = await prisma.carton.findFirst({
+      where: { packingListId: id },
+      orderBy: { cartonNo: 'desc' },
+      select: { cartonNo: true },
+    });
+    const startCartonNo = body.cartonNo || (maxCarton ? maxCarton.cartonNo + 1 : 1);
+
+    // Calculate CBM from dimensions (cm -> m3)
+    const length = parseFloat(body.length || 0);
+    const width = parseFloat(body.width || 0);
+    const height = parseFloat(body.height || 0);
+    const cbm = (length * width * height) / 1000000;
+
+    // sizeBreakdown from body (JSON object like {"S": 10, "M": 10})
+    const sizeBreakdown = body.sizeBreakdown || {};
+    const totalPcs = Object.values(sizeBreakdown).reduce((s, v) => s + (parseInt(v) || 0), 0);
+
+    // Batch creation: create N identical cartons
+    const cartonCount = parseInt(body.cartonCount) || 1;
+    const createdCartons = [];
+
+    for (let i = 0; i < cartonCount; i++) {
+      const carton = await prisma.carton.create({
+        data: {
+          packingListId: id,
+          cartonNo: startCartonNo + i,
+          styleNo: body.styleNo || '',
+          color: body.color || '',
+          sizeBreakdown,
+          totalPcs,
+          netWeight: parseFloat(body.netWeight || 0),
+          grossWeight: parseFloat(body.grossWeight || 0),
+          length: length || null,
+          width: width || null,
+          height: height || null,
+          cbm,
+          // Phase 3 fields
+          poLineItemId: body.poLineItemId || null,
+          dcName: body.dcName || null,
+          packType: body.packType || 'SINGLE_SIZE',
+          prepackConfig: body.prepackConfig || null,
+        },
+      });
+      createdCartons.push(carton);
+    }
+
+    // Refresh PL header totals
+    await refreshPLTotals(id);
+
+    if (cartonCount === 1) {
+      return NextResponse.json(createdCartons[0], { status: 201 });
+    }
+    return NextResponse.json({ cartons: createdCartons, count: cartonCount }, { status: 201 });
+
+  } catch (error) {
+    console.error('[cartons:POST]', error?.message || error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// DELETE — remove a carton by cartonId (passed as query param)
+export async function DELETE(request, { params }) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    const { searchParams } = new URL(request.url);
+    const cartonId = searchParams.get('cartonId');
+
+    if (!cartonId) {
+      return NextResponse.json({ error: 'cartonId query param required' }, { status: 400 });
+    }
+
+    await prisma.carton.delete({ where: { id: cartonId } });
+    await refreshPLTotals(id);
+
+    return NextResponse.json({ success: true });
+
+  } catch (error) {
+    console.error('[cartons:DELETE]', error?.message || error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

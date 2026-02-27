@@ -1,0 +1,46 @@
+{
+  "en": {
+    "packing": {
+      "list": {
+        "title": "Packing Lists",
+        "newButton": "New Packing List",
+        "searchPlaceholder": "Search packing list, PO, shipment..."
+      },
+      "detail": {
+        "title": "Packing List Detail",
+        "edit": "Edit",
+        "plNumber": "Packing List No.",
+        "poNumber": "PO Number",
+        "shipment": "Shipment",
+        "cartonQty": "Carton Qty",
+        "totalQty": "Total Qty",
+        "grossWeight": "Gross Weight",
+        "netWeight": "Net Weight",
+        "volume": "Volume",
+        "cartons": "Cartons"
+      }
+    }
+  },
+  "zh": {
+    "packing": {
+      "list": {
+        "title": "装箱单",
+        "newButton": "新建装箱单",
+        "searchPlaceholder": "搜索装箱单、订单、出货..."
+      },
+      "detail": {
+        "title": "装箱单详情",
+        "edit": "编辑",
+        "plNumber": "装箱单号",
+        "poNumber": "订单号",
+        "shipment": "出货",
+        "cartonQty": "箱数",
+        "totalQty": "总数量",
+        "grossWeight": "毛重",
+        "netWeight": "净重",
+        "volume": "体积",
+        "cartons": "纸箱明细"
+      }
+    }
+  }
+}

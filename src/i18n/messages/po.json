@@ -1,0 +1,92 @@
+{
+  "en": {
+    "po": {
+      "list": {
+        "title": "Purchase Orders",
+        "newButton": "New PO",
+        "searchPlaceholder": "Search PO number, customer, style..."
+      },
+      "detail": {
+        "title": "Purchase Order Detail",
+        "edit": "Edit PO",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "delete": "Delete PO",
+        "poNumber": "PO Number",
+        "customer": "Customer",
+        "store": "Store",
+        "brand": "Brand",
+        "season": "Season",
+        "orderDate": "Order Date",
+        "deliveryDate": "Delivery Date",
+        "status": "Status",
+        "totalAmount": "Total Amount",
+        "currency": "Currency",
+        "paymentTerms": "Payment Terms",
+        "notes": "Notes",
+        "lineItems": "Line Items",
+        "addLineItem": "Add Line Item",
+        "style": "Style",
+        "color": "Color",
+        "colorCode": "Color Code",
+        "size": "Size",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price",
+        "lineTotal": "Line Total"
+      },
+      "status": {
+        "RECEIVED": "Received",
+        "CONFIRMED": "Confirmed",
+        "IN_PRODUCTION": "In Production",
+        "PARTIALLY_SHIPPED": "Partially Shipped",
+        "FULLY_SHIPPED": "Fully Shipped",
+        "CANCELLED": "Cancelled"
+      }
+    }
+  },
+  "zh": {
+    "po": {
+      "list": {
+        "title": "客户订单",
+        "newButton": "新建订单",
+        "searchPlaceholder": "搜索订单号、客户、款式..."
+      },
+      "detail": {
+        "title": "订单详情",
+        "edit": "编辑订单",
+        "save": "保存修改",
+        "cancel": "取消",
+        "delete": "删除订单",
+        "poNumber": "订单号",
+        "customer": "客户",
+        "store": "门店",
+        "brand": "品牌",
+        "season": "季节",
+        "orderDate": "下单日期",
+        "deliveryDate": "交货日期",
+        "status": "状态",
+        "totalAmount": "总金额",
+        "currency": "币种",
+        "paymentTerms": "付款条款",
+        "notes": "备注",
+        "lineItems": "明细项目",
+        "addLineItem": "添加明细",
+        "style": "款式",
+        "color": "颜色",
+        "colorCode": "色号",
+        "size": "尺码",
+        "quantity": "数量",
+        "unitPrice": "单价",
+        "lineTotal": "小计"
+      },
+      "status": {
+        "RECEIVED": "已接收",
+        "CONFIRMED": "已确认",
+        "IN_PRODUCTION": "生产中",
+        "PARTIALLY_SHIPPED": "部分出货",
+        "FULLY_SHIPPED": "全部出货",
+        "CANCELLED": "已取消"
+      }
+    }
+  }
+}

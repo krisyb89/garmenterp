@@ -1,0 +1,44 @@
+{
+  "en": {
+    "pnl": {
+      "title": "P&L Summary",
+      "orderPnl": "Order P&L",
+      "revenue": "Revenue",
+      "costs": "Costs",
+      "profit": "Profit",
+      "profitMargin": "Profit Margin",
+      "categories": {
+        "FABRIC": "Fabric",
+        "TRIM": "Trim",
+        "CMT": "CMT",
+        "WASHING": "Washing",
+        "PRINT": "Print/Embroidery",
+        "FREIGHT": "Freight",
+        "INSPECTION": "Inspection",
+        "AGENT": "Agent Commission",
+        "OTHER": "Other"
+      }
+    }
+  },
+  "zh": {
+    "pnl": {
+      "title": "利润汇总",
+      "orderPnl": "订单利润",
+      "revenue": "收入",
+      "costs": "成本",
+      "profit": "利润",
+      "profitMargin": "利润率",
+      "categories": {
+        "FABRIC": "面料",
+        "TRIM": "辅料",
+        "CMT": "CMT",
+        "WASHING": "水洗",
+        "PRINT": "印花/绣花",
+        "FREIGHT": "运费",
+        "INSPECTION": "检验费",
+        "AGENT": "代理佣金",
+        "OTHER": "其他"
+      }
+    }
+  }
+}

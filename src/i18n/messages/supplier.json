@@ -1,0 +1,68 @@
+{
+  "en": {
+    "supplier": {
+      "list": {
+        "title": "Suppliers",
+        "newButton": "New Supplier",
+        "searchPlaceholder": "Search supplier name, code..."
+      },
+      "detail": {
+        "title": "Supplier Detail",
+        "edit": "Edit Supplier",
+        "name": "Supplier Name",
+        "code": "Supplier Code",
+        "type": "Supplier Type",
+        "contactPerson": "Contact Person",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "paymentTerms": "Payment Terms",
+        "currency": "Currency",
+        "isActive": "Active",
+        "notes": "Notes"
+      },
+      "types": {
+        "FABRIC_MILL": "Fabric Mill",
+        "TRIM_SUPPLIER": "Trim Supplier",
+        "CMT_FACTORY": "CMT Factory",
+        "WASHING_PLANT": "Washing Plant",
+        "PRINT_EMBROIDERY": "Print/Embroidery",
+        "PACKAGING": "Packaging",
+        "OTHER": "Other"
+      }
+    }
+  },
+  "zh": {
+    "supplier": {
+      "list": {
+        "title": "供应商",
+        "newButton": "新建供应商",
+        "searchPlaceholder": "搜索供应商名称、编号..."
+      },
+      "detail": {
+        "title": "供应商详情",
+        "edit": "编辑供应商",
+        "name": "供应商名称",
+        "code": "供应商编号",
+        "type": "供应商类型",
+        "contactPerson": "联系人",
+        "email": "邮箱",
+        "phone": "电话",
+        "address": "地址",
+        "paymentTerms": "付款条款",
+        "currency": "币种",
+        "isActive": "启用",
+        "notes": "备注"
+      },
+      "types": {
+        "FABRIC_MILL": "面料厂",
+        "TRIM_SUPPLIER": "辅料供应商",
+        "CMT_FACTORY": "CMT工厂",
+        "WASHING_PLANT": "水洗厂",
+        "PRINT_EMBROIDERY": "印花/绣花",
+        "PACKAGING": "包装",
+        "OTHER": "其他"
+      }
+    }
+  }
+}

@@ -1,0 +1,1554 @@
+{
+  "pos": [
+    {
+      "poNo": "PORDC-0004960",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#531",
+      "orderDate": "2025-02-03T00:00:00",
+      "ihDate": "2025-04-22T00:00:00",
+      "store": "BOSCOVS",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OM1222CZEE",
+          "color": "WHITE-FLORAL PATH",
+          "unitPrice": 0.0,
+          "totalQty": 168,
+          "sizeBreakdown": {
+            "ONE SIZE": 168
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OM1226CPO",
+          "color": "WHITE",
+          "unitPrice": 0.0,
+          "totalQty": 168,
+          "sizeBreakdown": {
+            "ONE SIZE": 168
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OM6598PTP",
+          "color": "YELLOW-BIRD WATCHING/SMALL LEMONS",
+          "unitPrice": 0.0,
+          "totalQty": 168,
+          "sizeBreakdown": {
+            "ONE SIZE": 168
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000348",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#527",
+      "orderDate": "2025-11-26T00:00:00",
+      "ihDate": "2026-01-07T00:00:00",
+      "store": "BEALL\u2019S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1310CVQP",
+          "color": "MULTI",
+          "unitPrice": 8.0,
+          "totalQty": 120,
+          "sizeBreakdown": {
+            "ONE SIZE": 120
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000351",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#515",
+      "orderDate": "2025-11-26T00:00:00",
+      "ihDate": "2026-01-07T00:00:00",
+      "store": "BEALL\u2019S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1310CVQP",
+          "color": "MULTI",
+          "unitPrice": 8.0,
+          "totalQty": 600,
+          "sizeBreakdown": {
+            "ONE SIZE": 600
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000343",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#545",
+      "orderDate": "2025-11-26T00:00:00",
+      "ihDate": "2026-01-13T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF2275EMJ",
+          "color": "WHITE/MULTI",
+          "unitPrice": 7.5,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000286",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#486",
+      "orderDate": "2025-11-12T00:00:00",
+      "ihDate": "2026-01-30T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWE6557VMCP",
+          "color": "BLUE-WHISPERING FLORAL",
+          "unitPrice": 15.0,
+          "totalQty": 78,
+          "sizeBreakdown": {
+            "ONE SIZE": 78
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000387",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#536",
+      "orderDate": "2025-11-12T00:00:00",
+      "ihDate": "2026-02-02T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWE2127FKG",
+          "color": "LT STONE",
+          "unitPrice": 7.5,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000226",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#510",
+      "orderDate": "2025-12-05T00:00:00",
+      "ihDate": "2026-02-04T00:00:00",
+      "store": "DILLARD'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1307TLNP",
+          "color": "YELLOW-SEASONAL BLOOM MIMOSA",
+          "unitPrice": 0.0,
+          "totalQty": 162,
+          "sizeBreakdown": {
+            "ONE SIZE": 162
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000166",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#460",
+      "orderDate": "2025-07-19T00:00:00",
+      "ihDate": "2026-02-18T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OW22809T5",
+          "color": "GREEN/MULTI - FOLK JAZZ CW2",
+          "unitPrice": 7.2,
+          "totalQty": 83,
+          "sizeBreakdown": {
+            "ONE SIZE": 83
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000344",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#542",
+      "orderDate": "2025-11-25T00:00:00",
+      "ihDate": "2026-02-18T00:00:00",
+      "store": "BEALL'S OUTLET",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1326VMCP",
+          "color": "BLUE-PORCELAIN STAMP",
+          "unitPrice": 9.5,
+          "totalQty": 600,
+          "sizeBreakdown": {
+            "ONE SIZE": 600
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF1327UESP",
+          "color": "NAVY STRIPE",
+          "unitPrice": 0.0,
+          "totalQty": 900,
+          "sizeBreakdown": {
+            "ONE SIZE": 900
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF1328MMC",
+          "color": "YELLOW",
+          "unitPrice": 7.5,
+          "totalQty": 900,
+          "sizeBreakdown": {
+            "ONE SIZE": 900
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF1332YPJE",
+          "color": "YELLOW-ETHNIC STRIPES",
+          "unitPrice": 7.2,
+          "totalQty": 660,
+          "sizeBreakdown": {
+            "ONE SIZE": 660
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000345",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#546",
+      "orderDate": "2025-11-25T00:00:00",
+      "ihDate": "2026-02-18T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1326VMCP",
+          "color": "BLUE-PORCELAIN STAMP",
+          "unitPrice": 9.5,
+          "totalQty": 300,
+          "sizeBreakdown": {
+            "ONE SIZE": 300
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF1332YPJE",
+          "color": "YELLOW-ETHNIC STRIPES",
+          "unitPrice": 7.2,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000346",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#485",
+      "orderDate": "2025-11-25T00:00:00",
+      "ihDate": "2026-02-18T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWE1307CVQP",
+          "color": "MULTI",
+          "unitPrice": 8.5,
+          "totalQty": 258,
+          "sizeBreakdown": {
+            "ONE SIZE": 258
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000354",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#530",
+      "orderDate": "2025-11-27T00:00:00",
+      "ihDate": "2026-02-18T00:00:00",
+      "store": "BOSCOV'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OM2275EMJ",
+          "color": "WHITE",
+          "unitPrice": 7.8,
+          "totalQty": 192,
+          "sizeBreakdown": {
+            "ONE SIZE": 192
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000200",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#477",
+      "orderDate": "2025-11-12T00:00:00",
+      "ihDate": "2026-02-25T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWP1307CVQP",
+          "color": "MULTI",
+          "unitPrice": 8.0,
+          "totalQty": 294,
+          "sizeBreakdown": {
+            "ONE SIZE": 294
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000231",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#510",
+      "orderDate": "2025-12-05T00:00:00",
+      "ihDate": "2026-02-25T00:00:00",
+      "store": "DILLARD'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1282AOE",
+          "color": "WHITE CAKE",
+          "unitPrice": 0.0,
+          "totalQty": 162,
+          "sizeBreakdown": {
+            "ONE SIZE": 162
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF6608AOE",
+          "color": "WHITE CAKE",
+          "unitPrice": 0.0,
+          "totalQty": 162,
+          "sizeBreakdown": {
+            "ONE SIZE": 162
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000339",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#542",
+      "orderDate": "2025-11-26T00:00:00",
+      "ihDate": "2026-02-28T00:00:00",
+      "store": "BEALL'S OUTLET",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF2275EMJ",
+          "color": "WHITE/MULTI",
+          "unitPrice": 7.5,
+          "totalQty": 540,
+          "sizeBreakdown": {
+            "ONE SIZE": 540
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000303",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#534",
+      "orderDate": "2025-11-11T00:00:00",
+      "ihDate": "2026-03-03T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWP2127FKG",
+          "color": "LT STONE",
+          "unitPrice": 7.5,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000229",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#511",
+      "orderDate": "2025-11-27T00:00:00",
+      "ihDate": "2026-03-11T00:00:00",
+      "store": "DILLARD'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF1283VEEP",
+          "color": "SAGE-BLOSSOM LANE ALL OVER",
+          "unitPrice": 10.5,
+          "totalQty": 174,
+          "sizeBreakdown": {
+            "ONE SIZE": 174
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF1283VEEP",
+          "color": "PEACH-BLOSSOM LANE ALL OVER CW2",
+          "unitPrice": 10.5,
+          "totalQty": 174,
+          "sizeBreakdown": {
+            "ONE SIZE": 174
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF6516GPO",
+          "color": "WHITE",
+          "unitPrice": 0.0,
+          "totalQty": 174,
+          "sizeBreakdown": {
+            "ONE SIZE": 174
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005093",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 566",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "BLUE-TROPICAL TOILE",
+          "unitPrice": 5.3,
+          "totalQty": 390,
+          "sizeBreakdown": {
+            "ONE SIZE": 390
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM33170D",
+          "color": "CORAL-TROPICA WAVE CW2",
+          "unitPrice": 5.3,
+          "totalQty": 390,
+          "sizeBreakdown": {
+            "ONE SIZE": 390
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "GREEN-SUMMER GREEN",
+          "unitPrice": 5.3,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM33170D",
+          "color": "CORAL-MIAMI PALM CW2",
+          "unitPrice": 5.3,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM33170D",
+          "color": "DARK PINK- TROPICAL PARTY CW2",
+          "unitPrice": 5.3,
+          "totalQty": 300,
+          "sizeBreakdown": {
+            "ONE SIZE": 300
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM33170D",
+          "color": "DUSTY BLUE-SUMMER HOME",
+          "unitPrice": 5.3,
+          "totalQty": 300,
+          "sizeBreakdown": {
+            "ONE SIZE": 300
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005094",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 567",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NP33170D",
+          "color": "DARK PINK- TROPICAL PARTY CW2",
+          "unitPrice": 5.3,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NP33170D",
+          "color": "DUSTY BLUE-SUMMER HOME",
+          "unitPrice": 5.3,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005095",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 567",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NP34612D",
+          "color": "GREEN-SUMMER GREEN",
+          "unitPrice": 5.3,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NP33170D",
+          "color": "BAJA BLUE - MIAMI PALM CW2",
+          "unitPrice": 5.3,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005096",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 567",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NP34612D",
+          "color": "BLUE-TROPICAL TOILE",
+          "unitPrice": 5.3,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NP33170D",
+          "color": "CORAL-TROPICA WAVE CW2",
+          "unitPrice": 5.3,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005097",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 568",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NW34612D",
+          "color": "BLUE-TROPICAL TOILE",
+          "unitPrice": 5.8,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NW33170D",
+          "color": "CORAL-TROPICA WAVE CW2",
+          "unitPrice": 5.8,
+          "totalQty": 240,
+          "sizeBreakdown": {
+            "ONE SIZE": 240
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005098",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 568",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NW34612D",
+          "color": "GREEN-SUMMER GREEN",
+          "unitPrice": 5.8,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NW33170D",
+          "color": "BAJA BLUE - MIAMI PALM CW2",
+          "unitPrice": 5.8,
+          "totalQty": 300,
+          "sizeBreakdown": {
+            "ONE SIZE": 300
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005099",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 568",
+      "orderDate": "2026-02-06T00:00:00",
+      "ihDate": "2026-03-15T00:00:00",
+      "store": "BEALL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NW33170D",
+          "color": "DARK PINK- TROPICAL PARTY CW2",
+          "unitPrice": 5.8,
+          "totalQty": 300,
+          "sizeBreakdown": {
+            "ONE SIZE": 300
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NW33170D",
+          "color": "DUSTY BLUE-SUMMER HOME",
+          "unitPrice": 5.8,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000230",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#504",
+      "orderDate": "2025-11-12T00:00:00",
+      "ihDate": "2026-03-25T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWP6534VMCP",
+          "color": "WHITE/BLACK-ARTISANS PASSION",
+          "unitPrice": 13.0,
+          "totalQty": 282,
+          "sizeBreakdown": {
+            "ONE SIZE": 282
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000296",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#478",
+      "orderDate": "2025-11-12T00:00:00",
+      "ihDate": "2026-03-25T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWP6564WVS",
+          "color": "MIMOSA",
+          "unitPrice": 14.5,
+          "totalQty": 294,
+          "sizeBreakdown": {
+            "ONE SIZE": 294
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000386",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#551",
+      "orderDate": "2025-12-23T00:00:00",
+      "ihDate": "2026-03-25T00:00:00",
+      "store": "BOSCOVS",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NW34612D",
+          "color": "MINT-MINT PALMS CW2",
+          "unitPrice": 5.8,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NW34612D",
+          "color": "SCARLET-RIO PALMS CW4",
+          "unitPrice": 5.8,
+          "totalQty": 459,
+          "sizeBreakdown": {
+            "ONE SIZE": 459
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NW34612D",
+          "color": "BLUE-GYPSY SEASHELL CW1",
+          "unitPrice": 5.8,
+          "totalQty": 459,
+          "sizeBreakdown": {
+            "ONE SIZE": 459
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NW34612D",
+          "color": "NAVY-COASTAL PALMS CW1",
+          "unitPrice": 5.8,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000383",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#549",
+      "orderDate": "2025-12-12T00:00:00",
+      "ihDate": "2026-03-30T00:00:00",
+      "store": "BOSCOV'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "NAVY-COASTAL TROPIC CW1",
+          "unitPrice": 5.3,
+          "totalQty": 480,
+          "sizeBreakdown": {
+            "ONE SIZE": 480
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "MINT-MINT PALMS CW2",
+          "unitPrice": 5.3,
+          "totalQty": 480,
+          "sizeBreakdown": {
+            "ONE SIZE": 480
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "SCARLET-RIO PALMS CW4",
+          "unitPrice": 5.3,
+          "totalQty": 480,
+          "sizeBreakdown": {
+            "ONE SIZE": 480
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "RED-PALMS TILES CW2",
+          "unitPrice": 5.3,
+          "totalQty": 480,
+          "sizeBreakdown": {
+            "ONE SIZE": 480
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "BLUE-GYPSY SEASHELL CW1",
+          "unitPrice": 5.3,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "9T50NM34612D",
+          "color": "GREE-TROPICAL SPA CW1",
+          "unitPrice": 5.3,
+          "totalQty": 360,
+          "sizeBreakdown": {
+            "ONE SIZE": 360
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000361",
+      "customer": "Rloom",
+      "orderNumber": null,
+      "orderDate": "2025-12-02T00:00:00",
+      "ihDate": "2026-04-01T00:00:00",
+      "store": "KOHL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "FM3255YPO",
+          "color": "NAVY",
+          "unitPrice": 11.7,
+          "totalQty": 2050,
+          "sizeBreakdown": {
+            "ONE SIZE": 2050
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "FM1314YPO",
+          "color": "NAVY",
+          "unitPrice": 9.5,
+          "totalQty": 2050,
+          "sizeBreakdown": {
+            "ONE SIZE": 2050
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000228",
+      "customer": "Rloom",
+      "orderNumber": "ORDER# 512",
+      "orderDate": "2025-11-14T00:00:00",
+      "ihDate": "2026-04-08T00:00:00",
+      "store": "DILLARD'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF2155DKJ",
+          "color": "DUSTY PINK",
+          "unitPrice": 11.5,
+          "totalQty": 126,
+          "sizeBreakdown": {
+            "ONE SIZE": 126
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF2155DKJ",
+          "color": "DUSTY BLUE",
+          "unitPrice": 11.5,
+          "totalQty": 114,
+          "sizeBreakdown": {
+            "ONE SIZE": 114
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF2155DKJ",
+          "color": "WHITE",
+          "unitPrice": 11.5,
+          "totalQty": 108,
+          "sizeBreakdown": {
+            "ONE SIZE": 108
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000375",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#539",
+      "orderDate": "2025-12-11T00:00:00",
+      "ihDate": "2026-04-08T00:00:00",
+      "store": "KOHL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "FM6557VEEP",
+          "color": "SIENNA - PERSIAN DITZY",
+          "unitPrice": 12.75,
+          "totalQty": 3850,
+          "sizeBreakdown": {
+            "ONE SIZE": 3850
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "FM3263VEEP",
+          "color": "SIENNA - PERSIAN DITZY",
+          "unitPrice": 14.5,
+          "totalQty": 3910,
+          "sizeBreakdown": {
+            "ONE SIZE": 3910
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "FM1024VEEP",
+          "color": "SIENNA - PERSIAN DITZY",
+          "unitPrice": 8.0,
+          "totalQty": 3910,
+          "sizeBreakdown": {
+            "ONE SIZE": 3910
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000203",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#479",
+      "orderDate": "2025-10-31T00:00:00",
+      "ihDate": "2026-04-15T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OW6564WVS",
+          "color": "MIMOSA",
+          "unitPrice": 14.5,
+          "totalQty": 224,
+          "sizeBreakdown": {
+            "ONE SIZE": 224
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000333",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#479",
+      "orderDate": "2025-11-18T00:00:00",
+      "ihDate": "2026-04-15T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OW2127FKG",
+          "color": "DEEP BISCUIT",
+          "unitPrice": 7.5,
+          "totalQty": 100,
+          "sizeBreakdown": {
+            "ONE SIZE": 100
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000352",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#547",
+      "orderDate": "2025-12-05T00:00:00",
+      "ihDate": "2026-04-22T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OW2180SJY",
+          "color": "CORAL",
+          "unitPrice": 8.0,
+          "totalQty": 174,
+          "sizeBreakdown": {
+            "ONE SIZE": 174
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000409",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#531",
+      "orderDate": "2025-01-17T00:00:00",
+      "ihDate": "2026-04-22T00:00:00",
+      "store": "BOSCOVS",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OM3229MBCP",
+          "color": "YELLOW-SUNNY AVE/ PRECIOUS FOULAND",
+          "unitPrice": 0.0,
+          "totalQty": 168,
+          "sizeBreakdown": {
+            "ONE SIZE": 168
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OM1220MBCP",
+          "color": "YELLOW-SUNNY AVE/ PRECIOUS FOULAND",
+          "unitPrice": 0.0,
+          "totalQty": 168,
+          "sizeBreakdown": {
+            "ONE SIZE": 168
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000411",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#554",
+      "orderDate": "2025-01-28T00:00:00",
+      "ihDate": "2026-04-22T00:00:00",
+      "store": "ROSS",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "TR3140CDL",
+          "color": "IVORY",
+          "unitPrice": 8.25,
+          "totalQty": 1200,
+          "sizeBreakdown": {
+            "ONE SIZE": 1200
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "TR3139CDL",
+          "color": "NAVY",
+          "unitPrice": 9.5,
+          "totalQty": 4800,
+          "sizeBreakdown": {
+            "ONE SIZE": 4800
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000412",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#554",
+      "orderDate": "2025-01-28T00:00:00",
+      "ihDate": "2026-04-22T00:00:00",
+      "store": "ROSS",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "TR3139CDL",
+          "color": "IVORY",
+          "unitPrice": 9.5,
+          "totalQty": 1200,
+          "sizeBreakdown": {
+            "ONE SIZE": 1200
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005103",
+      "customer": "Rloom",
+      "orderNumber": null,
+      "orderDate": "2026-02-11T00:00:00",
+      "ihDate": "2026-04-29T00:00:00",
+      "store": "KOHL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "FME3188VMCP",
+          "color": "IVORY/PINK- BELLISIMO GARDEN",
+          "unitPrice": 18.5,
+          "totalQty": 915,
+          "sizeBreakdown": {
+            "ONE SIZE": 915
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "FME1024IPBP",
+          "color": "IVORY- BELLISIMO GARDEN",
+          "unitPrice": 10.5,
+          "totalQty": 915,
+          "sizeBreakdown": {
+            "ONE SIZE": 915
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005104",
+      "customer": "Rloom",
+      "orderNumber": null,
+      "orderDate": "2026-02-11T00:00:00",
+      "ihDate": "2026-04-29T00:00:00",
+      "store": "KOHL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "FM1024IPBP",
+          "color": "IVORY- BELLISIMO GARDEN",
+          "unitPrice": 10.5,
+          "totalQty": 4010,
+          "sizeBreakdown": {
+            "ONE SIZE": 4010
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "FM3188VMCP",
+          "color": "IVORY/PINK- BELLISIMO GARDEN",
+          "unitPrice": 18.5,
+          "totalQty": 4000,
+          "sizeBreakdown": {
+            "ONE SIZE": 4000
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "FM6609IPBP",
+          "color": "IVORY/PINK- BELLISIMO GARDEN",
+          "unitPrice": 13.5,
+          "totalQty": 4010,
+          "sizeBreakdown": {
+            "ONE SIZE": 4010
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000376",
+      "customer": "Rloom",
+      "orderNumber": null,
+      "orderDate": "2026-02-12T00:00:00",
+      "ihDate": "2026-05-06T00:00:00",
+      "store": "KOHL'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "FM3281GZZ",
+          "color": "CREAM/TAN",
+          "unitPrice": 0.0,
+          "totalQty": 2050,
+          "sizeBreakdown": {
+            "ONE SIZE": 2050
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000204",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#487",
+      "orderDate": "2025-09-16T00:00:00",
+      "ihDate": "2026-05-20T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWE3125TLNP",
+          "color": "GREEN-BRIGHT MELODY CW4",
+          "unitPrice": 16.0,
+          "totalQty": 78,
+          "sizeBreakdown": {
+            "ONE SIZE": 78
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000397",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#552",
+      "orderDate": "2026-01-17T00:00:00",
+      "ihDate": "2026-05-20T00:00:00",
+      "store": "FRED MEYER",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OM4117WPU",
+          "color": "DARK BROWN",
+          "unitPrice": 18.5,
+          "totalQty": 798,
+          "sizeBreakdown": {
+            "ONE SIZE": 798
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000353",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#548",
+      "orderDate": "2025-12-05T00:00:00",
+      "ihDate": "2026-05-27T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T5SNM330151",
+          "color": "BROWN/MULTI-ROLLING FLOWER CW2",
+          "unitPrice": 0.0,
+          "totalQty": 180,
+          "sizeBreakdown": {
+            "ONE SIZE": 180
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OW2159WRK",
+          "color": "PLUM",
+          "unitPrice": 0.0,
+          "totalQty": 180,
+          "sizeBreakdown": {
+            "ONE SIZE": 180
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OW2310SJY",
+          "color": "CREAM CLOUD WASH",
+          "unitPrice": 0.0,
+          "totalQty": 180,
+          "sizeBreakdown": {
+            "ONE SIZE": 180
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000342",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#546",
+      "orderDate": "2025-11-26T00:00:00",
+      "ihDate": "2026-05-28T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T5SNW330151",
+          "color": "BROWN/MULTI-ROLLING FLOWER CW2",
+          "unitPrice": 5.6,
+          "totalQty": 282,
+          "sizeBreakdown": {
+            "ONE SIZE": 282
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005117",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#574",
+      "orderDate": "2026-02-20T00:00:00",
+      "ihDate": "2026-05-30T00:00:00",
+      "store": "BOSCOV'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OM4117WPU",
+          "color": "DARK BROWN",
+          "unitPrice": 18.5,
+          "totalQty": 72,
+          "sizeBreakdown": {
+            "ONE SIZE": 72
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000341",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#546",
+      "orderDate": "2025-11-26T00:00:00",
+      "ihDate": "2026-06-02T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OWE2159WRK",
+          "color": "PLUM",
+          "unitPrice": 0.0,
+          "totalQty": 120,
+          "sizeBreakdown": {
+            "ONE SIZE": 120
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0000347",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#544",
+      "orderDate": "2025-12-04T00:00:00",
+      "ihDate": "2026-06-10T00:00:00",
+      "store": "VON MAUR",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "9T5SNP330151",
+          "color": "BROWN/MULTI-ROLLING FLOWER CW2",
+          "unitPrice": 5.3,
+          "totalQty": 288,
+          "sizeBreakdown": {
+            "ONE SIZE": 288
+          },
+          "notes": null
+        }
+      ]
+    },
+    {
+      "poNo": "PORDC-0005124",
+      "customer": "Rloom",
+      "orderNumber": "ORDER#577",
+      "orderDate": "2026-02-21T00:00:00",
+      "ihDate": "2026-07-30T00:00:00",
+      "store": "DILLARD'S",
+      "status": "IN_PRODUCTION",
+      "currency": "USD",
+      "lineItems": [
+        {
+          "styleNo": "OF2184PLCS",
+          "color": "Navy/White",
+          "unitPrice": 0.0,
+          "totalQty": 174,
+          "sizeBreakdown": {
+            "ONE SIZE": 174
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF2184PLCS",
+          "color": "Burgundy",
+          "unitPrice": 0.0,
+          "totalQty": 174,
+          "sizeBreakdown": {
+            "ONE SIZE": 174
+          },
+          "notes": null
+        },
+        {
+          "styleNo": "OF2184PLCS",
+          "color": "Olive",
+          "unitPrice": 0.0,
+          "totalQty": 90,
+          "sizeBreakdown": {
+            "ONE SIZE": 90
+          },
+          "notes": null
+        }
+      ]
+    }
+  ],
+  "skipped": [
+    {
+      "orderNumber": "ORDER#569",
+      "styleNo": "TR6557VEEP",
+      "store": "ROSS",
+      "color": "VINTAGE SCARF CW2 - SAGE",
+      "qty": 1200,
+      "ihDate": "2026-05-15T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": "ORDER#569",
+      "styleNo": "TR6557VEEP",
+      "store": "ROSS",
+      "color": "FRENCH VINES CW2 - BRICK RED",
+      "qty": 1200,
+      "ihDate": "2026-05-15T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": "ORDER#573",
+      "styleNo": "TR3137GBC",
+      "store": "ROSS",
+      "color": "FRENCH SWEET BORDER - BROWN RICE",
+      "qty": 4800,
+      "ihDate": "2026-05-30T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": null,
+      "styleNo": "OG4534FCP",
+      "store": "Gibson Latimer",
+      "color": "Light Brown",
+      "qty": 500,
+      "ihDate": "2026-07-22T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": null,
+      "styleNo": "OR4445SLP",
+      "store": "A LOVE A",
+      "color": "MAPLE",
+      "qty": 1400,
+      "ihDate": "2026-07-22T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": null,
+      "styleNo": "OK4118SLP",
+      "store": "A LOVE A",
+      "color": "MOCHA",
+      "qty": 532,
+      "ihDate": "2026-07-22T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": null,
+      "styleNo": "OK4118SLP",
+      "store": "A LOVE A",
+      "color": "MAPLE",
+      "qty": 532,
+      "ihDate": "2026-07-22T00:00:00",
+      "reason": "No PO# assigned yet"
+    },
+    {
+      "orderNumber": null,
+      "styleNo": "OKX4118SLP",
+      "store": "A LOVE A",
+      "color": "MAPLE",
+      "qty": 316,
+      "ihDate": "2026-07-22T00:00:00",
+      "reason": "No PO# assigned yet"
+    }
+  ]
+}

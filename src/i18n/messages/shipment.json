@@ -1,0 +1,76 @@
+{
+  "en": {
+    "shipment": {
+      "list": {
+        "title": "Shipments",
+        "newButton": "New Shipment",
+        "searchPlaceholder": "Search shipment number, customer..."
+      },
+      "detail": {
+        "title": "Shipment Detail",
+        "edit": "Edit",
+        "shipmentNumber": "Shipment Number",
+        "customer": "Customer",
+        "poNumber": "PO Number",
+        "blNumber": "B/L Number",
+        "shipDate": "Ship Date",
+        "eta": "ETA",
+        "port": "Port",
+        "mode": "Mode",
+        "status": "Status",
+        "cartons": "Cartons",
+        "volume": "Volume (CBM)",
+        "weight": "Weight (KG)"
+      },
+      "status": {
+        "BOOKED": "Booked",
+        "IN_TRANSIT": "In Transit",
+        "ARRIVED": "Arrived",
+        "CLEARED": "Cleared",
+        "DELIVERED": "Delivered"
+      },
+      "modes": {
+        "SEA": "Sea",
+        "AIR": "Air",
+        "TRUCK": "Truck"
+      }
+    }
+  },
+  "zh": {
+    "shipment": {
+      "list": {
+        "title": "出货",
+        "newButton": "新建出货",
+        "searchPlaceholder": "搜索出货号、客户..."
+      },
+      "detail": {
+        "title": "出货详情",
+        "edit": "编辑",
+        "shipmentNumber": "出货号",
+        "customer": "客户",
+        "poNumber": "订单号",
+        "blNumber": "提单号",
+        "shipDate": "出货日期",
+        "eta": "预计到港",
+        "port": "港口",
+        "mode": "运输方式",
+        "status": "状态",
+        "cartons": "箱数",
+        "volume": "体积（CBM）",
+        "weight": "重量（KG）"
+      },
+      "status": {
+        "BOOKED": "已订舱",
+        "IN_TRANSIT": "运输中",
+        "ARRIVED": "已到港",
+        "CLEARED": "已清关",
+        "DELIVERED": "已送达"
+      },
+      "modes": {
+        "SEA": "海运",
+        "AIR": "空运",
+        "TRUCK": "陆运"
+      }
+    }
+  }
+}
