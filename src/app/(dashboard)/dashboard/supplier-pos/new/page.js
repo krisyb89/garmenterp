@@ -107,7 +107,7 @@ export default function NewSupplierPOPage() {
     notes:         '',
   });
   const [lines, setLines] = useState([
-    { materialId: null, description: '', color: '', quantity: '', unit: 'YDS', unitPrice: '', vatRate: '', vatRefundable: false, poLineItemId: null },
+    { materialId: null, description: '', color: '', quantity: '', unit: 'YDS', unitPrice: '', vatRate: '', vatRefundable: false, poLineItemId: null, linkedPOId: null },
   ]);
   // PO line items for linking (loaded when user selects a PO per line)
   const [poLineItems, setPoLineItems] = useState({}); // poId → lineItems[]
@@ -139,7 +139,7 @@ export default function NewSupplierPOPage() {
   }
 
   function addLine() {
-    setLines(prev => [...prev, { materialId: null, description: '', color: '', quantity: '', unit: 'YDS', unitPrice: '', vatRate: '', vatRefundable: false, poLineItemId: null }]);
+    setLines(prev => [...prev, { materialId: null, description: '', color: '', quantity: '', unit: 'YDS', unitPrice: '', vatRate: '', vatRefundable: false, poLineItemId: null, linkedPOId: null }]);
   }
 
   function removeLine(idx) {
@@ -242,14 +242,7 @@ export default function NewSupplierPOPage() {
   const hasVAT = lines.some(l => l.vatRate && parseFloat(l.vatRate) > 0);
 
   // Derive linked customer POs from line items automatically
-  const linkedPOIds = [...new Set(lines.map(l => {
-    if (!l.poLineItemId) return null;
-    // Find which PO owns this line item
-    for (const [poId, items] of Object.entries(poLineItems)) {
-      if (items.some(li => li.id === l.poLineItemId)) return poId;
-    }
-    return null;
-  }).filter(Boolean))];
+  const linkedPOIds = [...new Set(lines.map(l => l.linkedPOId).filter(Boolean))];
   const linkedPOs = linkedPOIds.map(id => purchaseOrders.find(p => p.id === id)).filter(Boolean);
 
   // Auto-set customerPOId from line items (first linked PO as primary)
@@ -281,10 +274,9 @@ export default function NewSupplierPOPage() {
                   {linkedPOs.map(po => po.poNo + ' — ' + (po.customer?.name || '')).join(', ')}
                 </div>
               ) : (
-                <select className="input-field" value={form.customerPOId} onChange={e => setForm({ ...form, customerPOId: e.target.value })}>
-                  <option value="">None (General)</option>
-                  {purchaseOrders.map(po => <option key={po.id} value={po.id}>{po.poNo} — {po.customer?.name}</option>)}
-                </select>
+                <div className="input-field" style={{ background: '#f3f4f6', color: '#6b7280' }}>
+                  None (General)
+                </div>
               )}
             </div>
             <div>
@@ -323,7 +315,8 @@ export default function NewSupplierPOPage() {
               <thead>
                 <tr>
                   <th style={{ minWidth: 220 }}>Material *</th>
-                  <th style={{ minWidth: 280 }}>Link to PO / Style-Color</th>
+                  <th style={{ minWidth: 140 }}>Customer PO</th>
+                  <th style={{ minWidth: 140 }}>Style-Color</th>
                   <th style={{ minWidth: 100 }}>Color</th>
                   <th style={{ minWidth: 90 }}>Qty *</th>
                   <th style={{ minWidth: 75 }}>Unit</th>
@@ -349,35 +342,69 @@ export default function NewSupplierPOPage() {
                           supplierId={form.supplierId}
                         />
                       </td>
-                      {/* Link to PO Line Item */}
+                      {/* Customer PO Selection */}
                       <td>
                         <select
-                          className="input-field" style={{ width: 170, fontSize: 12 }}
-                          value={line.poLineItemId || ''}
-                          onChange={e => updateLine(idx, 'poLineItemId', e.target.value || null)}
+                          className="input-field" style={{ width: 130, fontSize: 12 }}
+                          value={line.linkedPOId || ''}
+                          onChange={e => {
+                            const poId = e.target.value || null;
+                            updateLine(idx, 'linkedPOId', poId);
+                            updateLine(idx, 'poLineItemId', null);
+                            if (poId) loadPOLineItems(poId);
+                          }}
                         >
                           <option value="">— None —</option>
-                          {purchaseOrders.map(po => {
-                            const items = poLineItems[po.id] || [];
-                            if (!items.length) {
-                              return (
-                                <option key={po.id} value="" disabled onClick={() => loadPOLineItems(po.id)}>
-                                  {po.poNo} (loading...)
-                                </option>
-                              );
-                            }
-                            return items.map(li => (
-                              <option key={li.id} value={li.id}>
-                                {po.poNo} / {li.style?.styleNo} / {li.color}
-                              </option>
-                            ));
-                          })}
+                          {purchaseOrders.map(po => (
+                            <option key={po.id} value={po.id}>
+                              {po.poNo}
+                            </option>
+                          ))}
                         </select>
-                        {!Object.keys(poLineItems).length && purchaseOrders.length > 0 && (
-                          <button type="button" className="text-xs text-blue-500 mt-1" onClick={() => purchaseOrders.forEach(po => loadPOLineItems(po.id))}>
-                            Load PO lines
-                          </button>
-                        )}
+                      </td>
+                      {/* Style-Color Selection (filtered by selected PO) */}
+                      <td>
+                        {
+                          (() => {
+                            const availableLineItems = line.linkedPOId ? (poLineItems[line.linkedPOId] || []) : [];
+                            return (
+                              <>
+                                <select
+                                  className="input-field" style={{ width: 130, fontSize: 12 }}
+                                  value={line.poLineItemId || ''}
+                                  onChange={e => {
+                                    const lineItemId = e.target.value || null;
+                                    updateLine(idx, 'poLineItemId', lineItemId);
+                                    // Auto-fill color if line item is selected
+                                    if (lineItemId && line.linkedPOId && poLineItems[line.linkedPOId]) {
+                                      const item = poLineItems[line.linkedPOId].find(li => li.id === lineItemId);
+                                      if (item && item.color) {
+                                        updateLine(idx, 'color', item.color);
+                                      }
+                                    }
+                                  }}
+                                  disabled={!line.linkedPOId}
+                                >
+                                  <option value="">{line.linkedPOId ? '— Select —' : '— Select PO first —'}</option>
+                                  {availableLineItems.map(li => (
+                                    <option key={li.id} value={li.id}>
+                                      {li.style?.styleNo} / {li.color}
+                                    </option>
+                                  ))}
+                                </select>
+                                {line.linkedPOId && !availableLineItems.length && (
+                                  <button 
+                                    type="button" 
+                                    className="text-xs text-blue-500 mt-1 block" 
+                                    onClick={() => loadPOLineItems(line.linkedPOId)}
+                                  >
+                                    Load lines
+                                  </button>
+                                )}
+                              </>
+                            );
+                          })()
+                        }
                       </td>
                       <td>
                         <input className="input-field" style={{ width: 90 }} value={line.color} onChange={e => updateLine(idx, 'color', e.target.value)} />
@@ -441,7 +468,7 @@ export default function NewSupplierPOPage() {
               </tbody>
               <tfoot>
                 <tr className="font-semibold" style={{ borderTop: '2px solid #e5e7eb' }}>
-                  <td colSpan={8} className="text-right">Grand Total ({form.currency}):</td>
+                  <td colSpan={9} className="text-right">Grand Total ({form.currency}):</td>
                   <td style={{ whiteSpace: 'nowrap' }}>{totalGross.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   <td style={{ whiteSpace: 'nowrap', color: totalVAT > 0 ? '#16a34a' : '#9ca3af' }}>
                     {totalVAT > 0 ? totalVAT.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}

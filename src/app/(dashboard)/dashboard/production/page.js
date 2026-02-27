@@ -225,7 +225,33 @@ export default function ProductionPage() {
                   <label className="block text-xs font-medium text-gray-600 mb-1">Style *</label>
                   <Combobox
                     value={form.styleNo}
-                    onSelect={val => setForm(f => ({ ...f, styleNo: val, color: '' }))}
+                    onSelect={val => {
+                      // Find line items for this style
+                      const styleLineItems = selectedPO?.lineItems?.filter(l => l.style?.styleNo === val) || [];
+                      
+                      if (styleLineItems.length === 1) {
+                        // If only one line item, auto-fill color and quantity
+                        const lineItem = styleLineItems[0];
+                        setForm(f => ({
+                          ...f,
+                          styleNo:  val,
+                          color:    lineItem.color || '',
+                          totalQty: lineItem.totalQty != null ? String(lineItem.totalQty) : '',
+                        }));
+                      } else if (styleLineItems.length > 1) {
+                        // If multiple line items, fill total quantity of all items
+                        const totalQty = styleLineItems.reduce((sum, l) => sum + (l.totalQty || 0), 0);
+                        setForm(f => ({
+                          ...f,
+                          styleNo:  val,
+                          color:    '',
+                          totalQty: totalQty > 0 ? String(totalQty) : '',
+                        }));
+                      } else {
+                        // No line items found
+                        setForm(f => ({ ...f, styleNo: val, color: '', totalQty: '' }));
+                      }
+                    }}
                     options={styleOptions}
                     placeholder={form.poId ? 'Pick style…' : 'Select PO first'}
                     disabled={!form.poId}

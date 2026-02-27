@@ -1,6 +1,6 @@
 // src/app/(dashboard)/dashboard/production/[id]/page.js
 'use client';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -10,6 +10,7 @@ const PROD_STATUSES = ['PLANNED','MATERIAL_ISSUED','CUTTING','SEWING','WASHING_F
 
 export default function ProductionDetailPage() {
   const { id } = useParams();
+  const router = useRouter();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -89,6 +90,21 @@ export default function ProductionDetailPage() {
     setOrder({ ...order, status });
   }
 
+  async function handleDelete() {
+    if (!confirm('Are you sure you want to delete this production order?')) return;
+    try {
+      const res = await fetch(`/api/production-orders/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        router.push('/dashboard/production');
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Failed to delete');
+      }
+    } catch (err) {
+      alert('Failed to delete');
+    }
+  }
+
   if (loading) return <div className="text-center py-20 text-gray-400">Loading...</div>;
   if (!order) return <div className="text-center py-20 text-red-500">Not found</div>;
 
@@ -107,6 +123,13 @@ export default function ProductionDetailPage() {
           <select className="select-field w-auto text-sm" value={order.status} onChange={e => updateStatus(e.target.value)}>
             {PROD_STATUSES.map(s => <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>)}
           </select>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="btn-danger text-sm"
+          >
+            Delete
+          </button>
         </div>
       </div>
 

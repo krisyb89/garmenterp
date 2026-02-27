@@ -18,7 +18,11 @@ export default function CostingPage() {
 
   return (
     <div>
-      <PageHeader title="Costing Sheets" subtitle="Cost estimation for all development requests" />
+      <PageHeader 
+        title="Costing Sheets" 
+        subtitle="Cost estimation for all development requests"
+        action={{ label: '+ New SRS', href: '/dashboard/srs/new' }}
+      />
 
       <div className="card overflow-hidden p-0">
         <table className="table-base">
