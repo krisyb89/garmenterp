@@ -10,7 +10,7 @@ export default function LocaleSwitcher() {
       <select
         value={locale}
         onChange={(e) => setLocale(e.target.value)}
-        className="bg-white border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         {availableLocales.map((loc) => (
           <option key={loc.code} value={loc.code}>

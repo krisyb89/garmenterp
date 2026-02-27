@@ -87,10 +87,10 @@ export default function Sidebar({ user, onClose }) {
   const isActive = (href) => pathname === href || pathname?.startsWith(href + '/');
 
   return (
-    <aside className="w-64 bg-slate-900 text-white min-h-screen flex flex-col">
+    <aside className="w-64 bg-slate-900 text-white h-screen flex flex-col fixed left-0 top-0">
       <div className="p-4 border-b border-slate-700 flex items-center justify-between">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <img src="/logo.png" alt="OHO" className="w-8 h-8 object-contain" />
+          <img src="/logo.png" alt="OHO" className="w-8 h-8 object-contain bg-white rounded p-0.5" />
           <span className="font-bold text-lg">OHO Global</span>
         </Link>
         
@@ -111,7 +111,7 @@ export default function Sidebar({ user, onClose }) {
         <LocaleSwitcher />
       </div>
 
-      <nav className="flex-1 overflow-y-auto p-4">
+      <nav className="flex-1 overflow-y-auto p-4 custom-scrollbar">
         {navItems.map((group, idx) => {
           if (group.adminOnly && user?.role !== 'ADMIN') return null;
           
