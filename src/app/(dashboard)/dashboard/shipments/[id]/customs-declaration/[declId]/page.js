@@ -93,7 +93,7 @@ export default function CustomsDeclarationPage() {
 
       {/* Header Section */}
       <div className="card mb-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           {/* Row 1 */}
           <div className="col-span-2 pb-4 border-b border-gray-200">
             <label className="label-field">预录入编号 (Pre-entry No)</label>
@@ -569,7 +569,7 @@ export default function CustomsDeclarationPage() {
 
       {/* Footer Section */}
       <div className="card">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b border-gray-200">
+        <div className="grid grid-cols-2 gap-6 mb-6 pb-6 border-b border-gray-200">
           <div>
             <label className="label-field">特殊关系确认 (Special Relationship)</label>
             <select
@@ -608,7 +608,7 @@ export default function CustomsDeclarationPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="label-field">录入员 (Declarant Name)</label>
             <input

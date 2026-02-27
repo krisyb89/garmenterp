@@ -53,7 +53,7 @@ export default function NewPackagePage() {
             {customers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Courier</label>
             <select className="select-field w-full" value={form.courier}
@@ -68,7 +68,7 @@ export default function NewPackagePage() {
               placeholder="Optional" onChange={e => set('trackingNo', e.target.value)} />
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Date Sent</label>
             <input type="date" className="input-field w-full" value={form.dateSent}

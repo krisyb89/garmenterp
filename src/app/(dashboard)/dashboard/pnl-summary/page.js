@@ -78,7 +78,7 @@ export default function PnLSummaryPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
         <div className="card text-center">
           <div className="text-xs text-gray-500">Orders</div>
           <div className="text-xl font-bold">{totals.poCount}</div>

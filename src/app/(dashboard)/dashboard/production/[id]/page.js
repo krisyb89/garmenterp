@@ -110,7 +110,7 @@ export default function ProductionDetailPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="card text-center"><div className="text-xs text-gray-500">Style</div><div className="font-bold">{order.styleNo}</div></div>
         <div className="card text-center"><div className="text-xs text-gray-500">Color</div><div className="font-bold">{order.color || '—'}</div></div>
         <div className="card text-center"><div className="text-xs text-gray-500">Qty</div><div className="text-xl font-bold">{order.totalQty?.toLocaleString()}</div></div>
@@ -137,7 +137,7 @@ export default function ProductionDetailPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Size Breakdown */}
         {order.sizeBreakdown && (
           <div className="card">
@@ -199,7 +199,7 @@ export default function ProductionDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
             <label className="block text-xs text-gray-500 mb-1">Invoice Qty</label>
             <input

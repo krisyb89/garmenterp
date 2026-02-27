@@ -215,7 +215,7 @@ export default function PODetailPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div className="card text-center">
           <div className="text-xs text-gray-500">Total Qty</div>
           <div className="text-xl font-bold">{grandQty.toLocaleString()}</div>
@@ -241,7 +241,7 @@ export default function PODetailPage() {
       {/* Editable PO Details */}
       <div className="card mb-6">
         <h2 className="font-semibold mb-4">PO Details</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div>
             <label className="label-field">Store</label>
             <input className="input-field" value={hdr.store} onChange={e => setHdr(h => ({ ...h, store: e.target.value }))} placeholder="e.g., Nordstrom" />
@@ -270,7 +270,7 @@ export default function PODetailPage() {
             <input type="date" className="input-field" value={hdr.shipByDate} onChange={e => setHdr(h => ({ ...h, shipByDate: e.target.value }))} />
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
           <div>
             <label className="label-field">Special Instructions</label>
             <input className="input-field" value={hdr.specialInstructions} onChange={e => setHdr(h => ({ ...h, specialInstructions: e.target.value }))} />
@@ -294,7 +294,7 @@ export default function PODetailPage() {
             const { qty, amount } = getLineCalc(line);
             return (
               <div key={line.id} className="border border-gray-200 rounded-lg p-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-3">
+                <div className="grid grid-cols-4 gap-3 mb-3">
                   <div>
                     <label className="label-field">Style</label>
                     <div className="input-field bg-gray-50 text-gray-700 font-medium">{line.styleNo}</div>
@@ -412,7 +412,7 @@ export default function PODetailPage() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Production Orders */}
         <div className="card">
           <h2 className="font-semibold mb-4">Production Orders ({po.productionOrders?.length || 0})</h2>
@@ -499,7 +499,7 @@ export default function PODetailPage() {
             <>
               {/* Estimated P&L Row */}
               <div className="text-xs text-gray-500 font-medium mb-1 mt-2">Estimated (from PO)</div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-2">
+              <div className="grid grid-cols-4 gap-3 mb-2">
                 <div className="bg-blue-50 rounded-lg p-2 text-center">
                   <div className="text-xs text-gray-400">Revenue</div>
                   <div className="font-bold text-blue-700 text-sm">CNY {(po.pnl.estRevenue || po.pnl.revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
@@ -539,7 +539,7 @@ export default function PODetailPage() {
               {po.pnl.isActual && (
                 <>
                   <div className="text-xs text-gray-500 font-medium mb-1">Actual (from {po.pnl.invoiceCount} invoice{po.pnl.invoiceCount !== 1 ? 's' : ''})</div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-3">
+                  <div className="grid grid-cols-4 gap-3 mb-3">
                     <div className="bg-blue-50 rounded-lg p-2 text-center border-2 border-blue-200">
                       <div className="text-xs text-gray-400">Revenue</div>
                       <div className="font-bold text-blue-700 text-sm">CNY {(po.pnl.actRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>

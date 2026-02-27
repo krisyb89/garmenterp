@@ -220,7 +220,7 @@ export default function ProductionPage() {
               </div>
 
               {/* Style + Color from PO line items */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Style *</label>
                   <Combobox
@@ -262,7 +262,7 @@ export default function ProductionPage() {
               </div>
 
               {/* Dates */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Target Start</label>
                   <input type="date" value={form.targetStartDate} onChange={sfE('targetStartDate')} className="input-field" />
@@ -274,7 +274,7 @@ export default function ProductionPage() {
               </div>
 
               {/* CMT Rate */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">CMT Rate</label>
                   <input type="number" step="0.01" min="0" value={form.cmtRate} onChange={sfE('cmtRate')} placeholder="0.00" className="input-field" />

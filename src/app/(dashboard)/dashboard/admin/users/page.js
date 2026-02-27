@@ -133,7 +133,7 @@ export default function UsersPage() {
         <div className="card mb-6 max-w-2xl">
           <h2 className="font-semibold mb-4">{editingUser ? `Edit: ${editingUser.name}` : 'Create New User'}</h2>
           <form onSubmit={editingUser ? handleEdit : handleCreate} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="label-field">Full Name *</label>
                 <input
@@ -154,7 +154,7 @@ export default function UsersPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="label-field">{editingUser ? 'New Password (leave blank to keep)' : 'Password *'}</label>
                 <input
@@ -178,7 +178,7 @@ export default function UsersPage() {
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="label-field">Phone</label>
                 <input

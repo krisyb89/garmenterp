@@ -133,7 +133,7 @@ export default function NewPOPage() {
         {/* PO Header */}
         <div className="card">
           <h2 className="font-semibold mb-4">PO Details</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="label-field">PO# *</label>
               <input name="poNo" className="input-field" required placeholder="e.g., NK-PO-2025-001" />
@@ -154,7 +154,7 @@ export default function NewPOPage() {
               <input name="shipByDate" type="date" className="input-field" />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div>
               <label className="label-field">Cancel Date</label>
               <input name="cancelDate" type="date" className="input-field" />
@@ -175,7 +175,7 @@ export default function NewPOPage() {
               <input name="portOfDischarge" className="input-field" placeholder="e.g., Los Angeles" />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div>
               <label className="label-field">Currency</label>
               <select name="currency" className="select-field" defaultValue="USD">
@@ -218,7 +218,7 @@ export default function NewPOPage() {
                   <div key={idx} className="border border-gray-200 rounded-lg p-4 relative">
                     <button type="button" onClick={() => removeLineItem(idx)} className="absolute top-2 right-2 text-red-400 hover:text-red-600 text-sm">✕ Remove</button>
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+                    <div className="grid grid-cols-4 gap-4 mb-4">
                       <div>
                         <label className="label-field">Style *</label>
                         <select className="select-field" value={line.styleId} onChange={e => updateLineItem(idx, 'styleId', e.target.value)} required>

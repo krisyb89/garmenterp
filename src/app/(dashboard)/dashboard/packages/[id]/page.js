@@ -423,7 +423,7 @@ export default function PackageDetailPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
           <div>
             <label className="block text-xs text-gray-500 mb-1">Courier</label>
             <select className="select-field w-full text-sm" value={hdr.courier}

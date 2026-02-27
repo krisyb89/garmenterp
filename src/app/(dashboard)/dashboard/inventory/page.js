@@ -46,7 +46,7 @@ export default function InventoryPage() {
       <PageHeader title="Inventory" subtitle="Raw materials, WIP, and finished goods stock" />
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="card">
           <p className="text-sm text-gray-500">Total Items</p>
           <p className="text-2xl font-bold">{totalItems}</p>

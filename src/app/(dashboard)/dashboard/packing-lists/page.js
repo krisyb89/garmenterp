@@ -152,7 +152,7 @@ export default function PackingListsPage() {
         action={{ href: '/dashboard/packing-lists/create', label: '+ New Packing List' }} />
 
       {/* Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
         <div className="card">
           <p className="text-sm text-gray-500">Packing Lists</p>
           <p className="text-2xl font-bold">{packingLists.length}</p>
@@ -421,7 +421,7 @@ function PLCard({ pl, isExpanded, onToggleExpand, cartons, cartonsLoading, onUpd
                     groups[key].pcs += c.totalPcs;
                   }
                   return (
-                    <div className="grid grid-cols-1 sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                       {Object.values(groups).map((g, i) => (
                         <div key={i} className="text-sm bg-gray-50 rounded p-2">
                           <span className="font-medium">{g.styleNo}</span> <span className="text-gray-500">{g.color}</span>

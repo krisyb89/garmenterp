@@ -21,7 +21,6 @@
     "bcryptjs": "2.4.3",
     "cookie": "0.6.0",
     "date-fns": "3.6.0",
-    "js-cookie": "^3.0.5",
     "jsonwebtoken": "9.0.2",
     "next": "14.2.18",
     "react": "18.2.0",
@@ -30,7 +29,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.4.20",
-    "pm2": "^6.0.14",
+    "pg": "^8.18.0",
     "postcss": "8.4.47",
     "prisma": "^6.4.1",
     "tailwindcss": "3.4.14"

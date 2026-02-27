@@ -47,7 +47,7 @@ export default function NewStylePage() {
           <ImageUploader images={imageUrls} onChange={setImageUrls} maxImages={10} />
         </div>
 
-        <div className="border-t pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="border-t pt-4 grid grid-cols-2 gap-4">
           <div><label className="label-field">Style# *</label><input name="styleNo" className="input-field" required /></div>
           <div><label className="label-field">Customer *</label>
             <select name="customerId" className="select-field" required>
@@ -56,7 +56,7 @@ export default function NewStylePage() {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div><label className="label-field">Customer Ref</label><input name="customerRef" className="input-field" /></div>
           <div><label className="label-field">Category</label>
             <select name="category" className="select-field">
@@ -65,7 +65,7 @@ export default function NewStylePage() {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div><label className="label-field">Season</label><input name="season" className="input-field" placeholder="e.g., SS26" /></div>
           <div><label className="label-field">Construction</label>
             <select name="construction" className="select-field">

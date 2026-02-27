@@ -77,7 +77,7 @@ export default function InvoicesPage() {
         <form onSubmit={createFromShipment} className="card mb-6 space-y-4">
           <h3 className="font-semibold">Generate Invoice from Shipment</h3>
           <p className="text-sm text-gray-500">Select a shipment to auto-generate invoice line items from all packing lists.</p>
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="label-field">Shipment *</label>
               <select name="shipmentId" className="select-field" required>

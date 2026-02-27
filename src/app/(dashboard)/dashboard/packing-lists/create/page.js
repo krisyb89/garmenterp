@@ -153,7 +153,7 @@ export default function CreatePackingListPage() {
 
       <div className="card mb-6">
         <h3 className="font-semibold text-gray-900 mb-3">1. Select Purchase Order</h3>
-        <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="label-field">Purchase Order *</label>
             <select className="select-field" value={selectedPOId} onChange={e => handlePOSelect(e.target.value)}>
@@ -216,7 +216,7 @@ export default function CreatePackingListPage() {
                       <button onClick={() => removeCartonGroup(g.id)} className="text-xs text-red-600">Remove</button>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-3">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
                     <div>
                       <label className="label-field text-xs">Style-Color *</label>
                       <select className="select-field text-sm" value={g.poLineItemId} onChange={e => updateGroup(g.id, 'poLineItemId', e.target.value)}>
@@ -261,7 +261,7 @@ export default function CreatePackingListPage() {
                       </div>
                     </div>
                   )}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-3 mb-3">
+                  <div className="grid grid-cols-2 md:grid-cols-7 gap-3 mb-3">
                     <div><label className="label-field text-xs">Cartons #</label><input type="number" min="1" className="input-field text-sm" value={g.cartonCount} onChange={e => updateGroup(g.id, 'cartonCount', parseInt(e.target.value) || 1)} /></div>
                     <div><label className="label-field text-xs">GW/Ctn (kg)</label><input type="number" step="0.01" className="input-field text-sm" value={g.grossWeight} onChange={e => updateGroup(g.id, 'grossWeight', e.target.value)} /></div>
                     <div><label className="label-field text-xs">NW/Ctn (kg)</label><input type="number" step="0.01" className="input-field text-sm" value={g.netWeight} onChange={e => updateGroup(g.id, 'netWeight', e.target.value)} /></div>

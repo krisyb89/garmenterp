@@ -1,19 +1,10 @@
+// src/app/api/auth/logout/route.js
 import { NextResponse } from 'next/server';
 
-export async function POST(request) {
+export async function POST() {
   try {
     const response = NextResponse.json({ success: true });
-    
-    // 修复 Cookie Secure 标志 - 根据实际请求协议决定
-    const isSecure = request.headers.get('x-forwarded-proto') === 'https' || process.env.NODE_ENV === 'production';
-    
-    response.cookies.set('auth-token', '', { 
-      maxAge: 0, 
-      path: '/',
-      httpOnly: true,
-      secure: isSecure,
-      sameSite: 'lax',
-    });
+    response.cookies.set('auth-token', '', { maxAge: 0, path: '/' });
     return response;
 
   } catch (error) {

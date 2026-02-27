@@ -93,7 +93,7 @@ export default function MaterialDetailPage() {
       {editing ? (
         <div className="card">
           <h2 className="font-semibold mb-4">Edit Material</h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="label">Code</label>
               <input className="input-field" value={form.code} onChange={e => setForm({ ...form, code: e.target.value })} />
@@ -162,7 +162,7 @@ export default function MaterialDetailPage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="card">
               <h2 className="font-semibold mb-3">Specifications</h2>
               <dl className="space-y-2 text-sm">

@@ -1,0 +1,3229 @@
+[
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#545",
+    "poNo": "PORDC-0000343",
+    "poReceivedDate": "2025-11-26",
+    "ihDate": "2026-01-13",
+    "styleNo": "OF2275EMJ",
+    "store": "BEALL'S",
+    "printName": "WHITE/MULTI",
+    "quantity": 360,
+    "unitPrice": 7.5,
+    "totalValue": 2700.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/11 sent 12/25 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP ok",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "11/25 sent bulk fabric 12/9 sent 12/19 ok 12/27 sent bulk fabric 12/31 OK",
+        "status": "APPROVED"
+      },
+      "Contrast Quality": {
+        "type": "CUSTOM",
+        "segment": "FABRICS",
+        "label": "Contrast Fabric",
+        "text": "11/25 sent bulk fabric 12/9 sent 12/19 ok, bulk fabric IH",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#486",
+    "poNo": "PORDC-0000286",
+    "poReceivedDate": "2025-11-12",
+    "ihDate": "2026-01-30",
+    "styleNo": "OWE6557VMCP",
+    "store": "VON MAUR",
+    "printName": "BLUE-WHISPERING FLORAL",
+    "quantity": 78,
+    "unitPrice": 15.0,
+    "totalValue": 1170.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/2 sent 12/25 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/13 sent, 2/10 ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "10/31 sent,11/4 rej 11/10 resent, 11/19 approved S/O option A sent on 11/10",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/5 sent bulk fabric 12/11 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#536",
+    "poNo": "PORDC-0000387",
+    "poReceivedDate": "2025-11-12",
+    "ihDate": "2026-02-02",
+    "styleNo": "OWE2127FKG",
+    "store": "BEALL'S",
+    "printName": "LT STONE",
+    "quantity": 360,
+    "unitPrice": 8.8,
+    "totalValue": 3168.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/16 sent 1/6 OK",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/17 sent 2/3 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/27 sent fabric quality and L/D 1/3 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#510",
+    "poNo": "PORDC-0000226",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-02-04",
+    "styleNo": "OF1307TLNP",
+    "store": "DILLARD'S",
+    "printName": "YELLOW-SEASONAL BLOOM MIMOSA",
+    "quantity": 162,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "12/9 OK",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/26 sent 1/13 rej 1/22 sent 1/29 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/9 AW OK 12/13 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/16 sent 1/21 ok",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/20 sent 1/7 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent button quality&size 12/10 ok 1/24 sent button L/D 2/3 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#546",
+    "poNo": "PORDC-0000345",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OF1326VMCP",
+    "store": "BEALL'S",
+    "printName": "BLUE-PORCELAIN STAMP",
+    "quantity": 300,
+    "unitPrice": 9.5,
+    "totalValue": 2850.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/8 sent 1/30 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/9 sent 2/26 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/16 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/24 sent S/O 1/31 darker 10%",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#546",
+    "poNo": "PORDC-0000345",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OF1332YPJE",
+    "store": "BEALL'S",
+    "printName": "YELLOW-ETHNIC STRIPES",
+    "quantity": 240,
+    "unitPrice": 7.2,
+    "totalValue": 1728.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/22 sent 2/7 rej",
+        "status": "REJECTED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/16 sent 1/21 ok",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/16 sent 12/30 rej, need OG quality or crincle 1/5 sent 2 fabric options 1/8 option A 1/27 fabric OK on 1/22 sent",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "1/24 sent tassel quality&size 2/7 too bright, match to yellow",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#485",
+    "poNo": "PORDC-0000346",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OWE1307CVQP",
+    "store": "VON MAUR",
+    "printName": "MULTI",
+    "quantity": 258,
+    "unitPrice": 8.5,
+    "totalValue": 2193.0,
+    "approvals": {
+      "OG Sample": {
+        "type": "PROTO",
+        "segment": "SAMPLES",
+        "label": "OG Sample",
+        "text": "ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/26 sent 1/21 rej 2/6 sent,2/21 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/9 AW OK 12/13 TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/20 sent 1/7 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent button quality&size 12/10 ok 1/24 sent button L/D 2/7 rej 2/9 sent",
+        "status": "REJECTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#460",
+    "poNo": "PORDC-0000166",
+    "poReceivedDate": "2025-07-19",
+    "ihDate": "2026-02-18",
+    "styleNo": "OW22809T5",
+    "store": "VON MAUR",
+    "printName": "GREEN/MULTI - FOLK JAZZ CW2",
+    "quantity": 83,
+    "unitPrice": 7.2,
+    "totalValue": 598.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/12 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/10 sent, 12/31 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/16 sent 1/27 OK",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "11/11 ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "11/25 sent, 12/12 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "11/11 sent button 11/27 OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship for 3/25 IH",
+    "orderNumber": "ORDER#530",
+    "poNo": "PORDC-0000354",
+    "poReceivedDate": "2025-11-27",
+    "ihDate": "2026-02-18",
+    "styleNo": "OM2275EMJ",
+    "store": "BOSCOV'S",
+    "printName": "WHITE",
+    "quantity": 192,
+    "unitPrice": 7.8,
+    "totalValue": 1498.0,
+    "approvals": {
+      "OG Sample": {
+        "type": "PROTO",
+        "segment": "SAMPLES",
+        "label": "OG Sample",
+        "text": "ok",
+        "status": "APPROVED"
+      },
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/11 sent 12/25 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/10 sent 1/24 send front back side photo ,will release grading",
+        "status": "SUBMITTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "11/25 sent bulk fabric 12/9 sent 12/19 ok 12/27 sent 12/31 OK",
+        "status": "APPROVED"
+      },
+      "Contrast Quality": {
+        "type": "CUSTOM",
+        "segment": "FABRICS",
+        "label": "Contrast Fabric",
+        "text": "11/25 sent bulk fabric 12/9 sent 12/19 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#542",
+    "poNo": "PORDC-0000344",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OF1326VMCP",
+    "store": "BEALL'S OUTLET",
+    "printName": "BLUE-PORCELAIN STAMP",
+    "quantity": 600,
+    "unitPrice": 9.5,
+    "totalValue": 5700.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/8 sent 1/30 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/9 sent 2/26 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/16 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/24 sent S/O 1/31 darker 10%",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "1/10 ok",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/24 sent bulk fabric",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#542",
+    "poNo": "PORDC-0000344",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OF1327UESP",
+    "store": "BEALL'S OUTLET",
+    "printName": "NAVY STRIPE",
+    "quantity": 900,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "2/9 sent 2/14 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/16 AW OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/6 sent quality& L/D 1/10 ok pending",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "2/13 tassel color 1, S8635\n\n\n\n2 S8502\n\n\n\n3, S8108",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#542",
+    "poNo": "PORDC-0000344",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OF1328MMC",
+    "store": "BEALL'S OUTLET",
+    "printName": "YELLOW",
+    "quantity": 900,
+    "unitPrice": 7.5,
+    "totalValue": 6750.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/16 sent 2/7 rej",
+        "status": "REJECTED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/10 sent eyelt fabric quality&cotton voile L/D 1/16 eyelet ok, L/D rej 1/22 sent 1/28 option A",
+        "status": "REJECTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#542",
+    "poNo": "PORDC-0000344",
+    "poReceivedDate": "2025-11-25",
+    "ihDate": "2026-02-18",
+    "styleNo": "OF1332YPJE",
+    "store": "BEALL'S OUTLET",
+    "printName": "YELLOW-ETHNIC STRIPES",
+    "quantity": 660,
+    "unitPrice": 7.2,
+    "totalValue": 4752.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/22 sent 2/7 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/23 AW ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/16 sent 1/21 ok",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/16 sent 12/30 rej, need OG quality or crincle 1/5 sent 2 fabric options 1/8 option A 1/27 fabric OK on 1/22 sent fit sample",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "1/24 sent tassel quality&size 2/7 too bright, match to yellow",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#510",
+    "poNo": "PORDC-0000231",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-02-25",
+    "styleNo": "OF1282AOE",
+    "store": "DILLARD'S",
+    "printName": "WHITE CAKE",
+    "quantity": 162,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "12/9 OK",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/9 TP ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#510",
+    "poNo": "PORDC-0000231",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-02-25",
+    "styleNo": "OF6608AOE",
+    "store": "DILLARD'S",
+    "printName": "WHITE CAKE",
+    "quantity": 162,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/16 TP OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#477",
+    "poNo": "PORDC-0000200",
+    "poReceivedDate": "2025-11-12",
+    "ihDate": "2026-02-25",
+    "styleNo": "OWP1307CVQP",
+    "store": "VON MAUR",
+    "printName": "MULTI",
+    "quantity": 294,
+    "unitPrice": 8.0,
+    "totalValue": 2352.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/5 sent 12/24 rej 1/8 sent 1/20 OK",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/6 sent,2/13 ok, submit reference PP",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/9 AW OK TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/20 sent 1/7 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent button quality&size 12/10 ok 1/24 sent button L/D 2/7 rej 2/9 sent",
+        "status": "REJECTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship for 3/25 IH",
+    "orderNumber": "ORDER#542",
+    "poNo": "PORDC-0000339",
+    "poReceivedDate": "2025-11-26",
+    "ihDate": "2026-02-28",
+    "styleNo": "OF2275EMJ",
+    "store": "BEALL'S OUTLET",
+    "printName": "WHITE/MULTI",
+    "quantity": 540,
+    "unitPrice": 7.5,
+    "totalValue": 4050.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/11 sent 12/25 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "11/25 sent bulk fabric 12/9 sent 12/19 ok 12/27 sent bulk fabric 12/31 OK",
+        "status": "APPROVED"
+      },
+      "Contrast Quality": {
+        "type": "CUSTOM",
+        "segment": "FABRICS",
+        "label": "Contrast Fabric",
+        "text": "11/25 sent bulk fabric 12/9 sent 12/19 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Can't ship before CNY",
+    "orderNumber": "ORDER#534",
+    "poNo": "PORDC-0000303",
+    "poReceivedDate": "2025-11-11",
+    "ihDate": "2026-03-03",
+    "styleNo": "OWP2127FKG",
+    "store": "BEALL'S",
+    "printName": "LT STONE",
+    "quantity": 360,
+    "unitPrice": 8.2,
+    "totalValue": 2952.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/16 sent 1/3 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/17 sent 1/31 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/27 sent fabric quality and L/D 1/3 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Waiting fit comments",
+    "orderNumber": "ORDER#504",
+    "poNo": "PORDC-0000230",
+    "poReceivedDate": "2025-11-12",
+    "ihDate": "2026-03-25",
+    "styleNo": "OWP6534VMCP",
+    "store": "VON MAUR",
+    "printName": "WHITE/BLACK-ARTISANS PASSION",
+    "quantity": 282,
+    "unitPrice": 13.0,
+    "totalValue": 3666.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/23 sent 1/10 rej 1/19 sent 2/10 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "11/13 OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/9 sent 12/30 ok",
+        "status": "APPROVED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "1/10 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#511",
+    "poNo": "PORDC-0000229",
+    "poReceivedDate": "2025-11-27",
+    "ihDate": "2026-03-11",
+    "styleNo": "OF1283VEEP",
+    "store": "DILLARD'S",
+    "printName": "SAGE-BLOSSOM LANE ALL OVER",
+    "quantity": 174,
+    "unitPrice": 10.5,
+    "totalValue": 1827.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/26 sent 1/13 rej 1/22 sent 1/29 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/2 TP OK 12/11 AW ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/31 sent 1/7 ok",
+        "status": "APPROVED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "1/24 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "1/21 sent shell button",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#511",
+    "poNo": "PORDC-0000229",
+    "poReceivedDate": "2025-11-27",
+    "ihDate": "2026-03-11",
+    "styleNo": "OF1283VEEP",
+    "store": "DILLARD'S",
+    "printName": "PEACH-BLOSSOM LANE ALL OVER CW2",
+    "quantity": 174,
+    "unitPrice": 10.5,
+    "totalValue": 1827.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/26 sent 1/13 rej 1/22 sent 1/29 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/2 TP OK 12/11 AW ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/31 sent 1/7 ok",
+        "status": "APPROVED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "1/23 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "1/21 sent shell button",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#511",
+    "poNo": "PORDC-0000229",
+    "poReceivedDate": "2025-11-27",
+    "ihDate": "2026-03-11",
+    "styleNo": "OF6516GPO",
+    "store": "DILLARD'S",
+    "printName": "WHITE",
+    "quantity": 174,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/23 sent 1/10 OK",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/19 sent 1/27 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/2 TP OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 566",
+    "poNo": "PORDC-0005093",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NM34612D",
+    "store": "BEALL'S",
+    "printName": "BLUE-TROPICAL TOILE",
+    "quantity": 390,
+    "unitPrice": 5.3,
+    "totalValue": 2067.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 566",
+    "poNo": "PORDC-0005093",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NM33170D",
+    "store": "BEALL'S",
+    "printName": "CORAL-TROPICA WAVE CW2",
+    "quantity": 390,
+    "unitPrice": 5.3,
+    "totalValue": 2067.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 566",
+    "poNo": "PORDC-0005093",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NM34612D",
+    "store": "BEALL'S",
+    "printName": "GREEN-SUMMER GREEN",
+    "quantity": 360,
+    "unitPrice": 5.3,
+    "totalValue": 1908.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 566",
+    "poNo": "PORDC-0005093",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NM33170D",
+    "store": "BEALL'S",
+    "printName": "CORAL-MIAMI PALM CW2",
+    "quantity": 360,
+    "unitPrice": 5.3,
+    "totalValue": 1908.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 566",
+    "poNo": "PORDC-0005093",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NM33170D",
+    "store": "BEALL'S",
+    "printName": "DARK PINK- TROPICAL PARTY CW2",
+    "quantity": 300,
+    "unitPrice": 5.3,
+    "totalValue": 1590.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 566",
+    "poNo": "PORDC-0005093",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NM33170D",
+    "store": "BEALL'S",
+    "printName": "DUSTY BLUE-SUMMER HOME",
+    "quantity": 300,
+    "unitPrice": 5.3,
+    "totalValue": 1590.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 567",
+    "poNo": "PORDC-0005096",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NP34612D",
+    "store": "BEALL'S",
+    "printName": "BLUE-TROPICAL TOILE",
+    "quantity": 240,
+    "unitPrice": 5.3,
+    "totalValue": 1272.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 567",
+    "poNo": "PORDC-0005096",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NP33170D",
+    "store": "BEALL'S",
+    "printName": "CORAL-TROPICA WAVE CW2",
+    "quantity": 240,
+    "unitPrice": 5.3,
+    "totalValue": 1272.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 567",
+    "poNo": "PORDC-0005095",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NP34612D",
+    "store": "BEALL'S",
+    "printName": "GREEN-SUMMER GREEN",
+    "quantity": 360,
+    "unitPrice": 5.3,
+    "totalValue": 1908.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 567",
+    "poNo": "PORDC-0005095",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NP33170D",
+    "store": "BEALL'S",
+    "printName": "BAJA BLUE - MIAMI PALM CW2",
+    "quantity": 240,
+    "unitPrice": 5.3,
+    "totalValue": 1272.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 567",
+    "poNo": "PORDC-0005094",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NP33170D",
+    "store": "BEALL'S",
+    "printName": "DARK PINK- TROPICAL PARTY CW2",
+    "quantity": 240,
+    "unitPrice": 5.3,
+    "totalValue": 1272.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 567",
+    "poNo": "PORDC-0005094",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NP33170D",
+    "store": "BEALL'S",
+    "printName": "DUSTY BLUE-SUMMER HOME",
+    "quantity": 360,
+    "unitPrice": 5.3,
+    "totalValue": 1908.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 568",
+    "poNo": "PORDC-0005097",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NW34612D",
+    "store": "BEALL'S",
+    "printName": "BLUE-TROPICAL TOILE",
+    "quantity": 240,
+    "unitPrice": 5.8,
+    "totalValue": 1392.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 568",
+    "poNo": "PORDC-0005097",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NW33170D",
+    "store": "BEALL'S",
+    "printName": "CORAL-TROPICA WAVE CW2",
+    "quantity": 240,
+    "unitPrice": 5.8,
+    "totalValue": 1392.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 568",
+    "poNo": "PORDC-0005098",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NW34612D",
+    "store": "BEALL'S",
+    "printName": "GREEN-SUMMER GREEN",
+    "quantity": 360,
+    "unitPrice": 5.8,
+    "totalValue": 2088.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 568",
+    "poNo": "PORDC-0005098",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NW33170D",
+    "store": "BEALL'S",
+    "printName": "BAJA BLUE - MIAMI PALM CW2",
+    "quantity": 300,
+    "unitPrice": 5.8,
+    "totalValue": 1740.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 568",
+    "poNo": "PORDC-0005099",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NW33170D",
+    "store": "BEALL'S",
+    "printName": "DARK PINK- TROPICAL PARTY CW2",
+    "quantity": 300,
+    "unitPrice": 5.8,
+    "totalValue": 1740.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Will ship without price tag",
+    "orderNumber": "ORDER# 568",
+    "poNo": "PORDC-0005099",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-03-15",
+    "styleNo": "9T50NW33170D",
+    "store": "BEALL'S",
+    "printName": "DUSTY BLUE-SUMMER HOME",
+    "quantity": 360,
+    "unitPrice": 5.8,
+    "totalValue": 2088.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "Ship with no hanger for ecom, flat pack",
+    "orderNumber": "ORDER#478",
+    "poNo": "PORDC-0000296",
+    "poReceivedDate": "2025-11-12",
+    "ihDate": "2026-03-25",
+    "styleNo": "OWP6564WVS",
+    "store": "VON MAUR",
+    "printName": "MIMOSA",
+    "quantity": 294,
+    "unitPrice": 14.5,
+    "totalValue": 4263.0,
+    "approvals": {
+      "OG Sample": {
+        "type": "PROTO",
+        "segment": "SAMPLES",
+        "label": "OG Sample",
+        "text": "ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/18 sent 1/10 rej 1/16 sent 1/29 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/29 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/5 sent 12/11 lighter 15%",
+        "status": "SUBMITTED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "11/28 sent 12/16 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent lace quality&size 12/9 ok, need DTM 12/20 sent 1/7 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#551",
+    "poNo": "PORDC-0000386",
+    "poReceivedDate": "2025-12-23",
+    "ihDate": "2026-03-25",
+    "styleNo": "9T50NW34612D",
+    "store": "BOSCOVS",
+    "printName": "MINT-MINT PALMS CW2",
+    "quantity": 360,
+    "unitPrice": 5.8,
+    "totalValue": 2088.0,
+    "approvals": {
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#551",
+    "poNo": "PORDC-0000386",
+    "poReceivedDate": "2025-12-23",
+    "ihDate": "2026-03-25",
+    "styleNo": "9T50NW34612D",
+    "store": "BOSCOVS",
+    "printName": "SCARLET-RIO PALMS CW4",
+    "quantity": 459,
+    "unitPrice": 5.8,
+    "totalValue": 2662.0,
+    "approvals": {
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#551",
+    "poNo": "PORDC-0000386",
+    "poReceivedDate": "2025-12-23",
+    "ihDate": "2026-03-25",
+    "styleNo": "9T50NW34612D",
+    "store": "BOSCOVS",
+    "printName": "BLUE-GYPSY SEASHELL CW1",
+    "quantity": 459,
+    "unitPrice": 5.8,
+    "totalValue": 2662.0,
+    "approvals": {
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#551",
+    "poNo": "PORDC-0000386",
+    "poReceivedDate": "2025-12-23",
+    "ihDate": "2026-03-25",
+    "styleNo": "9T50NW34612D",
+    "store": "BOSCOVS",
+    "printName": "NAVY-COASTAL PALMS CW1",
+    "quantity": 360,
+    "unitPrice": 5.8,
+    "totalValue": 2088.0,
+    "approvals": {
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#549",
+    "poNo": "PORDC-0000383",
+    "poReceivedDate": "2025-12-12",
+    "ihDate": "2026-03-30",
+    "styleNo": "9T50NM34612D",
+    "store": "BOSCOV'S",
+    "printName": "NAVY-COASTAL TROPIC CW1",
+    "quantity": 480,
+    "unitPrice": 5.3,
+    "totalValue": 2544.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#549",
+    "poNo": "PORDC-0000383",
+    "poReceivedDate": "2025-12-12",
+    "ihDate": "2026-03-30",
+    "styleNo": "9T50NM34612D",
+    "store": "BOSCOV'S",
+    "printName": "MINT-MINT PALMS CW2",
+    "quantity": 480,
+    "unitPrice": 5.3,
+    "totalValue": 2544.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#549",
+    "poNo": "PORDC-0000383",
+    "poReceivedDate": "2025-12-12",
+    "ihDate": "2026-03-30",
+    "styleNo": "9T50NM34612D",
+    "store": "BOSCOV'S",
+    "printName": "SCARLET-RIO PALMS CW4",
+    "quantity": 480,
+    "unitPrice": 5.3,
+    "totalValue": 2544.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#549",
+    "poNo": "PORDC-0000383",
+    "poReceivedDate": "2025-12-12",
+    "ihDate": "2026-03-30",
+    "styleNo": "9T50NM34612D",
+    "store": "BOSCOV'S",
+    "printName": "RED-PALMS TILES CW2",
+    "quantity": 480,
+    "unitPrice": 5.3,
+    "totalValue": 2544.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/17 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#549",
+    "poNo": "PORDC-0000383",
+    "poReceivedDate": "2025-12-12",
+    "ihDate": "2026-03-30",
+    "styleNo": "9T50NM34612D",
+    "store": "BOSCOV'S",
+    "printName": "BLUE-GYPSY SEASHELL CW1",
+    "quantity": 360,
+    "unitPrice": 5.3,
+    "totalValue": 1908.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#549",
+    "poNo": "PORDC-0000383",
+    "poReceivedDate": "2025-12-12",
+    "ihDate": "2026-03-30",
+    "styleNo": "9T50NM34612D",
+    "store": "BOSCOV'S",
+    "printName": "GREE-TROPICAL SPA CW1",
+    "quantity": 360,
+    "unitPrice": 5.3,
+    "totalValue": 1908.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 AW OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/17 sent return to original scal ,ok",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0000361",
+    "poReceivedDate": "2025-12-02",
+    "ihDate": "2026-04-01",
+    "styleNo": "FM3255YPO",
+    "store": "KOHL'S",
+    "printName": "NAVY",
+    "quantity": 2050,
+    "unitPrice": 11.7,
+    "totalValue": 23985.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "12/9 OK",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/26 sent 1/14 rej 1/19 sent,1/27 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/6 sent 2/11 rej",
+        "status": "REJECTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/9 TP ok",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/18 sent L/D 12/30 rej 1/5 sent L/D 1/8 option D grey cast 2/2 sent bulk fabric 2/6 rej",
+        "status": "REJECTED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "1/14 sent button quality&size 1/24 option A & C dyed to decide 1/28 sent 2/5 option B",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0000361",
+    "poReceivedDate": "2025-12-02",
+    "ihDate": "2026-04-01",
+    "styleNo": "FM1314YPO",
+    "store": "KOHL'S",
+    "printName": "NAVY",
+    "quantity": 2050,
+    "unitPrice": 9.5,
+    "totalValue": 19475.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "12/3 OK",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/26 sent 1/8 rej 1/19 sent,1/27 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/6 sent 2/11 rej",
+        "status": "REJECTED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/18 sent L/D 12/30 rej 1/5 sent L/D 1/8 option D grey cast 2/2 sent bulk fabric 2/6 rej",
+        "status": "REJECTED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "1/14 sent button quality&size 1/24 option A & C dyed to decide 1/28 sent 2/5 option B",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER# 512",
+    "poNo": "PORDC-0000228",
+    "poReceivedDate": "2025-11-14",
+    "ihDate": "2026-04-08",
+    "styleNo": "OF2155DKJ",
+    "store": "DILLARD'S",
+    "printName": "DUSTY PINK",
+    "quantity": 126,
+    "unitPrice": 11.5,
+    "totalValue": 1449.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/6 sent quality &L/D 1/10 option A 1/13 heavier as OG 1/14 sent hevier quality 1/20 ok 1/22 sent L/D 2/6 sent bulk&lace",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent lace, 12/11 quality ok 1/16 sent lace L/D 1/21 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER# 512",
+    "poNo": "PORDC-0000228",
+    "poReceivedDate": "2025-11-14",
+    "ihDate": "2026-04-08",
+    "styleNo": "OF2155DKJ",
+    "store": "DILLARD'S",
+    "printName": "DUSTY BLUE",
+    "quantity": 114,
+    "unitPrice": 11.5,
+    "totalValue": 1311.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/6 sent quality &L/D 1/10 option A 1/13 heavier as OG 1/14 sent hevier quality 1/20 ok 1/22 sent L/D 2/6 sent bulk&lace",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent lace, 12/11 quality ok 1/16 sent lace L/D 1/21 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER# 512",
+    "poNo": "PORDC-0000228",
+    "poReceivedDate": "2025-11-14",
+    "ihDate": "2026-04-08",
+    "styleNo": "OF2155DKJ",
+    "store": "DILLARD'S",
+    "printName": "WHITE",
+    "quantity": 108,
+    "unitPrice": 11.5,
+    "totalValue": 1242.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/6 sent quality &L/D 1/10 option A 1/13 heavier as OG 1/14 sent hevier quality 1/20 ok 1/22 sent L/D 2/6 sent bulk&lace",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent lace, 12/11 quality ok 1/16 sent lace L/D 1/21 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "PENDING",
+    "orderNumber": null,
+    "poNo": "PORDC-0000357",
+    "poReceivedDate": "2025-11-27",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM6557SWIP",
+    "store": "KOHL'S",
+    "printName": "SCARLET- FRENCH SWEETS WITH BORDER",
+    "quantity": 3900,
+    "unitPrice": 13.75,
+    "totalValue": 53625.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "1/4 sent 1/14 rej",
+        "status": "REJECTED"
+      },
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small due : 02/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small due : 03/10",
+        "status": "PENDING"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/16 sent 12/23 red add 15% , pink too yellow , fabric too sheer",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "PENDING",
+    "orderNumber": "ORDER#538",
+    "poNo": "PORDC-0000374",
+    "poReceivedDate": "2025-12-11",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM3267SWIP",
+    "store": "KOHL'S",
+    "printName": "SCARLET-FRENCH SWEETS WITH BORDER",
+    "quantity": 3950,
+    "unitPrice": 16.5,
+    "totalValue": 65175.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "1/4 sent",
+        "status": "SUBMITTED"
+      },
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small due : 02/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small due : 03/10",
+        "status": "PENDING"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/16 sent 12/23 red add 15% , pink too yellow , fabric too sheer",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "PENDING",
+    "orderNumber": "ORDER#538",
+    "poNo": "PORDC-0000374",
+    "poReceivedDate": "2025-12-11",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM1321SWI",
+    "store": "KOHL'S",
+    "printName": "SCARLET",
+    "quantity": 2050,
+    "unitPrice": 11.4,
+    "totalValue": 23370.0,
+    "approvals": {
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small due : 02/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small due : 03/10",
+        "status": "PENDING"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 TP OK",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "with bead",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": "PENDING",
+    "orderNumber": "ORDER#538",
+    "poNo": "PORDC-0000374",
+    "poReceivedDate": "2025-12-11",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM1321SWIP",
+    "store": "KOHL'S",
+    "printName": "SCARLET- FRENCH SWEETS WITH BORDER",
+    "quantity": 3850,
+    "unitPrice": 12.0,
+    "totalValue": 46200.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "1/4 sent",
+        "status": "SUBMITTED"
+      },
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small due : 02/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small due : 03/10",
+        "status": "PENDING"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/13 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/16 sent 12/23 red add 15% , pink too yellow , fabric too sheer",
+        "status": "SUBMITTED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "no bead",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#539",
+    "poNo": "PORDC-0000375",
+    "poReceivedDate": "2025-12-11",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM6557VEEP",
+    "store": "KOHL'S",
+    "printName": "SIENNA - PERSIAN DITZY",
+    "quantity": 3850,
+    "unitPrice": 12.75,
+    "totalValue": 49088.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/11 sent 12/18 rej 1/13 sent 1/21 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/30 sent 2/5 ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/16 sent 12/23 OPTION b GROUND COLOR TOO WHITE NEEDS TO BE MORE IVORY\n\n\n\nGREEN IS NOT YELLOW ENOUGH\n\n\n\nSIENNA COLOR IS TOO FADED AND BROWN NEEDS MORE RED TONES 12/31 sent 1/9 sienna back to 12/16",
+        "status": "SUBMITTED"
+      },
+      "Contrast Quality": {
+        "type": "CUSTOM",
+        "segment": "FABRICS",
+        "label": "Contrast Fabric",
+        "text": "1/10 sent lining 1/27 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "2/10 shell stitch JA1436",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#539",
+    "poNo": "PORDC-0000375",
+    "poReceivedDate": "2025-12-11",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM3263VEEP",
+    "store": "KOHL'S",
+    "printName": "SIENNA - PERSIAN DITZY",
+    "quantity": 3910,
+    "unitPrice": 14.5,
+    "totalValue": 56695.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/16 sent 12/30 rej 1/13 sent 1/29 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/2 sent 2/11 rej 2/14 grading， submit reference PP",
+        "status": "REJECTED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/16 sent 12/23 OPTION b GROUND COLOR TOO WHITE NEEDS TO BE MORE IVORY\n\n\n\nGREEN IS NOT YELLOW ENOUGH\n\n\n\nSIENNA COLOR IS TOO FADED AND BROWN NEEDS MORE RED TONES 12/31 sent 1/9 sienna back to 12/16",
+        "status": "SUBMITTED"
+      },
+      "Contrast Quality": {
+        "type": "CUSTOM",
+        "segment": "FABRICS",
+        "label": "Contrast Fabric",
+        "text": "1/10 sent lining 1/27 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#539",
+    "poNo": "PORDC-0000375",
+    "poReceivedDate": "2025-12-11",
+    "ihDate": "2026-04-08",
+    "styleNo": "FM1024VEEP",
+    "store": "KOHL'S",
+    "printName": "SIENNA - PERSIAN DITZY",
+    "quantity": 3910,
+    "unitPrice": 8.0,
+    "totalValue": 31280.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/16 sent 12/31 rej 1/13 sent 1/22 rej 1/30 sent 2/5 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "2/5 ok",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/16 sent 12/23 OPTION b GROUND COLOR TOO WHITE NEEDS TO BE MORE IVORY\n\n\n\nGREEN IS NOT YELLOW ENOUGH\n\n\n\nSIENNA COLOR IS TOO FADED AND BROWN NEEDS MORE RED TONES 12/31 sent 1/9 sienna back to 12/16",
+        "status": "SUBMITTED"
+      },
+      "Placement": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Placement",
+        "text": "2/26 option A",
+        "status": "SUBMITTED"
+      },
+      "Contrast Quality": {
+        "type": "CUSTOM",
+        "segment": "FABRICS",
+        "label": "Contrast Fabric",
+        "text": "1/10 sent lining 1/27 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#479",
+    "poNo": "PORDC-0000203",
+    "poReceivedDate": "2025-10-31",
+    "ihDate": "2026-04-15",
+    "styleNo": "OW6564WVS",
+    "store": "VON MAUR",
+    "printName": "MIMOSA",
+    "quantity": 224,
+    "unitPrice": 14.5,
+    "totalValue": 3248.0,
+    "approvals": {
+      "OG Sample": {
+        "type": "PROTO",
+        "segment": "SAMPLES",
+        "label": "OG Sample",
+        "text": "ok",
+        "status": "APPROVED"
+      },
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "11/28 sent,12/18 rej 12/26 sent 1/10 ok",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/16 sent 1/29 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "12/5 sent 12/11 lighter 15%",
+        "status": "SUBMITTED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "11/28 sent 12/16 ok",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "KOHL'S",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#479",
+    "poNo": "PORDC-0000333",
+    "poReceivedDate": "2025-11-18",
+    "ihDate": "2026-04-15",
+    "styleNo": "OW2127FKG",
+    "store": "VON MAUR",
+    "printName": "DEEP BISCUIT",
+    "quantity": 100,
+    "unitPrice": 8.5,
+    "totalValue": 850.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "11/14 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/17 sent 1/31 OK",
+        "status": "APPROVED"
+      },
+      "PP": {
+        "type": "PP",
+        "segment": "SAMPLES",
+        "label": "PP",
+        "text": "1/31 OK",
+        "status": "APPROVED"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "size M",
+        "status": "PENDING"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "TP OK",
+        "status": "APPROVED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "12/27 sent fabric quality and L/D 1/3 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#531",
+    "poNo": "PORDC-0000409",
+    "poReceivedDate": "2025-01-17",
+    "ihDate": "2026-04-22",
+    "styleNo": "OM3229MBCP",
+    "store": "BOSCOVS",
+    "printName": "YELLOW-SUNNY AVE/ PRECIOUS FOULAND",
+    "quantity": 168,
+    "unitPrice": null,
+    "totalValue": null,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "2/24 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "Precious Foulard.psd OK 2/26 TP OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#531",
+    "poNo": "PORDC-0000409",
+    "poReceivedDate": "2025-01-24",
+    "ihDate": "2026-04-22",
+    "styleNo": "OM1220MBCP",
+    "store": "BOSCOVS",
+    "printName": "YELLOW-SUNNY AVE/ PRECIOUS FOULAND",
+    "quantity": 168,
+    "unitPrice": null,
+    "totalValue": null,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "2/24 ok",
+        "status": "APPROVED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "Precious Foulard.psd OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#531",
+    "poNo": "PORDC-0004960",
+    "poReceivedDate": "2025-02-03",
+    "ihDate": "2025-04-22",
+    "styleNo": "OM1222CZEE",
+    "store": "BOSCOVS",
+    "printName": "WHITE-FLORAL PATH",
+    "quantity": 168,
+    "unitPrice": null,
+    "totalValue": null,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#531",
+    "poNo": "PORDC-0004960",
+    "poReceivedDate": "2025-02-03",
+    "ihDate": "2025-04-22",
+    "styleNo": "OM1226CPO",
+    "store": "BOSCOVS",
+    "printName": "WHITE",
+    "quantity": 168,
+    "unitPrice": null,
+    "totalValue": null,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#531",
+    "poNo": "PORDC-0004960",
+    "poReceivedDate": "2025-02-03",
+    "ihDate": "2025-04-22",
+    "styleNo": "OM6598PTP",
+    "store": "BOSCOVS",
+    "printName": "YELLOW-BIRD WATCHING/SMALL LEMONS",
+    "quantity": 168,
+    "unitPrice": null,
+    "totalValue": null,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#554",
+    "poNo": "PORDC-0000411",
+    "poReceivedDate": "2025-01-28",
+    "ihDate": "2026-04-22",
+    "styleNo": "TR3140CDL",
+    "store": "ROSS",
+    "printName": "IVORY",
+    "quantity": 1200,
+    "unitPrice": 8.25,
+    "totalValue": 9900.0,
+    "approvals": {
+      "Standard": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Standard",
+        "text": "11-0103 TCX",
+        "status": "SUBMITTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "2/5 TP OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#554",
+    "poNo": "PORDC-0000411",
+    "poReceivedDate": "2025-01-28",
+    "ihDate": "2026-04-22",
+    "styleNo": "TR3139CDL",
+    "store": "ROSS",
+    "printName": "NAVY",
+    "quantity": 4800,
+    "unitPrice": 9.5,
+    "totalValue": 45600.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "2/5 TP OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#554",
+    "poNo": "PORDC-0000412",
+    "poReceivedDate": "2025-01-28",
+    "ihDate": "2026-04-22",
+    "styleNo": "TR3139CDL",
+    "store": "ROSS",
+    "printName": "IVORY",
+    "quantity": 1200,
+    "unitPrice": 9.5,
+    "totalValue": 11400.0,
+    "approvals": {
+      "Standard": {
+        "type": "CUSTOM",
+        "segment": "COLOR_PRINTS",
+        "label": "Standard",
+        "text": "11-0103 TCX",
+        "status": "SUBMITTED"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "2/5 TP OK",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#547",
+    "poNo": "PORDC-0000352",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-04-22",
+    "styleNo": "OW2180SJY",
+    "store": "VON MAUR",
+    "printName": "CORAL",
+    "quantity": 174,
+    "unitPrice": 8.0,
+    "totalValue": 1392.0,
+    "approvals": {
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "12/5 sent 12/18 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0005103",
+    "poReceivedDate": "2026-02-11",
+    "ihDate": "2026-04-29",
+    "styleNo": "FME3188VMCP",
+    "store": "KOHL'S",
+    "printName": "IVORY/PINK- BELLISIMO GARDEN",
+    "quantity": 915,
+    "unitPrice": 18.5,
+    "totalValue": 16928.0,
+    "approvals": {
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small AD Samples due : 3/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small TOP Samples due : 3/25",
+        "status": "PENDING"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/26 sent poplin&VMCP",
+        "status": "SUBMITTED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "2/27 tassel color bright pink",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0005103",
+    "poReceivedDate": "2026-02-11",
+    "ihDate": "2026-04-29",
+    "styleNo": "FME1024IPBP",
+    "store": "KOHL'S",
+    "printName": "IVORY- BELLISIMO GARDEN",
+    "quantity": 915,
+    "unitPrice": 10.5,
+    "totalValue": 9608.0,
+    "approvals": {
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small AD Samples due : 3/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small TOP Samples due : 3/25",
+        "status": "PENDING"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "2/27 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/26 sent poplin&VMCP",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0005104",
+    "poReceivedDate": "2026-02-11",
+    "ihDate": "2026-04-29",
+    "styleNo": "FM1024IPBP",
+    "store": "KOHL'S",
+    "printName": "IVORY- BELLISIMO GARDEN",
+    "quantity": 4010,
+    "unitPrice": 10.5,
+    "totalValue": 42105.0,
+    "approvals": {
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small AD Samples due : 3/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small TOP Samples due : 3/25",
+        "status": "PENDING"
+      },
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "2/27 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/26 sent poplin&VMCP",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0005104",
+    "poReceivedDate": "2026-02-11",
+    "ihDate": "2026-04-29",
+    "styleNo": "FM3188VMCP",
+    "store": "KOHL'S",
+    "printName": "IVORY/PINK- BELLISIMO GARDEN",
+    "quantity": 4000,
+    "unitPrice": 18.5,
+    "totalValue": 74000.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "1/27 sent 2/6 ok",
+        "status": "APPROVED"
+      },
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small AD Samples due : 3/18",
+        "status": "PENDING"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "2/9 sent 2/13 rej",
+        "status": "REJECTED"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small TOP Samples due : 3/25",
+        "status": "PENDING"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/26 sent poplin&VMCP",
+        "status": "SUBMITTED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "2/27 tassel color bright pink",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0005104",
+    "poReceivedDate": "2026-02-11",
+    "ihDate": "2026-04-29",
+    "styleNo": "FM6609IPBP",
+    "store": "KOHL'S",
+    "printName": "IVORY/PINK- BELLISIMO GARDEN",
+    "quantity": 4010,
+    "unitPrice": 13.5,
+    "totalValue": 54135.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "1/27 sent 2/6 ok",
+        "status": "APPROVED"
+      },
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small AD Samples due : 3/18",
+        "status": "PENDING"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "2/9 sent, 2/13 rej",
+        "status": "REJECTED"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small TOP Samples due : 3/25",
+        "status": "PENDING"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/26 sent poplin&VMCP",
+        "status": "SUBMITTED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": null,
+    "poNo": "PORDC-0000376",
+    "poReceivedDate": "2026-02-12",
+    "ihDate": "2026-05-06",
+    "styleNo": "FM3281GZZ",
+    "store": "KOHL'S",
+    "printName": "CREAM/TAN",
+    "quantity": 2050,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "2/14 ok",
+        "status": "APPROVED"
+      },
+      "Ads": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Ad Samples",
+        "text": "2 Size Small AD Samples due : 3/18",
+        "status": "PENDING"
+      },
+      "TOP": {
+        "type": "TOP",
+        "segment": "SAMPLES",
+        "label": "TOP",
+        "text": "3 Size Small TOP Samples due : 4/08",
+        "status": "PENDING"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#569",
+    "poNo": "PORDC-0005100",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-05-15",
+    "styleNo": "TR6557VEEP",
+    "store": "ROSS",
+    "printName": "VINTAGE SCARF CW2 - SAGE",
+    "quantity": 1200,
+    "unitPrice": 10.0,
+    "totalValue": 12000.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#569",
+    "poNo": "PORDC-0005100",
+    "poReceivedDate": "2026-02-06",
+    "ihDate": "2026-05-15",
+    "styleNo": "TR6557VEEP",
+    "store": "ROSS",
+    "printName": "FRENCH VINES CW2 - BRICK RED",
+    "quantity": 1200,
+    "unitPrice": 10.0,
+    "totalValue": 12000.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#487",
+    "poNo": "PORDC-0000204",
+    "poReceivedDate": "2025-09-16",
+    "ihDate": "2026-05-20",
+    "styleNo": "OWE3125TLNP",
+    "store": "VON MAUR",
+    "printName": "GREEN-BRIGHT MELODY CW4",
+    "quantity": 78,
+    "unitPrice": 16.0,
+    "totalValue": 1248.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "12/2 TP OK",
+        "status": "APPROVED"
+      },
+      "Trim 1": {
+        "type": "TRIM",
+        "segment": "TRIMS",
+        "label": "Trim 1",
+        "text": "12/2 sent button quality&size&color 12/10 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#552",
+    "poNo": "PORDC-0000397",
+    "poReceivedDate": "2026-01-17",
+    "ihDate": "2026-05-20",
+    "styleNo": "OM4117WPU",
+    "store": "FRED MEYER",
+    "printName": "DARK BROWN",
+    "quantity": 798,
+    "unitPrice": 18.5,
+    "totalValue": 14763.0,
+    "approvals": {
+      "SRS": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "SRS",
+        "text": "1/27 ok",
+        "status": "APPROVED"
+      },
+      "Fits": {
+        "type": "FIT",
+        "segment": "SAMPLES",
+        "label": "FIT",
+        "text": "1/31 sent 2/10 rej",
+        "status": "REJECTED"
+      },
+      "Self Quality": {
+        "type": "FABRIC",
+        "segment": "FABRICS",
+        "label": "Self Fabric",
+        "text": "1/28 sent PU quality& L/D 2/10 quality ok，source color as OG",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#548",
+    "poNo": "PORDC-0000353",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-05-27",
+    "styleNo": "9T5SNM330151",
+    "store": "VON MAUR",
+    "printName": "BROWN/MULTI-ROLLING FLOWER CW2",
+    "quantity": 180,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/4 sent 1/8 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#548",
+    "poNo": "PORDC-0000353",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-05-27",
+    "styleNo": "OW2159WRK",
+    "store": "VON MAUR",
+    "printName": "PLUM",
+    "quantity": 180,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#548",
+    "poNo": "PORDC-0000353",
+    "poReceivedDate": "2025-12-05",
+    "ihDate": "2026-05-27",
+    "styleNo": "OW2310SJY",
+    "store": "VON MAUR",
+    "printName": "CREAM CLOUD WASH",
+    "quantity": 180,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#546",
+    "poNo": "PORDC-0000342",
+    "poReceivedDate": "2025-11-26",
+    "ihDate": "2026-05-28",
+    "styleNo": "9T5SNW330151",
+    "store": "VON MAUR",
+    "printName": "BROWN/MULTI-ROLLING FLOWER CW2",
+    "quantity": 282,
+    "unitPrice": 5.6,
+    "totalValue": 1579.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "11/22 ok 12/2 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/4 sent 1/8 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#574",
+    "poNo": "PORDC-0005117",
+    "poReceivedDate": "2026-02-20",
+    "ihDate": "2026-05-30",
+    "styleNo": "OM4117WPU",
+    "store": "BOSCOV'S",
+    "printName": "DARK BROWN",
+    "quantity": 72,
+    "unitPrice": 18.5,
+    "totalValue": 1332.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#573",
+    "poNo": "PORDC-0005120",
+    "poReceivedDate": "2026-02-12",
+    "ihDate": "2026-06-02",
+    "styleNo": "TR3137GBC",
+    "store": "ROSS",
+    "printName": "FRENCH SWEET BORDER - BROWN RICE",
+    "quantity": 4800,
+    "unitPrice": 9.25,
+    "totalValue": 44400.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#546",
+    "poNo": "PORDC-0000341",
+    "poReceivedDate": "2025-11-26",
+    "ihDate": "2026-06-02",
+    "styleNo": "OWE2159WRK",
+    "store": "VON MAUR",
+    "printName": "PLUM",
+    "quantity": 120,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#544",
+    "poNo": "PORDC-0000347",
+    "poReceivedDate": "2025-12-04",
+    "ihDate": "2026-06-10",
+    "styleNo": "9T5SNP330151",
+    "store": "VON MAUR",
+    "printName": "BROWN/MULTI-ROLLING FLOWER CW2",
+    "quantity": 288,
+    "unitPrice": 5.3,
+    "totalValue": 1526.0,
+    "approvals": {
+      "File": {
+        "type": "CUSTOM",
+        "segment": "SAMPLES",
+        "label": "Tech Pack",
+        "text": "11/22 ok 12/2 TP OK",
+        "status": "APPROVED"
+      },
+      "S/O": {
+        "type": "PRINT_STRIKEOFF",
+        "segment": "COLOR_PRINTS",
+        "label": "S/O",
+        "text": "1/4 sent 1/8 ok",
+        "status": "APPROVED"
+      }
+    }
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#577",
+    "poNo": "PORDC-0005124",
+    "poReceivedDate": "2026-02-21",
+    "ihDate": "2026-07-30",
+    "styleNo": "OF2184PLCS",
+    "store": "DILLARD'S",
+    "printName": "Navy/White",
+    "quantity": 174,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#577",
+    "poNo": "PORDC-0005124",
+    "poReceivedDate": "2026-02-21",
+    "ihDate": "2026-07-30",
+    "styleNo": "OF2184PLCS",
+    "store": "DILLARD'S",
+    "printName": "Burgundy",
+    "quantity": 174,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#577",
+    "poNo": "PORDC-0005124",
+    "poReceivedDate": "2026-02-21",
+    "ihDate": "2026-07-30",
+    "styleNo": "OF2184PLCS",
+    "store": "DILLARD'S",
+    "printName": "Olive",
+    "quantity": 90,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#577",
+    "poNo": "PORDC-0005124",
+    "poReceivedDate": "2026-02-21",
+    "ihDate": "2026-07-30",
+    "styleNo": "OF7237HHMS",
+    "store": "DILLARD'S",
+    "printName": "Ivory/Tan",
+    "quantity": 174,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  },
+  {
+    "customer": "Rloom",
+    "orderStatus": null,
+    "orderNumber": "ORDER#577",
+    "poNo": "PORDC-0005124",
+    "poReceivedDate": "2026-02-21",
+    "ihDate": "2026-07-30",
+    "styleNo": "OF5120NNT",
+    "store": "DILLARD'S",
+    "printName": "Olive",
+    "quantity": 174,
+    "unitPrice": null,
+    "totalValue": 0.0,
+    "approvals": {}
+  }
+]

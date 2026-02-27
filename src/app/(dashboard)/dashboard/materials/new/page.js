@@ -86,7 +86,7 @@ export default function NewMaterialPage() {
       <form onSubmit={handleSubmit} className="card max-w-2xl space-y-4">
 
         {/* Basic Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="label-field">Code *</label>
             <input name="code" className="input-field" required placeholder="FAB-001" />
@@ -113,7 +113,7 @@ export default function NewMaterialPage() {
         </div>
 
         {/* Fabric-specific */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="label-field">Content / Composition</label>
             <input name="content" className="input-field" placeholder="100% Cotton" />
@@ -129,7 +129,7 @@ export default function NewMaterialPage() {
         </div>
 
         {/* Pricing */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           <div>
             <label className="label-field">Price / Unit</label>
             <input name="pricePerUnit" type="number" step="0.0001" className="input-field" placeholder="0" />
@@ -153,7 +153,7 @@ export default function NewMaterialPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">MOQ</label>
             <input name="moq" type="number" className="input-field" />
@@ -167,7 +167,7 @@ export default function NewMaterialPage() {
         {/* Supplier Linking */}
         <div className="border-t pt-4">
           <h3 className="font-medium text-sm text-gray-700 mb-3">🏭 Link to Supplier (optional)</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="label-field">Supplier</label>
               <select name="supplierId" className="select-field">

@@ -266,7 +266,7 @@ export default function NewSupplierPOPage() {
         {/* Header */}
         <div className="card mb-6">
           <h2 className="font-semibold mb-4">Order Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="label">Supplier *</label>
               <select className="input-field" value={form.supplierId} onChange={e => setForm({ ...form, supplierId: e.target.value })} required>
@@ -323,7 +323,7 @@ export default function NewSupplierPOPage() {
               <thead>
                 <tr>
                   <th style={{ minWidth: 220 }}>Material *</th>
-                  <th style={{ minWidth: 180 }}>Link to PO / Style-Color</th>
+                  <th style={{ minWidth: 280 }}>Link to PO / Style-Color</th>
                   <th style={{ minWidth: 100 }}>Color</th>
                   <th style={{ minWidth: 90 }}>Qty *</th>
                   <th style={{ minWidth: 75 }}>Unit</th>

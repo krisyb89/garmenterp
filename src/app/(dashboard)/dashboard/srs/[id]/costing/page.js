@@ -179,7 +179,7 @@ export default function SRSCostingPage() {
         </p>
 
         {/* Currency & Rate Settings */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
           <div>
             <label className="label-field">Local Currency</label>
             <select className="select-field" value={localCur} onChange={e => setField('localCurrency', e.target.value)}>
@@ -220,7 +220,7 @@ export default function SRSCostingPage() {
 
         {/* Summary */}
         <div className="mt-6 pt-4 border-t">
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <h3 className="font-semibold text-sm text-gray-700 uppercase tracking-wide">Cost Summary</h3>
               <div className="bg-gray-50 rounded-lg p-4 space-y-2 text-sm">
@@ -240,7 +240,7 @@ export default function SRSCostingPage() {
             </div>
             <div className="space-y-3">
               <h3 className="font-semibold text-sm text-gray-700 uppercase tracking-wide">Pricing</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="label-field">Agent Commission %</label>
                   <input type="number" step="0.1" className="input-field" value={cs.agentCommPercent ?? 0}

@@ -1,7 +1,8 @@
 // src/app/(dashboard)/layout.js
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
-import DashboardShell from '@/components/DashboardShell';
+import Sidebar from '@/components/Sidebar';
+import { I18nProvider } from '@/i18n/I18nProvider';
 
 export default async function DashboardLayout({ children }) {
   let user;
@@ -16,5 +17,16 @@ export default async function DashboardLayout({ children }) {
     redirect('/login');
   }
 
-  return <DashboardShell user={user}>{children}</DashboardShell>;
+  return (
+    <I18nProvider>
+      <div className="flex h-screen overflow-hidden">
+        <Sidebar user={user} />
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-6">
+            {children}
+          </div>
+        </main>
+      </div>
+    </I18nProvider>
+  );
 }

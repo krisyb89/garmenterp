@@ -171,7 +171,7 @@ export default function SRSDetailPage() {
         {/* Core Details */}
         <div className="card space-y-4">
           <h2 className="font-semibold">Request Details</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="label-field">Style # *</label>
               <input className="input-field" value={form.styleNo} onChange={e => set('styleNo', e.target.value)} required />
@@ -181,7 +181,7 @@ export default function SRSDetailPage() {
               <input className="input-field" value={form.brand} onChange={e => set('brand', e.target.value)} placeholder="e.g., Mainline / Kids" />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="label-field">Color / Print</label>
               <input className="input-field" value={form.colorPrint} onChange={e => set('colorPrint', e.target.value)} placeholder="e.g., Navy + floral print" />
@@ -195,7 +195,7 @@ export default function SRSDetailPage() {
             <label className="label-field">Description</label>
             <textarea className="input-field" rows={3} value={form.description} onChange={e => set('description', e.target.value)} placeholder="Style description, construction details…" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="label-field">Target Price</label>
               <input type="number" step="0.01" className="input-field" value={form.targetPrice} onChange={e => set('targetPrice', e.target.value)} placeholder="0.00" />
@@ -211,7 +211,7 @@ export default function SRSDetailPage() {
               <input className="input-field" value={form.deliveryWindow} onChange={e => set('deliveryWindow', e.target.value)} placeholder="e.g., March 2026" />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="label-field">Est. Qty Min</label>
               <input type="number" className="input-field" value={form.estimatedQtyMin} onChange={e => set('estimatedQtyMin', e.target.value)} placeholder="1000" />

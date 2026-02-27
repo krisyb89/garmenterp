@@ -15,7 +15,6 @@ export async function PUT(request, { params }) {
     if (body.label     !== undefined) data.label     = body.label;
     if (body.status    !== undefined) data.status    = body.status;
     if (body.sortOrder !== undefined) data.sortOrder = body.sortOrder;
-    if (body.imageUrls !== undefined) data.imageUrls = body.imageUrls;
 
     const cell = await prisma.wIPCell.update({
       where: { id },

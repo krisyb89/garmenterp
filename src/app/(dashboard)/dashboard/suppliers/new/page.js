@@ -28,11 +28,11 @@ export default function NewSupplierPage() {
       <PageHeader title="New Supplier" />
       {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">{error}</div>}
       <form onSubmit={handleSubmit} className="card max-w-2xl space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div><label className="label-field">Name *</label><input name="name" className="input-field" required /></div>
           <div><label className="label-field">Code *</label><input name="code" className="input-field" required maxLength={10} /></div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div><label className="label-field">Type *</label>
             <select name="type" className="select-field" required>
               <option value="">Select...</option>
@@ -42,11 +42,11 @@ export default function NewSupplierPage() {
           </div>
           <div><label className="label-field">Country</label><input name="country" className="input-field" /></div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div><label className="label-field">Contact Person</label><input name="contactPerson" className="input-field" /></div>
           <div><label className="label-field">Email</label><input name="email" type="email" className="input-field" /></div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div><label className="label-field">Phone</label><input name="phone" className="input-field" /></div>
           <div><label className="label-field">Currency</label>
             <select name="currency" className="select-field" defaultValue="CNY">

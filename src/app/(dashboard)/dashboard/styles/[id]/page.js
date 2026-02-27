@@ -183,7 +183,7 @@ export default function StyleDetailPage() {
         const styleImage = (Array.isArray(style.imageUrls) ? style.imageUrls[0] : null) || style.imageUrl || null;
         const df = (field) => (e) => setDetailForm(prev => ({ ...prev, [field]: e.target.value }));
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div className="card">
               {/* Top row: square thumbnail + style number */}
               <div className="flex items-start gap-4 mb-4">
@@ -212,7 +212,7 @@ export default function StyleDetailPage() {
 
               {/* Editable fields */}
               <div className="space-y-3 text-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs text-gray-500 mb-1">Category</label>
                     <input className="input-field text-sm w-full" value={detailForm.category}
@@ -224,7 +224,7 @@ export default function StyleDetailPage() {
                       placeholder="SS25, FW25…" onChange={df('season')} />
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs text-gray-500 mb-1">Construction</label>
                     <input className="input-field text-sm w-full" value={detailForm.construction}
@@ -249,7 +249,7 @@ export default function StyleDetailPage() {
                 {/* Customs / Compliance */}
                 <div className="border-t border-gray-100 pt-3 mt-1">
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Customs / Compliance</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs text-gray-500 mb-1">China HS Code</label>
                       <input className="input-field text-sm w-full" value={detailForm.cnHsCode}
@@ -401,6 +401,24 @@ export default function StyleDetailPage() {
         </div>
       </div>
 
+      {/* Approvals */}
+      <div className="card">
+        <h2 className="font-semibold mb-4">Approvals ({style.approvals?.length || 0})</h2>
+        {!style.approvals?.length ? <p className="text-sm text-gray-400">No approvals yet</p> :
+          <table className="table-base">
+            <thead><tr><th>Type</th><th>Submit#</th><th>Reference</th><th>Supplier</th><th>Submitted</th><th>Status</th></tr></thead>
+            <tbody>{style.approvals.map(a => (
+              <tr key={a.id}>
+                <td><span className="status-badge bg-purple-100 text-purple-700">{a.type.replace(/_/g, ' ')}</span></td>
+                <td>#{a.submissionNo}</td>
+                <td>{a.reference || '—'}</td>
+                <td>{a.supplierName || '—'}</td>
+                <td>{a.submitDate ? new Date(a.submitDate).toLocaleDateString() : '—'}</td>
+                <td><StatusBadge status={a.status} /></td>
+              </tr>
+            ))}</tbody>
+          </table>}
+      </div>
     </div>
   );
 }

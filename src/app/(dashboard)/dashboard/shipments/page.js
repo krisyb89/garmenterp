@@ -94,7 +94,7 @@ export default function ShipmentsPage() {
       {showCreate && (
         <form onSubmit={handleCreate} className="card mb-6 space-y-4">
           <h3 className="font-semibold">Create New Shipment</h3>
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="label-field">Purchase Order (Optional)</label>
               <select name="poId" className="select-field">

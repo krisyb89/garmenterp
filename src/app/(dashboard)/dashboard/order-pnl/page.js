@@ -48,7 +48,7 @@ export default function OrderPnLPage() {
         <div className="text-sm text-gray-400">{filtered.length} orders</div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
         <div className="card text-center">
           <div className="text-xs text-gray-500">Est Revenue</div>
           <div className="text-xl font-bold text-blue-600">¥{fmt2(totalEstRevenue)}</div>

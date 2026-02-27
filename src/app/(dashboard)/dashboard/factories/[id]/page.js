@@ -75,7 +75,7 @@ export default function FactoryDetailPage() {
       {editing ? (
         <div className="card">
           <h2 className="font-semibold mb-4">Edit Factory</h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="label">Name</label>
               <input className="input-field" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
@@ -138,7 +138,7 @@ export default function FactoryDetailPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="card">
             <h2 className="font-semibold mb-3">Details</h2>
             <dl className="space-y-2 text-sm">

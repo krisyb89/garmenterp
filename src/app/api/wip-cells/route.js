@@ -74,7 +74,6 @@ export async function POST(request) {
         label:        body.label,
         status:       body.status    || 'PENDING',
         sortOrder:    body.sortOrder ?? 0,
-        imageUrls:    body.imageUrls || null,
       },
       include: {
         poLineItem: {

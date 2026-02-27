@@ -65,7 +65,7 @@ export default function NewSRSPage() {
           </select>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Style # *</label>
             <input name="styleNo" className="input-field" required placeholder="e.g., ST-10293" />
@@ -77,7 +77,7 @@ export default function NewSRSPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Color / Print</label>
             <input name="colorPrint" className="input-field" placeholder="e.g., Navy + floral print" />
@@ -93,7 +93,7 @@ export default function NewSRSPage() {
           <textarea name="description" className="input-field" rows={3} placeholder="Style description, construction details..." />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Target Price</label>
             <input name="targetPrice" type="number" step="0.01" className="input-field" placeholder="0.00" />
@@ -106,7 +106,7 @@ export default function NewSRSPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Estimated Qty (Min)</label>
             <input name="estimatedQtyMin" type="number" className="input-field" placeholder="1000" />
@@ -117,7 +117,7 @@ export default function NewSRSPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Delivery Window</label>
             <input name="deliveryWindow" className="input-field" placeholder="e.g., March 2025" />

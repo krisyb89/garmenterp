@@ -134,7 +134,7 @@ export default function CustomerDetailPage() {
         /* Edit Form */
         <div className="card max-w-3xl space-y-4">
           <h2 className="font-semibold mb-2">Edit Customer</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="label-field">Customer Name *</label>
               <input className="input-field" value={form.name || ''} onChange={e => setForm({ ...form, name: e.target.value })} required />
@@ -144,7 +144,7 @@ export default function CustomerDetailPage() {
               <input className="input-field" value={form.code || ''} onChange={e => setForm({ ...form, code: e.target.value })} required maxLength={10} style={{ textTransform: 'uppercase' }} />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="label-field">Contact Person</label>
               <input className="input-field" value={form.contactPerson || ''} onChange={e => setForm({ ...form, contactPerson: e.target.value })} />
@@ -154,7 +154,7 @@ export default function CustomerDetailPage() {
               <input className="input-field" type="email" value={form.email || ''} onChange={e => setForm({ ...form, email: e.target.value })} />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="label-field">Phone</label>
               <input className="input-field" value={form.phone || ''} onChange={e => setForm({ ...form, phone: e.target.value })} />
@@ -168,7 +168,7 @@ export default function CustomerDetailPage() {
             <label className="label-field">Address</label>
             <textarea className="input-field" rows={2} value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="label-field">Currency</label>
               <select className="select-field" value={form.currency || 'USD'} onChange={e => setForm({ ...form, currency: e.target.value })}>
@@ -205,7 +205,7 @@ export default function CustomerDetailPage() {
       ) : (
         /* View Mode */
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="card">
               <h2 className="font-semibold mb-4">Details</h2>
               <dl className="space-y-2 text-sm">

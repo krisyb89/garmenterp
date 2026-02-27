@@ -435,7 +435,7 @@ export default function SupplierPODetailPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <div className="card text-center">
           <p className="text-sm text-gray-500">Supplier</p>
           <p className="text-lg font-bold">{spo.supplier?.name}</p>
@@ -467,7 +467,7 @@ export default function SupplierPODetailPage() {
       {/* ── Editable Header ── */}
       <div className="card mb-6">
         <h2 className="font-semibold mb-4">Order Details</h2>
-        <div className="grid grid-cols-1 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
             <label className="label">Supplier *</label>
             <select className="input-field" value={hdr.supplierId} onChange={e => setHdr(h => ({ ...h, supplierId: e.target.value }))} disabled={isLocked}>
@@ -520,7 +520,7 @@ export default function SupplierPODetailPage() {
             <thead>
               <tr>
                 <th style={{ minWidth: 220 }}>Material</th>
-                <th style={{ minWidth: 180 }}>PO / Style-Color</th>
+                <th style={{ minWidth: 280 }}>PO / Style-Color</th>
                 <th style={{ minWidth: 100 }}>Color</th>
                 <th style={{ minWidth: 90 }}>Qty</th>
                 <th style={{ minWidth: 75 }}>Unit</th>
@@ -650,7 +650,7 @@ export default function SupplierPODetailPage() {
         {showReceiveForm && (
           <div className="border border-blue-200 bg-blue-50/30 rounded-lg p-4 mb-4">
             <h3 className="font-semibold text-blue-800 mb-3">New Receipt</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
               <div>
                 <label className="label">Received Date</label>
                 <input type="date" className="input-field" value={grForm.receivedDate} onChange={e => setGrForm(f => ({ ...f, receivedDate: e.target.value }))} />

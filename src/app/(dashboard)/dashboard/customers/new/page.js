@@ -42,7 +42,7 @@ export default function NewCustomerPage() {
       {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">{error}</div>}
 
       <form onSubmit={handleSubmit} className="card max-w-2xl space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Customer Name *</label>
             <input name="name" className="input-field" required />
@@ -53,7 +53,7 @@ export default function NewCustomerPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Contact Person</label>
             <input name="contactPerson" className="input-field" />
@@ -64,7 +64,7 @@ export default function NewCustomerPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label-field">Phone</label>
             <input name="phone" className="input-field" />
@@ -80,7 +80,7 @@ export default function NewCustomerPage() {
           <textarea name="address" className="input-field" rows={2} />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <label className="label-field">Currency</label>
             <select name="currency" className="select-field" defaultValue="USD">

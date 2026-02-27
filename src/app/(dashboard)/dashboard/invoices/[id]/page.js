@@ -107,7 +107,7 @@ export default function InvoiceDetailPage() {
 
         {editingHeader ? (
           <form onSubmit={saveHeaderFields} className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div><label className="label-field">Shipper/Exporter Name</label><input name="shipperName" className="input-field" defaultValue={invoice.shipperName || ''} /></div>
               <div><label className="label-field">Shipper Address</label><textarea name="shipperAddress" className="input-field" rows={2} defaultValue={invoice.shipperAddress || ''} /></div>
               <div><label className="label-field">Consignee Name</label><input name="consigneeName" className="input-field" defaultValue={invoice.consigneeName || ''} /></div>
@@ -135,7 +135,7 @@ export default function InvoiceDetailPage() {
         ) : (
           <div className="border border-gray-300 bg-gray-50">
             {/* Header Grid - 3 rows, 3 columns */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-300">
+            <div className="grid grid-cols-3 gap-px bg-gray-300">
               {/* Row 1 */}
               <div className="bg-white p-3 border border-gray-300">
                 <div className="text-xs font-semibold text-gray-500 mb-1">SHIPPER/EXPORTER</div>
@@ -208,7 +208,7 @@ export default function InvoiceDetailPage() {
         {/* Shipment Details if available */}
         {invoice.shipment && (
           <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded text-sm">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {invoice.shipment.shipmentNo && <div><span className="text-gray-500">Shipment No:</span> <span className="font-medium">{invoice.shipment.shipmentNo}</span></div>}
               {invoice.shipment.vesselName && <div><span className="text-gray-500">Vessel:</span> <span className="font-medium">{invoice.shipment.vesselName}</span></div>}
               {invoice.shipment.blNo && <div><span className="text-gray-500">BL No:</span> <span className="font-medium">{invoice.shipment.blNo}</span></div>}
@@ -263,7 +263,7 @@ export default function InvoiceDetailPage() {
 
         {/* Invoice Footer */}
         <div className="border-t-2 border-gray-400 pt-4 mt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-8">
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="font-semibold">TOTAL UNITS:</span>
@@ -305,7 +305,7 @@ export default function InvoiceDetailPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="card text-center">
           <div className="text-xs text-gray-500">Total Amount</div>
           <div className="text-xl font-bold">{invoice.currency} {fmtCur(invoice.totalAmount)}</div>
@@ -337,7 +337,7 @@ export default function InvoiceDetailPage() {
 
         {showPayment && (
           <form onSubmit={recordPayment} className="bg-gray-50 rounded-lg p-4 mb-4 space-y-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <div><label className="label-field">Date *</label><input name="paymentDate" type="date" className="input-field" required defaultValue={new Date().toISOString().split('T')[0]} /></div>
               <div><label className="label-field">Amount * ({invoice.currency})</label><input name="amount" type="number" step="0.01" className="input-field" required /></div>
               <div><label className="label-field">Bank Reference</label><input name="bankReference" className="input-field" /></div>

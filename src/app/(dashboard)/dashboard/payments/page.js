@@ -25,7 +25,7 @@ export default function PaymentsPage() {
     <div>
       <PageHeader title="Payments & Accounts Receivable" subtitle="Track outstanding and overdue payments" />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-4 gap-4 mb-6">
         <div className="card text-center"><div className="text-xs text-gray-500">Total Invoices</div><div className="text-xl font-bold">{invoices.length}</div></div>
         <div className="card text-center"><div className="text-xs text-gray-500">Outstanding</div><div className="text-xl font-bold text-orange-600">{outstanding.length}</div></div>
         <div className="card text-center"><div className="text-xs text-gray-500">Total Due</div><div className="text-xl font-bold text-red-600">${totalDue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div></div>
