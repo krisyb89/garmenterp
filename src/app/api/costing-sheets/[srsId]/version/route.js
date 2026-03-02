@@ -9,7 +9,7 @@ export async function POST(request, { params }) {
     const user = await getCurrentUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { srsId } = await params;
+    const { srsId } = params;
     const body = await request.json().catch(() => ({}));
 
     // Find the source version — either a specific one (body.sourceId) or the latest

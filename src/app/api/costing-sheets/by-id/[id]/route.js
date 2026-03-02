@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = params;
 
     const costingSheet = await prisma.costingSheet.findUnique({
       where: { id },
@@ -67,7 +67,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = params;
     const body = await request.json();
 
     // Check if costing sheet exists
@@ -169,7 +169,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
     }
 
-    const { id } = await params;
+    const { id } = params;
 
     // Check if costing sheet exists
     const existing = await prisma.costingSheet.findUnique({

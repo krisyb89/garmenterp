@@ -56,7 +56,7 @@ export async function GET(request, { params }) {
     const user = await getCurrentUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { srsId } = await params;
+    const { srsId } = params;
 
     // Return ALL versions ordered newest-first (full data — versions are compact enough)
     const versions = await prisma.costingSheet.findMany({
@@ -79,7 +79,7 @@ export async function PUT(request, { params }) {
     const user = await getCurrentUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { srsId } = await params;
+    const { srsId } = params;
     const body = await request.json();
     const data = buildCostingData(body);
 
