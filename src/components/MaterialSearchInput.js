@@ -17,8 +17,12 @@ export default function MaterialSearchInput({ category, line, onSelect }) {
   const [searching, setSearching] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [dropdownStyle, setDropdownStyle] = useState({});
+  const [isMounted, setIsMounted] = useState(false);
   const wrapRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Mark as mounted on client (avoids SSR/CSR mismatch)
+  useEffect(() => { setIsMounted(true); }, []);
 
   // Sync query when line.name changes from outside (e.g., clear)
   useEffect(() => { setQuery(line?.name || ''); }, [line?.name]);
@@ -130,7 +134,7 @@ export default function MaterialSearchInput({ category, line, onSelect }) {
         autoComplete="off"
       />
 
-      {typeof window !== 'undefined' && createPortal(dropdown, document.body)}
+      {isMounted && createPortal(dropdown, document.body)}
 
       {showModal && (
         <AddMaterialModal

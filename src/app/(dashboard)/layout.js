@@ -1,15 +1,32 @@
 // src/app/(dashboard)/layout.js
 import { redirect } from 'next/navigation';
-import { getCurrentUser } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import { verifyToken } from '@/lib/auth';
 import Sidebar from '@/components/Sidebar';
 import { I18nProvider } from '@/i18n/I18nProvider';
+import prisma from '@/lib/prisma';
 
 export default async function DashboardLayout({ children }) {
-  let user;
+  let user = null;
   try {
-    user = await getCurrentUser();
+    // Direct cookie handling with full error protection
+    const cookieStore = await cookies();
+    const token = cookieStore?.get('auth-token')?.value;
+    if (token) {
+      const payload = verifyToken(token);
+      if (payload?.userId) {
+        // Verify user still exists in DB
+        const dbUser = await prisma.user.findUnique({ 
+          where: { id: payload.userId }, 
+          select: { id: true, email: true, role: true, name: true, isActive: true } 
+        });
+        if (dbUser) {
+          user = { ...payload, ...dbUser };
+        }
+      }
+    }
   } catch (err) {
-    console.error('[DashboardLayout] getCurrentUser failed:', err?.message);
+    console.error('[DashboardLayout] Auth check failed:', err?.message || err);
     user = null;
   }
 

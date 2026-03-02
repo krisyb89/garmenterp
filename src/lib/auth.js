@@ -31,8 +31,14 @@ export function verifyToken(token) {
 }
 
 export async function getCurrentUser() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('auth-token')?.value;
+  let cookieStore;
+  try {
+    cookieStore = await cookies();
+  } catch (e) {
+    console.error('[getCurrentUser] cookies() failed:', e?.message || e);
+    return null;
+  }
+  const token = cookieStore?.get('auth-token')?.value;
   if (!token) return null;
   const payload = verifyToken(token);
   if (!payload) return null;
